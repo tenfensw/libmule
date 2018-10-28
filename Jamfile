@@ -1,5 +1,14 @@
 # Jamfile to build libMule
 
+rule InstallWithHeaders {
+	echo "$(1)" ;
+	ShellInstallWithHeaders $(2) : $(3) ;
+}
+
+actions ShellInstallWithHeaders {
+	sh ./install-libmule.sh "$(2)" "$(3)"
+}
+
 MULEVERSIONMAJOR = 1 ;
 MULEVERSIONMINOR = 0 ;
 MULEVERSIONUPDATE = 0 ;
@@ -42,3 +51,9 @@ else {
 }
 
 Library libMule : $(MULEPLATFORMSOURCES) src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp ;
+
+InstallLib $(LIBDIR) : libMule.a ;
+InstallFile $(LIBDIR)/../include/libmule/core : src/core/muledevice.h ;
+InstallFile $(LIBDIR)/../include/libmule/core : src/core/muleapplication.h ;
+InstallFile $(LIBDIR)/../include/libmule/platformsupport/common : src/platformsupport/common/mulecurrentplatform.h ;
+InstallFile $(LIBDIR)/../include/libmule/platformsupport/common : src/platformsupport/common/mulecommonplatform.h ;
