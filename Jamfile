@@ -1,6 +1,5 @@
 # Jamfile to build libMule
 
-
 MULEVERSIONMAJOR = 1 ;
 MULEVERSIONMINOR = 0 ;
 MULEVERSIONUPDATE = 0 ;
@@ -29,7 +28,7 @@ ENABLE_FILEIO ?= yes ;
 ENABLE_USERFRIENDLYCLASSES ?= yes ;
 
 if $(CXX) {
-	C++=$(CXX) ;
+	C++ = $(CXX) ;
 }
 include src/platformsupport/$(MULETARGET)/vars.jam ;
 
@@ -41,6 +40,5 @@ if $(DEBUG) || $(MULERELEASE) = no {
 else {
 	C++FLAGS += -DMULE_VERSION_RELEASE ;
 }
-
 
 Library libMule : $(MULEPLATFORMSOURCES) src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp ;

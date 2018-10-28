@@ -1,7 +1,8 @@
 What works?
 - dummy backend compiles
+- LEGO EV3 backend compiles, but not all functions are finished
 
 What doesn't work?
 - dummy backend untested, there might be bugs
-- LEGO EV3 and Raspberry Pi backends are unfinished
+- LEGO EV3 and Raspberry Pi backends are untested and unfinished
 - Windows is not supported without Cygwin

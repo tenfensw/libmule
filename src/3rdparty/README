@@ -1,0 +1,6 @@
+In this folder third-party components will be downloaded. They are usually
+needed to support various platforms. To download these components, run the
+./download-3rdparty-components.sh script.
+
+Notice that the code was not included in this repo because it is licensed
+under a license incompatible with GNU GPLv3.

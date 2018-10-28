@@ -4,6 +4,7 @@
 #include "core/muledevice.h"
 #include <vector>
 #include <string>
+#include <cstdlib>
 #include "core/muleglobalfunctions.h"
 
 class MuleCommonPlatform
@@ -36,7 +37,7 @@ protected:
         muleprintf("\n\n");
         muleprintf("The application will now exit now.\n");
         int exitcode = 400 + erc;
-        std::exit(exitcode);
+	std::exit(exitcode);
     }
 
 

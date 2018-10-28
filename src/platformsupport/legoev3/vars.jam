@@ -1,0 +1,41 @@
+# Jambase override variables for LEGO EV3 platform
+# Part of libMule
+
+actions FetchEV3API {
+	if test -e "./src/3rdparty/.stamp_ev3api"; then
+		exit 0
+	else
+		sh -c "cd ./src/3rdparty && ./download-3rdparty-components.sh && touch ./.stamp_ev3api"
+		exit 0
+	fi
+}
+
+CC ?= arm-none-linux-gnueabi-gcc ;
+C++ ?= arm-none-linux-gnueabi-g++ ;
+C++FLAGS = -Os -DMULE_PLATFORM_LEGOEV3 ;
+if $(DEBUG) {
+	C++FLAGS += -g ;
+	CCFLAGS += -g ;
+}
+
+if $(ENABLE_DEVICES) = yes {
+	C++FLAGS += -DMULE_FEATURES_SENSORS ;
+}
+
+if $(ENABLE_FILEIO) = yes {
+	C++FLAGS += -DMULE_FEATURES_FILEIO ;
+}
+
+if $(ENABLE_USERFRIENDLYCLASSES) = yes {
+	C++FLAGS += -DMULE_FEATURES_EASYMOTORS ;
+}
+
+C++FLAGS += -DMULE_OTHER_HWPINTYPE=unsigned -DMULE_OTHER_STRINGTYPE=std::string -std=c++0x ;
+C++FLAGS += -Isrc/platformsupport/legoev3 -Isrc/3rdparty/EV3-API-master/API ;
+CCFLAGS += -Isrc/3rdparty/EV3-API-master/API ;
+LINK = $(C++) ;
+LINKFLAGS = "" ;
+
+FetchEV3API src/3rdparty/.stamp_ev3api ;
+MULEPLATFORMSOURCES = src/3rdparty/EV3-API-master/API/ev3.c src/3rdparty/EV3-API-master/API/ev3_button.c src/3rdparty/EV3-API-master/API/ev3_command.c src/3rdparty/EV3-API-master/API/ev3_lcd.c src/3rdparty/EV3-API-master/API/ev3_output.c src/3rdparty/EV3-API-master/API/ev3sensor.c src/3rdparty/EV3-API-master/API/ev3_sound.c src/3rdparty/EV3-API-master/API/ev3_timer.c src/platformsupport/legoev3/mulemindstormsplatform.cpp ;
+Depends $(MULEPLATFORMSOURCES) : src/3rdparty/.stamp_ev3api ;

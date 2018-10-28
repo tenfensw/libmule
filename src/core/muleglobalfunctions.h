@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <exception>
+#include <cstdlib>
 #include <unistd.h>
 
 static MULE_OTHER_STRINGTYPE muleyesno(const bool& in) {

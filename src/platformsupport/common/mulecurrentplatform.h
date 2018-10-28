@@ -9,6 +9,10 @@
 #include "platformsupport/dummy/muledummyplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleDummyPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME std::string("dummy")
+#elif defined(MULE_PLATFORM_LEGOEV3)
+#include "platformsupport/legoev3/mulemindstormsplatform.h"
+#define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleMindstormsPlatform
+#define MULE_INTERNAL_CURRENTPLATFORMNAME std::string("legoev3")
 #else
 #error No supported platforms were detected
 #endif
