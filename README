@@ -37,6 +37,9 @@ variable, too:
 Now just run Jam:
 # jam -q lib
 
+To install, run ./install-libmule.sh:
+# PREFIX=<install prefix here> ./install-libmule.sh
+
 That's it!
 
 

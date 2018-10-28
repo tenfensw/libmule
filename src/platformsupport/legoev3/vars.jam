@@ -41,18 +41,3 @@ MULEPLATFORMSOURCES = src/3rdparty/EV3-API-master/API/ev3.c src/3rdparty/EV3-API
 Depends $(MULEPLATFORMSOURCES) : src/3rdparty/.stamp_ev3api ;
 
 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/analog.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/basictypes.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3_button.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3_command.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3_constants.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3_lcd.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3_output.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3sensor.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3_sound.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/ev3_timer.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/iic.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/typedata.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3/EV3APIHeaders : src/3rdparty/EV3-API-master/API/uart.h ; 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/legoev3 : src/platformsupport/legoev3/mulemindstormsplatform.h ;

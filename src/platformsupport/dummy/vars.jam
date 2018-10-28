@@ -26,4 +26,3 @@ LINKFLAGS = "" ;
 
 MULEPLATFORMSOURCES = src/platformsupport/dummy/muledummyplatform.cpp ;
 
-InstallFile $(LIBDIR)/../include/libmule/platformsupport/dummy : src/platformsupport/dummy/muledummyplatform.h ;
