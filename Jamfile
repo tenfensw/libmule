@@ -1,0 +1,43 @@
+# Jamfile to build libMule
+
+
+MULEVERSIONMAJOR = 1 ;
+MULEVERSIONMINOR = 0 ;
+MULEVERSIONUPDATE = 0 ;
+
+# Display beautiful header
+echo "====================================================================" ;
+echo "| libMule - Microcontroller-universal library (that is Extendable) |" ;
+echo "|           Written by Tim K (timprogrammer@rambler.ru)            |" ;
+echo "|                  Licensed under GNU GPLv3.                       |" ;
+echo "====================================================================" ;
+echo "" ;
+
+if $(MULETARGET) {
+	echo "MULETARGET is defined, can continue" ;
+}
+else {
+	echo "MULETARGET is not defined, cannot continue" ;
+	echo "" ;
+	echo "[ERROR] You need to set the MULETARGET variable first to build libMule for a specific platform." ;
+	echo "Currently supported platforms are: dummy, legoev3, rpi" ;
+	return 1 ; 
+}
+
+ENABLE_DEVICES ?= yes ;
+ENABLE_FILEIO ?= yes ;
+ENABLE_USERFRIENDLYCLASSES ?= yes ;
+
+include src/platformsupport/$(MULETARGET)/vars.jam ;
+
+C++FLAGS += -Isrc ;
+C++FLAGS += -DMULE_VERSION_MAJOR=$(MULEVERSIONMAJOR) -DMULE_VERSION_MINOR=$(MULEVERSIONMINOR) -DMULE_VERSION_UPDATE=$(MULEVERSIONUPDATE) ; 
+if $(DEBUG) || $(MULERELEASE) = no {
+	C++FLAGS += -DMULE_FEATURES_DEBUG -DMULE_VERSION_NIGHTLY ;
+}
+else {
+	C++FLAGS += -DMULE_VERSION_RELEASE ;
+}
+
+
+Library libMule : $(MULEPLATFORMSOURCES) src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp ;

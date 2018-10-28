@@ -1,0 +1,27 @@
+# Jambase override variables for dummy platform
+# Part of libMule
+
+C++ = c++ ;
+C++FLAGS = -Os -DMULE_PLATFORM_DUMMY ;
+if $(DEBUG) {
+	C++FLAGS += -g ;
+}
+
+if $(ENABLE_DEVICES) = yes {
+	C++FLAGS += -DMULE_FEATURES_SENSORS ;
+}
+
+if $(ENABLE_FILEIO) = yes {
+	C++FLAGS += -DMULE_FEATURES_FILEIO ;
+}
+
+if $(ENABLE_USERFRIENDLYCLASSES) = yes {
+	C++FLAGS += -DMULE_FEATURES_EASYMOTORS ;
+}
+
+C++FLAGS += -DMULE_OTHER_HWPINTYPE=int -DMULE_OTHER_STRINGTYPE=std::string -DMULE_FEATURES_SUPPORTSCOUT ;
+C++FLAGS += -Isrc/platformsupport/dummy ;
+LINK = $(C++) ;
+LINKFLAGS = "" ;
+
+MULEPLATFORMSOURCES = src/platformsupport/dummy/muledummyplatform.cpp ;
