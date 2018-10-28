@@ -31,7 +31,8 @@ a crashing non-working version of Mule with unimplemented functions and barely w
 If you've installed your cross-compiler in a path other than /usr/bin, /bin or /usr/local/bin, then you might want to set the C++ 
 variable, too:
 
-# export CXX=<path to your compiler>
+# export CXX=<path to your C++ compiler>
+# export CC=<path to your C compiler>
 
 Now just run Jam:
 # jam -q lib
