@@ -29,7 +29,7 @@ ENABLE_FILEIO ?= yes ;
 ENABLE_USERFRIENDLYCLASSES ?= yes ;
 
 if $(CXX) {
-	C++=$(CXX)
+	C++=$(CXX) ;
 }
 include src/platformsupport/$(MULETARGET)/vars.jam ;
 

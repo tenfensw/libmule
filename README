@@ -1,0 +1,41 @@
+libMule - Microcontroller-universal Library (that is Extendable)
+
+libMule (or just Mule for short) is a C++ library that allows you to create applications that will work on any microcontroller (LEGO 
+Mindstorms EV3 or Raspberry Pi, for example). It is similar to Qt in some ways... except Qt is for cross-platform GUI apps and Mule is 
+for embedded microcontroller apps.
+
+====== Supported platforms ======
+Currently, only three platforms are supported:
+- Raspberry Pi
+- LEGO EV3 (Mindstorms)
+- Dummy platform (for testing purposes only)
+
+Support for more platforms will be added in future releases.
+
+====== Building Mule ======
+WARNING!!! Mule does not work on Windows unless you use Cygwin.
+
+To build Mule, you'll need either Perforce Jam 2.5 (or 2.6) build system. You may use FreeType Jam or any other fork if you want, but 
+they were untested. QMake or Boost.Build are both not supported (QMake is used so that the project could be opened in Qt Creator). 
+
+Also, to build Mule, you'll need a C++ cross-compiler for your platform. For Raspberry Pi, you can follow this guide to build a GCC 
+cross-compiler: https://solarianprogrammer.com/2018/05/06/building-gcc-cross-compiler-raspberry-pi/. As for LEGO EV3, well, your only 
+choice is to use this toolchain: https://github.com/c4ev3/toolchain.
+
+After that, navigate to the source code directory of libMule. Set the MULETARGET environment variable to "rpi" if you want to build the 
+Raspberry Pi version of the library, "legoev3" if you want to build the LEGO EV3 version of the library or "dummy" if you want to enjoy 
+a crashing non-working version of Mule with unimplemented functions and barely working file IO backend.
+
+# export MULETARGET=<platform name>
+
+If you've installed your cross-compiler in a path other than /usr/bin, /bin or /usr/local/bin, then you might want to set the C++ 
+variable, too:
+
+# export CXX=<path to your compiler>
+
+Now just run Jam:
+# jam -q lib
+
+That's it!
+
+
