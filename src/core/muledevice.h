@@ -2,6 +2,7 @@
 #define MULEDEVICE_H
 
 #include "core/muleglobalfunctions.h"
+#include "core/muleconfig.h"
 
 class MuleDevice
 {

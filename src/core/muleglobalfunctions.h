@@ -6,6 +6,7 @@
 #include <exception>
 #include <cstdlib>
 #include <unistd.h>
+#include "core/muleconfig.h"
 
 static MULE_OTHER_STRINGTYPE muleyesno(const bool& in) {
     if (in == true)

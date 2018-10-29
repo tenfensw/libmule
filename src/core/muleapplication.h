@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 #include "platformsupport/common/mulecurrentplatform.h"
-#include "muleglobalfunctions.h"
+#include "core/muleglobalfunctions.h"
+#include "core/muleconfig.h"
 
 class MuleApplication
 {   

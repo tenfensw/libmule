@@ -2,6 +2,7 @@
 #define MULEDUMMYPLATFORM_H
 
 #include "platformsupport/common/mulecommonplatform.h"
+#include "core/muleconfig.h"
 #include <fstream>
 #include <sstream>
 #include <sys/stat.h>

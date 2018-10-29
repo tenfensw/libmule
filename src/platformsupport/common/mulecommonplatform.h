@@ -2,6 +2,7 @@
 #define MULECOMMONPLATFORM_H
 
 #include "core/muledevice.h"
+#include "core/muleconfig.h"
 #include <vector>
 #include <string>
 #include <cstdlib>

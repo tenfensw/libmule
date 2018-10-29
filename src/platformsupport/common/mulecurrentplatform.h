@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "core/muleconfig.h"
 #include "core/muleglobalfunctions.h"
 #include "core/muledevice.h"
 #ifdef MULE_PLATFORM_DUMMY

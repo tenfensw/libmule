@@ -1,5 +1,9 @@
 # Jamfile to build libMule
 
+actions GenerateMuleConfig {
+	./generate-muleconfig.sh --output="$(1)" $(C++FLAGS)
+}
+
 MULEVERSIONMAJOR = 1 ;
 MULEVERSIONMINOR = 0 ;
 MULEVERSIONUPDATE = 0 ;
@@ -41,4 +45,6 @@ else {
 	C++FLAGS += -DMULE_VERSION_RELEASE ;
 }
 
-Library libMule : $(MULEPLATFORMSOURCES) src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp ;
+Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp ;
+GenerateMuleConfig src/core/muleconfig.h ;
+Depends src/core/muleconfig.cpp : src/core/muleconfig.h ;
