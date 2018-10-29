@@ -1,5 +1,9 @@
 #include "muleapplication.h"
 
+namespace MuleApplicationWideData {
+	void* appWideFirstInstance;
+};
+
 MuleApplication::MuleApplication()
 {
     if (internalInit())
@@ -37,3 +41,8 @@ void MuleApplication::internalCleanUp() {
         MuleApplicationWideData::appWideFirstInstance = nullptr;
 #endif
 }
+
+MuleApplication* MuleApplication::getRunningInstance() {
+	return (MuleApplication*)(MuleApplicationWideData::appWideFirstInstance);
+}
+

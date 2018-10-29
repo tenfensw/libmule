@@ -7,6 +7,10 @@
 #include "core/muleglobalfunctions.h"
 #include "core/muleconfig.h"
 
+namespace MuleApplicationWideData {
+	extern void* appWideFirstInstance;
+};
+
 class MuleApplication
 {   
 
@@ -25,9 +29,7 @@ public:
     MULE_OTHER_STRINGTYPE getCurrentDirectory() {
         return mulegetcwd();
     }
-    static MuleApplication* getRunningInstance() {
-        return (MuleApplication*)(MuleApplicationWideData::appWideFirstInstance);
-    }
+    static MuleApplication* getRunningInstance();
     void exit(const int& status) {
         internalCleanUp();
         exit(status);

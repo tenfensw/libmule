@@ -61,8 +61,4 @@ static void muleexception(const int& errcode, const MULE_OTHER_STRINGTYPE& errte
     return;
 }
 
-namespace MuleApplicationWideData {
-    void* appWideFirstInstance;
-}
-
 #endif // MULEGLOBALFUNCTIONS_H
