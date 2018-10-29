@@ -1,7 +1,6 @@
 #include "muledummyplatform.h"
 
-MuleDummyPlatform::MuleDummyPlatform()
-{
+MuleDummyPlatform::MuleDummyPlatform() {
     if (initialize() == false)
         platformInitializationException(1, "MuleDummyPlatform::initialize() returned false, not true");
 }

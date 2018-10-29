@@ -11,23 +11,20 @@
 class MuleCommonPlatform
 {
 public:
-    MuleCommonPlatform() {
-        initialize();
-    }
-    virtual ~MuleCommonPlatform();
+    MuleCommonPlatform() {}
 
-    virtual bool initialize();
+    virtual bool initialize() {}
 #ifdef MULE_FEATURES_SENSORS
-    virtual std::vector<MuleDevice*> getDevices();
-    virtual MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin);
-    virtual bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode);
-    virtual MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin);
-    virtual bool writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct);
+    virtual std::vector<MuleDevice*> getDevices() {}
+    virtual MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin) {}
+    virtual bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {}
+    virtual MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin) {}
+    virtual bool writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {}
 #endif
 #ifdef MULE_FEATURES_FILEIO
-    virtual MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file);
-    virtual bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct);
-    virtual bool fileExists(MULE_OTHER_STRINGTYPE file);
+    virtual MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file) {}
+    virtual bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {}
+    virtual bool fileExists(MULE_OTHER_STRINGTYPE file) {}
 #endif
 protected:
     void platformInitializationException(const int& erc, const MULE_OTHER_STRINGTYPE& message) {
