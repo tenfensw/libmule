@@ -4,7 +4,7 @@
 C++ = c++ ;
 C++FLAGS = -Os -DMULE_PLATFORM_DUMMY ;
 if $(DEBUG) {
-	C++FLAGS += -g ;
+	C++FLAGS += -g -DMULE_FEATURES_DEBUG ;
 }
 
 if $(ENABLE_DEVICES) = yes {
