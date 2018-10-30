@@ -12,6 +12,10 @@ MuleApplication::MuleApplication()
         muleexception(9, "MuleApplication could not be initialized", false);
 }
 
+MuleApplication::~MuleApplication() {
+    this->exit(0);
+}
+
 bool MuleApplication::internalInit() {
     isFirstInstance = false;
     if (!(MuleApplicationWideData::appWideFirstInstance)) {
@@ -28,10 +32,6 @@ bool MuleApplication::internalInit() {
     }
 }
 
-MuleApplication::~MuleApplication() {
-    this->exit(0);
-}
-
 void MuleApplication::internalCleanUp() {
     delete mcpClass;
     if (isFirstInstance == true)
@@ -44,5 +44,26 @@ void MuleApplication::internalCleanUp() {
 
 MuleApplication* MuleApplication::getRunningInstance() {
 	return (MuleApplication*)(MuleApplicationWideData::appWideFirstInstance);
+}
+
+MULE_OTHER_STRINGTYPE MuleApplication::getPlatformName() {
+	return mcpClass->getPlatformName();
+}
+
+MuleCurrentPlatform* MuleApplication::getPlatformClass() {
+	return mcpClass;
+}
+
+std::vector<MuleDevice*> MuleApplication::getDevices() {
+	return mcpClass->getDevices();
+}
+
+MULE_OTHER_STRINGTYPE MuleApplication::getCurrentDirectory() {
+	return mulegetcwd();
+}
+
+void MuleApplication::exit(const int& status) {
+	internalCleanUp();
+	exit(status);
 }
 

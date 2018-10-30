@@ -17,23 +17,13 @@ class MuleApplication
 public:
     MuleApplication();
     ~MuleApplication();
-    MULE_OTHER_STRINGTYPE getPlatformName() {
-        return mcpClass->getPlatformName();
-    }
-    MuleCurrentPlatform* getPlatformClass() {
-        return mcpClass;
-    }
-    std::vector<MuleDevice*> getDevices() {
-        return mcpClass->getDevices();
-    }
-    MULE_OTHER_STRINGTYPE getCurrentDirectory() {
-        return mulegetcwd();
-    }
+    MULE_OTHER_STRINGTYPE getPlatformName();
+    MuleCurrentPlatform* getPlatformClass();
+    std::vector<MuleDevice*> getDevices();
+    MULE_OTHER_STRINGTYPE getCurrentDirectory();
     static MuleApplication* getRunningInstance();
-    void exit(const int& status) {
-        internalCleanUp();
-        exit(status);
-    }
+    void exit(const int& status);
+
 
 private:
     MuleCurrentPlatform* mcpClass;
