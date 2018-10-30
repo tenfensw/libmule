@@ -6,6 +6,7 @@ namespace MuleApplicationWideData {
 
 MuleApplication::MuleApplication()
 {
+    areNecessaryPartsReady = false;
     if (internalInit())
         muledebug("MuleApplication was successfully initialized");
     else
@@ -25,6 +26,7 @@ bool MuleApplication::internalInit() {
     }
     try {
         mcpClass = new MuleCurrentPlatform();
+	areNecessaryPartsReady = true;
         muledebug("MuleCurrentPlatform initialized");
         return true;
     } catch (...) {

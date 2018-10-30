@@ -23,7 +23,7 @@ public:
     MULE_OTHER_STRINGTYPE getCurrentDirectory();
     static MuleApplication* getRunningInstance();
     void exit(const int& status);
-
+    bool areNecessaryPartsReady;
 
 private:
     MuleCurrentPlatform* mcpClass;
