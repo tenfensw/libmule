@@ -36,6 +36,7 @@ if $(CXX) {
 }
 include src/platformsupport/$(MULETARGET)/vars.jam ;
 
+echo "Target platform operating system: $(MULETARGETOS)" ;
 C++FLAGS += -Isrc ;
 C++FLAGS += -DMULE_VERSION_MAJOR=$(MULEVERSIONMAJOR) -DMULE_VERSION_MINOR=$(MULEVERSIONMINOR) -DMULE_VERSION_UPDATE=$(MULEVERSIONUPDATE) ; 
 if $(DEBUG) || $(MULERELEASE) = no {

@@ -13,6 +13,8 @@ actions FetchEV3API {
 CC ?= arm-none-linux-gnueabi-gcc ;
 C++ ?= arm-none-linux-gnueabi-g++ ;
 C++FLAGS = -Os -DMULE_PLATFORM_LEGOEV3 ;
+MULETARGETOS = linux ;
+
 if $(DEBUG) {
 	C++FLAGS += -g ;
 	CCFLAGS += -g ;
