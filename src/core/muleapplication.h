@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <csignal>
 #include "platformsupport/common/mulecurrentplatform.h"
 #include "core/muleglobalfunctions.h"
 #include "core/muleconfig.h"

@@ -66,6 +66,6 @@ MULE_OTHER_STRINGTYPE MuleApplication::getCurrentDirectory() {
 
 void MuleApplication::exit(const int& status) {
 	internalCleanUp();
-	exit(status);
+	std::exit(status);
 }
 
