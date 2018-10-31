@@ -20,7 +20,7 @@ else
 	exit 1
 fi
 
-COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API/archive/master.zip"
+COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API/archive/master.zip libalsa=ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.0.21a.tar.bz2"
 if test -e "./.stamp"; then
 	echo "[INFO] Everything was already downloaded"
 	exit 0
@@ -49,21 +49,8 @@ for Component in $COMPONENTS; do
 			echo "[ERROR] No unpacking utils for archive type \"zip\" were found."
 			exit 3
 		fi
-	elif test `echo "$CNAME" | cut -d '.' -f2` = "tar"; then
-		if tar -xvzf "$CNAME"; then
-			echo "[INFO] This was a gzip archive"
-		elif tar -xvJf "$CNAME"; then
-			echo "[INFO] This was a lzma archive"
-		elif tar -xvjf "$CNAME"; then
-			echo "[INFO] This was a bzip2 archive"
-		elif tar -xvf "$CNAME"; then
-			echo "[INFO] This was a tar archive"
-		elif bsdtar -xvf "$CNAME"; then
-			echo "[INFO] This was a BSD tar archive"
-		else
-			echo "[ERROR] No unpacking utils could unpack this archive"
-			exit 4
-		fi
+	elif echo "$CNAME" | grep -q ".tar"; then
+		tar -xvf "$CNAME" || tar -xvjf "$CNAME" || tar -xvzf "$CNAME" || tar -xvJf "$CNAME" || bsdtar -xvf "$CNAME" || exit 5
 	else
 		echo "[ERROR] Internal script error"
 		exit 4

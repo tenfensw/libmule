@@ -14,6 +14,7 @@ CC ?= arm-none-linux-gnueabi-gcc ;
 C++ ?= arm-none-linux-gnueabi-g++ ;
 C++FLAGS = -Os -DMULE_PLATFORM_LEGOEV3 ;
 MULETARGETOS = linux ;
+C++FLAGS += -DMULE_OS_UNIX -DMULE_OS_LINUX ;
 
 if $(DEBUG) {
 	C++FLAGS += -g ;

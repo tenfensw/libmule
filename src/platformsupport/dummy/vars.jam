@@ -4,6 +4,7 @@
 C++ = c++ ;
 C++FLAGS = -Os -DMULE_PLATFORM_DUMMY ;
 MULETARGETOS = unix ;
+C++FLAGS += -DMULE_OS_UNIX ;
 
 if $(DEBUG) {
 	C++FLAGS += -g -DMULE_FEATURES_DEBUG ;
