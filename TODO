@@ -1,11 +1,10 @@
 What works?
 - dummy backend compiles, MuleApplication works too
-- LEGO EV3 backend compiles, but not all functions are finished
+- LEGO EV3 backend compiles, but not all functions are finished, though tests compile and link with libMule.a
 
 What doesn't work?
-- LEGO EV3 and Raspberry Pi backends are untested and unfinished
 - Windows is not supported without Cygwin
-- Need to implement MuleSound and MuleVoice classes. They will depend on libalsa2 on Linux or QNX sound architecture on QNX, as well as espeak will possibly be used as a backend for MuleVoice
+- Need to implement MuleSound and MuleVoice classes. They will depend on libalsa2 on Linux (EV3 PlaySound on LEGO EV3) or QNX sound architecture on QNX, as well as espeak will possibly be used as a backend for MuleVoice
 
 ==== Notes about MuleSound ====
 LEGO EV3 has an extremely obsolete version of the Linux kernel (2.6.33) and, as such, I'll have to use this version of libalsa2: http://rpmfind.net/linux/RPM/mandriva/2010.0/i586/media/main/testing/libalsa2-1.0.21a-1.0.3mdv2010.0.i586.html
