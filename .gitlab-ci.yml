@@ -1,5 +1,6 @@
 before_script:
-  - apt-get update -qq && apt-get install -y -qq ftjam gcc g++ g++-5-arm-linux-gnueabi
+  - uname -a
+  - apt-get update -qq && apt-get install -y -qq ftjam gcc g++
   - ftjam -v
   - gcc -dumpversion
   - gcc -v
