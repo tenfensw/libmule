@@ -10,8 +10,8 @@
 #include <cmath>
 #include <ev3.h>
 
-#define MULE_HOMEDIRECTORY "/home/lms2012/timkoisoft/libMule"
-#define MULE_DOCUMENTSDIRECTORY "/home/lms2012/timkoisoft/libMule"
+#define MULE_HOMEDIRECTORY "/home/root/lms2012/timkoisoft/libMule"
+#define MULE_DOCUMENTSDIRECTORY "/home/root/lms2012/timkoisoft/libMule"
 #define MULE_TEMPDIRECTORY "/tmp"
 
 class MuleMindstormsPlatform : public MuleCommonPlatform
