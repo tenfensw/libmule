@@ -1,3 +1,5 @@
+#ifndef MULEGLOBALFUNCTIONS_H
+#define MULEGLOBALFUNCTIONS_H
 #include <iostream>
 #include <sstream>
 #include <exception>
