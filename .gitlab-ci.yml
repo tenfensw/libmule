@@ -1,0 +1,22 @@
+before_script:
+  - apt-get update -qq && apt-get install -y -qq ftjam gcc g++ g++-5-arm-linux-gnueabi
+  - ftjam -v
+  - gcc -dumpversion
+  - gcc -v
+
+dummyplatform_and_tests:
+  script:
+    - ftjam -sMULETARGET=dummy -sCC=/usr/bin/gcc -sCXX=/usr/bin/g++ -q all
+    - /usr/bin/g++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01
+    - ./tests/run-test01
+    - ftjam -sMULETARGET=dummy -sCC=/usr/bin/gcc -sCXX=/usr/bin/g++ -q clean
+    - rm -r -f ./tests/run-test01 ./src/core/muleconfig.*
+
+legoev3platform_and_tests:
+  script:
+    - ftjam -sMULETARGET=legoev3 -sCC=/usr/bin/arm-linux-gnueabi-gcc-5 -sC++FLAGS="-static-libstdc++ -static-libgcc" -sCXX=/usr/bin/arm-linux-gnueabi-g++-5 -sLINK=/usr/bin/arm-linux-gnueabi-g++-5 -sLINKFLAGS="-static-libstdc++ -static-libgcc" -q all
+    - /usr/bin/arm-linux-gnueabi-g++-5 -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01 -static-libstdc++ -static-libgcc
+    - ldd ./tests/run-test01
+    - ./tests/run-test01
+    - ftjam -sMULETARGET=legoev3 -sCC=/usr/bin/arm-linux-gnueabi-gcc-5 -sC++FLAGS="-static-libstdc++ -static-libgcc" -sCXX=/usr/bin/arm-linux-gnueabi-g++-5 -sLINK=/usr/bin/arm-linux-gnueabi-g++-5 -sLINKFLAGS="-static-libstdc++ -static-libgcc" -q clean
+    - rm -r -f -v tests/run-test01 src/core/muleconfig.*
