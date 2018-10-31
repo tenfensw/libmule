@@ -8,6 +8,16 @@
 #include <sstream>
 #include <sys/stat.h>
 
+#ifdef MULE_OS_UNIX
+#define MULE_HOMEDIRECTORY "/home/" + MULE_OTHER_STRINGTYPE(getenv("USER"))
+#define MULE_DOCUMENTSDIRECTORY MULE_HOMEDIRECTORY + "/Documents"
+#else
+#define MULE_HOMEDIRECTORY "/undefined/path"
+#define MULE_DOCUMENTSDIRECTORY "/undefined/path"
+#endif
+#define MULE_TEMPDIRECTORY "/tmp"
+
+
 class MuleDummyPlatform : public MuleCommonPlatform
 {
 public:

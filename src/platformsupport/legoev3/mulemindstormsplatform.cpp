@@ -80,7 +80,7 @@ bool MuleMindstormsPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWP
 #ifdef MULE_FEATURES_FILEIO
 MULE_OTHER_STRINGTYPE MuleMindstormsPlatform::readFromFile(MULE_OTHER_STRINGTYPE file) {
     muledebug("file = " + file);
-    std::ifstream t("/tmp/" + file);
+    std::ifstream t(file);
     return MULE_OTHER_STRINGTYPE((std::istreambuf_iterator<char>(t)),
                                     std::istreambuf_iterator<char>());
 }
@@ -88,14 +88,14 @@ MULE_OTHER_STRINGTYPE MuleMindstormsPlatform::readFromFile(MULE_OTHER_STRINGTYPE
 bool MuleMindstormsPlatform::writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {
     if (fileExists(file) == false)
         return false;
-    std::ofstream stream("/tmp/" + file);
+    std::ofstream stream(file);
     stream << ct;
     stream.close();
     return true;
 }
 
 bool MuleMindstormsPlatform::fileExists(MULE_OTHER_STRINGTYPE file) {
-    MULE_OTHER_STRINGTYPE fnamereal = "/tmp/" + file;
+    MULE_OTHER_STRINGTYPE fnamereal = file;
     struct stat buffer;
     return (stat (fnamereal.c_str(), &buffer) == 0);
 }
