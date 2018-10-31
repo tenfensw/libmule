@@ -15,4 +15,5 @@
 #endif
 #ifdef MULE_FEATURES_FILEIO
 #include "fileio/mulefile.h"
+#include "fileio/muledirectoryfunctions.h"
 #endif
