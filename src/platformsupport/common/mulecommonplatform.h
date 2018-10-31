@@ -1,3 +1,4 @@
+
 #ifndef MULECOMMONPLATFORM_H
 #define MULECOMMONPLATFORM_H
 
@@ -25,6 +26,7 @@ public:
     virtual MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file) {}
     virtual bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {}
     virtual bool fileExists(MULE_OTHER_STRINGTYPE file) {}
+    virtual bool deleteFile(MULE_OTHER_STRINGTYPE file) {}
 #endif
 protected:
     void platformInitializationException(const int& erc, const MULE_OTHER_STRINGTYPE& message) {

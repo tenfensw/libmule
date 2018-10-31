@@ -1,5 +1,5 @@
-#include "muledevice.h"
-#include "muleapplication.h"
+#include "core/muledevice.h"
+#include "core/muleapplication.h"
 
 MuleDevice::MuleDevice(const MULE_OTHER_HWPINTYPE& pin)
 {

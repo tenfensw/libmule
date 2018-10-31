@@ -13,3 +13,6 @@
 #elif defined(MULE_PLATFORM_LEGOEV3)
 #include "platformsupport/dummy/mulemindstormsplatform.h"
 #endif
+#ifdef MULE_FEATURES_FILEIO
+#include "fileio/mulefile.h"
+#endif

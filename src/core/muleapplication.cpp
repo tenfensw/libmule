@@ -1,4 +1,4 @@
-#include "muleapplication.h"
+#include "core/muleapplication.h"
 
 namespace MuleApplicationWideData {
 	void* appWideFirstInstance;

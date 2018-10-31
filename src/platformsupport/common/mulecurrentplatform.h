@@ -22,6 +22,7 @@ class MuleCurrentPlatform
 {
 public:
     MuleCurrentPlatform();
+#ifdef MULE_FEATURES_SENSORS
     std::vector<MuleDevice*> getDevices() {
         return platformClass->getDevices();
     }
@@ -37,6 +38,8 @@ public:
     bool writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {
         return platformClass->writeToPin(pin, ct);
     }
+#endif
+#ifdef MULE_FEATURES_FILEIO
     MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file) {
         return platformClass->readFromFile(file);
     }
@@ -49,6 +52,10 @@ public:
     MULE_OTHER_STRINGTYPE getPlatformName() {
         return platformClass->getPlatformName();
     }
+    virtual bool deleteFile(MULE_OTHER_STRINGTYPE file) {
+	return platformClass->deleteFile(file);
+    }
+#endif
 
 private:
     MULE_INTERNAL_CURRENTPLATFORMCLASS* platformClass;

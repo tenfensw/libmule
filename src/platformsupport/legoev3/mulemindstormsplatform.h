@@ -31,6 +31,7 @@ public:
     MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file);
     bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct);
     bool fileExists(MULE_OTHER_STRINGTYPE file);
+    bool deleteFile(MULE_OTHER_STRINGTYPE file);
 #endif
 
 private:

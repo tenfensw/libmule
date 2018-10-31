@@ -20,7 +20,7 @@ else
 	exit 1
 fi
 
-COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API/archive/master.zip libalsa=ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.0.21a.tar.bz2"
+COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API/archive/master.zip wavplay=https://dl.dropboxusercontent.com/s/sn71ph0lv1mshxz/wavplay-1.4.tar.bz2"
 if test -e "./.stamp"; then
 	echo "[INFO] Everything was already downloaded"
 	exit 0

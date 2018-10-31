@@ -67,4 +67,15 @@ bool MuleDummyPlatform::fileExists(MULE_OTHER_STRINGTYPE file) {
     struct stat buffer;
     return (stat (file.c_str(), &buffer) == 0);
 }
+
+bool MuleDummyPlatform::deleteFile(MULE_OTHER_STRINGTYPE file) {
+#ifdef MULE_OS_UNIX
+	if (std::system(MULE_OTHER_STRINGTYPE("rm -r -f " + file).c_str()) == 0)
+		return true;
+	else
+		return false;
+#else
+	return false;
+#endif
+}
 #endif

@@ -8,6 +8,14 @@
 #include <unistd.h>
 #include "core/muleconfig.h"
 
+void mulestrmodreplace(MULE_OTHER_STRINGTYPE& subject, const MULE_OTHER_STRINGTYPE& search,
+                          const MULE_OTHER_STRINGTYPE& replace) {
+    size_t pos = 0;
+    while ((pos = subject.find(search, pos)) != MULE_OTHER_STRINGTYPE::npos) {
+         subject.replace(pos, search.length(), replace);
+         pos += replace.length();
+    }
+}
 static MULE_OTHER_STRINGTYPE muleyesno(const bool& in) {
     if (in == true)
         return "yes";

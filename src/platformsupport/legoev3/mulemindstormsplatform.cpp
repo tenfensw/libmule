@@ -99,4 +99,12 @@ bool MuleMindstormsPlatform::fileExists(MULE_OTHER_STRINGTYPE file) {
     struct stat buffer;
     return (stat (fnamereal.c_str(), &buffer) == 0);
 }
+
+bool MuleMindstormsPlatform::deleteFile(MULE_OTHER_STRINGTYPE file) {
+	if (std::system(MULE_OTHER_STRINGTYPE("rm -r -f " + file).c_str()) == 0) 
+                return true;
+        else
+                return false;
+
+}
 #endif
