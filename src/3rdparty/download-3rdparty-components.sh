@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This will download third-party components
 
 if test "$1" = "clean"; then
@@ -33,7 +33,7 @@ for Component in $COMPONENTS; do
 	echo "[INFO] Downloading component \"$CNAME\" from \"$DLURL\""
 	CNAME=`basename "$DLURL"`
 	if echo "$DLURL" | grep -q "github.com"; then
-		if command -v git > /dev/null 2>&1; then; then
+		if command -v git > /dev/null 2>&1; then
 			if git clone "$DLURL" && mv -v `basename "$DLURL"` `basename "$DLURL"`-master/; then
 				echo "[INFO] git clone finished successfully"
 			else
