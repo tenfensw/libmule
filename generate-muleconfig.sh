@@ -28,7 +28,7 @@ for Argument in $*; do
 	fi
 done
 OUTCONTENTS="$OUTCONTENTS\n#endif"
-echo -e "$OUTCONTENTS" > "$OUTREDIR"
+printf "$OUTCONTENTS" > "$OUTREDIR"
 CPPVERSION=`echo "$OUTREDIR" | cut -d '.' -f1`
 CPPVERSION="$CPPVERSION.cpp"
 touch "$CPPVERSION"
