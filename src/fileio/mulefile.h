@@ -15,7 +15,7 @@ public:
     bool write(const MULE_OTHER_STRINGTYPE& val);
     bool append(const MULE_OTHER_STRINGTYPE& val);
     MULE_OTHER_STRINGTYPE read();
-    bool delete();
+    bool remove();
     bool create();
     bool exists();
 

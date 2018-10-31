@@ -6,7 +6,10 @@ MuleFile::MuleFile(const MULE_OTHER_STRINGTYPE& filename) {
 	mulestrmodreplace(fileName, "\\", "/");
 	mulestrmodreplace(fileName, "./", mulegetcwd());
 	mcpLocalClass = MuleApplication::getRunningInstance()->getPlatformClass();
-	if (mcpLocalClass->fileExists(fileName))
+	if (mcpLocalClass->fileExists("./" + fileName))
+		fileName = mulegetcwd() + fileName;
+
+	if (exists())
 		readContents = mcpLocalClass->readFromFile(fileName);
 }
 
@@ -43,7 +46,7 @@ MULE_OTHER_STRINGTYPE MuleFile::getParentDirectory() {
 	return "";
 }
 
-bool MuleFile::delete() {
+bool MuleFile::remove() {
 	return mcpLocalClass->deleteFile(fileName);
 }
 
