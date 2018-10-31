@@ -11,7 +11,7 @@
 #ifdef MULE_PLATFORM_DUMMY
 #include "platformsupport/dummy/muledummyplatform.h"
 #elif defined(MULE_PLATFORM_LEGOEV3)
-#include "platformsupport/dummy/mulemindstormsplatform.h"
+#include "platformsupport/legoev3/mulemindstormsplatform.h"
 #endif
 #ifdef MULE_FEATURES_FILEIO
 #include "fileio/mulefile.h"

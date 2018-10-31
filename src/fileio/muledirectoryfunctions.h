@@ -8,7 +8,7 @@
 std::vector<MuleFile> mulels(const MULE_OTHER_STRINGTYPE& indir) {
 	DIR *dir;
 	struct dirent *ent;
-	if ((dir = opendir (indir)) != NULL) {
+	if ((dir = opendir (indir.c_str())) != NULL) {
 		std::vector<MuleFile> result;
 		while ((ent = readdir (dir)) != NULL)
 			result.push_back(MuleFile(MULE_OTHER_STRINGTYPE(ent->d_name)));
