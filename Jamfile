@@ -50,6 +50,11 @@ else {
 	C++FLAGS += -DMULE_VERSION_RELEASE ;
 }
 
+if $(MULECOMPILERFLAGS) {
+	C++FLAGS += $(MULECOMPILERFLAGS) ;
+	CCFLAGS += $(MULECOMPILERFLAGS) ;
+}
+
 Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEFILEIOSOURCES) ;
 GenerateMuleConfig src/core/muleconfig.h ;
 Depends src/core/muleconfig.cpp : src/core/muleconfig.h ;

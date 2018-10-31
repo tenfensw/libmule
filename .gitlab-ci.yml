@@ -1,6 +1,7 @@
 before_script:
-  - uname -a
-  - apt-get update -qq && apt-get install -y -qq ftjam gcc g++
+  - apt-get update -qq && apt-get install -y -qq ftjam gcc g++ wget
+  - mkdir -v toolchains
+  - sh -c "cd toolchains && wget http://releases.linaro.org/archive/15.06/components/toolchain/binaries/4.8/arm-linux-gnueabi/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz && tar -xvJf gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz"
   - ftjam -v
   - gcc -dumpversion
   - gcc -v
@@ -15,9 +16,8 @@ dummyplatform_and_tests:
 
 legoev3platform_and_tests:
   script:
-    - ftjam -sMULETARGET=legoev3 -sCC=/usr/bin/arm-linux-gnueabi-gcc-5 -sC++FLAGS="-static-libstdc++ -static-libgcc" -sCXX=/usr/bin/arm-linux-gnueabi-g++-5 -sLINK=/usr/bin/arm-linux-gnueabi-g++-5 -sLINKFLAGS="-static-libstdc++ -static-libgcc" -q all
-    - /usr/bin/arm-linux-gnueabi-g++-5 -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01 -static-libstdc++ -static-libgcc
+    - ftjam -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -sCC=`pwd`/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -sCXX=`pwd`/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++-sLINK=`pwd`/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++-sLINKFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -q all
+    - `pwd`/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01 -static-libstdc++ -static-libgcc
     - ldd ./tests/run-test01
-    - ./tests/run-test01
-    - ftjam -sMULETARGET=legoev3 -sCC=/usr/bin/arm-linux-gnueabi-gcc-5 -sC++FLAGS="-static-libstdc++ -static-libgcc" -sCXX=/usr/bin/arm-linux-gnueabi-g++-5 -sLINK=/usr/bin/arm-linux-gnueabi-g++-5 -sLINKFLAGS="-static-libstdc++ -static-libgcc" -q clean
+    - ftjam -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -sCC=`pwd`/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -sCXX=`pwd`/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++-sLINK=`pwd`/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++-sLINKFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -q clean
     - rm -r -f -v tests/run-test01 src/core/muleconfig.*
