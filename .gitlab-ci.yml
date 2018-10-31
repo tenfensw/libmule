@@ -1,5 +1,5 @@
 before_script:
-  - apt-get update -qq && apt-get install -y -qq ftjam gcc g++ wget unzip
+  - apt-get update -qq && apt-get install -y -qq ftjam gcc g++ wget bsdtar
   - mkdir -v toolchains
   - sh -c "cd toolchains && wget http://releases.linaro.org/archive/15.06/components/toolchain/binaries/4.8/arm-linux-gnueabi/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz && tar -xvJf gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz"
   - ftjam -v

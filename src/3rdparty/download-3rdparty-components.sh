@@ -39,10 +39,10 @@ for Component in $COMPONENTS; do
 		exit 2
 	fi
 	if test `echo "$CNAME" | cut -d '.' -f2` = "zip"; then
-		if command -v unzip > /dev/null 2>&1; then
-			unzip "$CNAME"
-		elif command -v bsdtar > /dev/null 2>&1; then
+		if command -v bsdtar > /dev/null 2>&1; then
 			bsdtar -xvf "$CNAME"
+		elif command -v unzip > /dev/null 2>&1; then
+			unzip "$CNAME"
 		elif command -v 7z > /dev/null 2>&1; then
 			7z x "$CNAME"
 		else
