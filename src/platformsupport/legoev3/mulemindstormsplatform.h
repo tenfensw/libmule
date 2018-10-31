@@ -8,7 +8,7 @@
 #include <sstream>
 #include <sys/stat.h>
 #include <cmath>
-#include <ev3.h>
+#include "3rdparty/EV3-API-master/API/ev3.h"
 
 #define MULE_HOMEDIRECTORY "/home/root/lms2012/timkoisoft/libMule"
 #define MULE_DOCUMENTSDIRECTORY "/home/root/lms2012/timkoisoft/libMule"
