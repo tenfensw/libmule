@@ -44,6 +44,7 @@ public:
         return platformClass->readFromFile(file);
     }
     bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {
+	muledebug("MuleCurrentPlatform::writeToFile(" + file + "," + ct + ") called");
         return platformClass->writeToFile(file, ct);
     }
     bool fileExists(MULE_OTHER_STRINGTYPE file) {

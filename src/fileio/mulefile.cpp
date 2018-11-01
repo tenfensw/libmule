@@ -27,6 +27,7 @@ bool MuleFile::exists() {
 }
 
 bool MuleFile::write(const MULE_OTHER_STRINGTYPE& val) {
+	muledebug("Called MuleFile::write(" + val + ")");
 	if (mcpLocalClass->writeToFile(fileName, val)) {
 		readContents = val;
 		return true;

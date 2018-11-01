@@ -55,8 +55,11 @@ MULE_OTHER_STRINGTYPE MuleDummyPlatform::readFromFile(MULE_OTHER_STRINGTYPE file
 }
 
 bool MuleDummyPlatform::writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {
-    if (fileExists(file) == false)
+    muledebug("MuleDummyPlatform::writeToFile(" + file + "," + ct + ") called");
+    if (fileExists(file) == false) {
+	muledebug("fileExists(file) returned false, return that too");
         return false;
+    }
     std::ofstream stream(file);
     stream << ct;
     stream.close();
