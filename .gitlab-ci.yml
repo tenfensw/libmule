@@ -22,7 +22,7 @@ dummyplatform_and_tests:
     - ftjam -sDEBUG=yes -sMULETARGET=dummy -sCC=/usr/bin/gcc -sCXX=/usr/bin/g++ -q clean
     - rm -r -f ./tests/run-test0* ./src/core/muleconfig.*
 
-legoev3platform_and_tests:
+legoev3platform_and_tests_linaroalternativetoolchain:
   script:
     - ftjam -sDEBUG=yes -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -sCXX=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -sLINK=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -sLINKFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -q all
     - $PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API
@@ -30,7 +30,7 @@ legoev3platform_and_tests:
     - ftjam -sDEBUG=yes -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -sCXX=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -sLINK=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -sLINKFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -q clean
     - rm -r -f -v tests/run-test0* src/core/muleconfig.*
 
-dummyplatform_and_tests_llvm:
+dummyplatform_and_tests_llvmalternativetoolchain:
   script:
     - ftjam -sDEBUG=yes -sMULETARGET=dummy -sCC=/usr/bin/clang -sCXX=/usr/bin/clang++ -q all
     - /usr/bin/clang++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01
@@ -40,7 +40,7 @@ dummyplatform_and_tests_llvm:
     - ftjam -sDEBUG=yes -sMULETARGET=dummy -sCC=/usr/bin/clang -sCXX=/usr/bin/clang++ -q clean
     - rm -r -f ./tests/run-test0* ./src/core/muleconfig.*
 
-legoev3platform_and_tests_codesourcerytoolchain:
+legoev3platform_and_tests:
   script:
     - ftjam -sDEBUG=yes -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv4t  -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-gcc -sCXX=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -sLINK=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -sLINKFLAGS="-march=armv4t  -static-libstdc++ -static-libgcc" -q all
     - $PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API

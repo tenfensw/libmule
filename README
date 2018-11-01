@@ -12,6 +12,8 @@ Currently, only three platforms are supported:
 
 Support for more platforms will be added in future releases.
 
+See also src/platformsupport/SUPPORTED_TOOLCHAINS to get more info about tested and officially supported toolchains
+
 ====== Building Mule ======
 WARNING!!! Mule does not work on Windows unless you use Cygwin.
 

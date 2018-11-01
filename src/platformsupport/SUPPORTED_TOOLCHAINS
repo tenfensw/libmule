@@ -1,0 +1,12 @@
+======= Dummy platform =======
+While dummy platform is essentially just a wrapper to native POSIX C/C++ functions and most C++11-compartible compilers should work with libMule, only these configurations were tested:
+- GCC 8.2, glibc 2.26 on Linux with binutils 2.31.1
+- GCC 6.3, glibc 2.19 on Linux with binutils 2.28
+- LLVM 3.8, glibc 2.19 on Linux with LLVM custom binutils version 3.8
+
+======= LEGO EV3 =======
+libMule uses EV3-API C library so that things such as motors and sound would be properly supported (because engineers at LEGO thought that OSS, ALSA, PulseAudio and GPIO are way to complex, but, in fact, LEGO's own sound system is even harder to learn than PulseAudio or ALSA!). As such, just like EV3-API devs, libMule devs recommend and actively support Mentor CodeSourcery Lite toolchain, which is a toolchain that supports LEGO EV3 processor and firmware better than Linaro. However, we still test libMule with other toolchains too, as CodeSourcery Lite was replaced with a non-free proprietary Mentor MIPS-only toolchain and, as such, discontinued, as well as we want to ensure maximum compartibility with different compilers.
+
+These are the tested (and the only officially supported) configurations:
+- Mentor CodeSourcery Lite 2013.11 (GCC 4.8.1) on Linux
+- Linaro 2015.06 (GCC 4.8.1) on Linux
