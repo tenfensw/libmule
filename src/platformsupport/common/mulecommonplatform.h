@@ -32,6 +32,7 @@ public:
     virtual void doBeep() {}
     virtual bool playWaveFile(MULE_OTHER_STRINGTYPE filename) {}
     virtual MULE_OTHER_STRINGTYPE getSoundBackend() {}
+    virtual bool stopAllSounds() {}
 #endif
 protected:
     void platformInitializationException(const int& erc, const MULE_OTHER_STRINGTYPE& message) {

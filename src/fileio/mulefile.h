@@ -12,6 +12,7 @@ public:
     MuleFile(const MULE_OTHER_STRINGTYPE& filename);
     ~MuleFile();
     MULE_OTHER_STRINGTYPE getParentDirectory();
+    MULE_OTHER_STRINGTYPE getFileName();
     bool write(const MULE_OTHER_STRINGTYPE& val);
     bool append(const MULE_OTHER_STRINGTYPE& val);
     MULE_OTHER_STRINGTYPE read();

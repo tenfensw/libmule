@@ -117,4 +117,8 @@ void MuleDummyPlatform::doBeep() {
 bool MuleDummyPlatform::playWaveFile(MULE_OTHER_STRINGTYPE filename) {
 	return false;
 }
+
+bool MuleDummyPlatform::stopAllSounds() {
+	return;
+}
 #endif

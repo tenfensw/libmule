@@ -43,6 +43,7 @@ public:
     MULE_OTHER_STRINGTYPE getSoundBackend() {
 	return "lego";
     }
+    bool stopAllSounds();
 #endif
 
 private:

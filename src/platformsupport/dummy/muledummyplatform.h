@@ -46,6 +46,7 @@ public:
     MULE_OTHER_STRINGTYPE getSoundBackend() {
 	return "dynamic";
     }
+    bool stopAllSounds();
 #endif
 
 private:

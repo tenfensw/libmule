@@ -57,3 +57,7 @@ bool MuleFile::remove() {
 bool MuleFile::create() {
 	return write("");
 }
+
+MULE_OTHER_STRINGTYPE MuleFile::getFileName() {
+	return fileName;
+}

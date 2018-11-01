@@ -100,5 +100,12 @@ bool MuleDummyPlatform::playWaveFile(MULE_OTHER_STRINGTYPE filename) {
 		return false;
 	return false;
 }
+
+bool MuleDummyPlatform::stopAllSounds() {
+	if (std::system("killall aplay; killall paplay; killall cat") == 0)
+		return true;
+	else
+		return false;
+}
 #endif
 

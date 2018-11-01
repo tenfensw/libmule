@@ -62,10 +62,13 @@ public:
 	platformClass->doBeep();
     }
     bool playWaveFile(MULE_OTHER_STRINGTYPE file) {
-	return platformClass->playWaveFile();
+	return platformClass->playWaveFile(file);
     }
     MULE_OTHER_STRINGTYPE getSoundBackend() {
 	return platformClass->getSoundBackend();
+    }
+    bool stopAllSounds() {
+	return platformClass->stopAllSounds();
     }
 #endif
 
