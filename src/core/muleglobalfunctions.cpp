@@ -65,3 +65,14 @@ void muleexception(const int& errcode, const MULE_OTHER_STRINGTYPE& errtext, con
     return;
 }
 
+
+void mulesleep(const double& seconds) {
+#ifdef MULE_PLATFORM_LEGOEV3
+	Wait((int)(seconds * 1000));
+#elif defined(MULE_OS_UNIX)
+	std::system("sleep " + muleinttostr((int)(ceil(seconds))));
+#else
+	muleprintf("[libMule/WARNING] mulesleep is not supported on this platform");
+	return;
+#endif
+}

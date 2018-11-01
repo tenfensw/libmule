@@ -17,4 +17,5 @@ MULE_OTHER_STRINGTYPE muleinttostr(int in);
 void muledebug(MULE_OTHER_STRINGTYPE debugout);
 MULE_OTHER_STRINGTYPE mulegetcwd();
 void muleexception(const int& errcode, const MULE_OTHER_STRINGTYPE& errtext, const bool& cancatch);
+void mulesleep(const double& seconds);
 #endif // MULEGLOBALFUNCTIONS_H
