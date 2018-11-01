@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 
-void main() {
+int main() {
 	MuleApplication mApp;
 	int ntimebeep = rand() % 10;
 	muleprintf("Beeping " + muleinttostr(ntimebeep) + " times");
