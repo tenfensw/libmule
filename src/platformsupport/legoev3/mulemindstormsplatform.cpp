@@ -108,3 +108,13 @@ bool MuleMindstormsPlatform::deleteFile(MULE_OTHER_STRINGTYPE file) {
 
 }
 #endif
+
+#ifdef MULE_FEATURES_SOUND
+void MuleDummyPlatform::doBeep() {
+	PlayTone(TONE_B2, 1000);
+}
+
+bool MuleDummyPlatform::playWaveFile(MULE_OTHER_STRINGTYPE filename) {
+	return false;
+}
+#endif

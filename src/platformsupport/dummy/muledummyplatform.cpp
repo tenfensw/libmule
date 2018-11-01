@@ -84,3 +84,21 @@ bool MuleDummyPlatform::deleteFile(MULE_OTHER_STRINGTYPE file) {
 #endif
 }
 #endif
+
+
+#ifdef MULE_FEATURES_SOUND
+void MuleDummyPlatform::doBeep() {
+	std::system("beep || aplay -d 1 /dev/urandom || exit 1");
+}
+
+bool MuleDummyPlatform::playWaveFile(MULE_OTHER_STRINGTYPE filename) {
+	if (fileExists(filename) == false)
+		return false;
+	if (std::system(MULE_OTHER_STRINGTYPE("aplay " + filename).c_str()) == 0 || std::system(MULE_OTHER_STRINGTYPE("paplay " + filename).c_str()) == 0 || std::system(MULE_OTHER_STRINGTYPE("cat " + filename + " > /dev/dsp").c_str()) == 0)
+		return true;
+	else
+		return false;
+	return false;
+}
+#endif
+

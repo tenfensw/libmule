@@ -40,6 +40,10 @@ if $(ENABLE_FILEIO) = yes {
 	include src/fileio/module.jam ;
 }
 
+if $(ENABLE_SOUND) = yes {
+	include src/sound/module.jam ;
+}
+
 echo "Target platform operating system: $(MULETARGETOS)" ;
 C++FLAGS += -Isrc ;
 C++FLAGS += -DMULE_VERSION_MAJOR=$(MULEVERSIONMAJOR) -DMULE_VERSION_MINOR=$(MULEVERSIONMINOR) -DMULE_VERSION_UPDATE=$(MULEVERSIONUPDATE) ; 
@@ -55,6 +59,6 @@ if $(MULECOMPILERFLAGS) {
 	CCFLAGS += $(MULECOMPILERFLAGS) ;
 }
 
-Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEFILEIOSOURCES) ;
+Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEFILEIOSOURCES) $(MULESOUNDSOURCES) ;
 GenerateMuleConfig src/core/muleconfig.h ;
 Depends src/core/muleconfig.cpp : src/core/muleconfig.h ;

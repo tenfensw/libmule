@@ -28,6 +28,11 @@ public:
     virtual bool fileExists(MULE_OTHER_STRINGTYPE file) {}
     virtual bool deleteFile(MULE_OTHER_STRINGTYPE file) {}
 #endif
+#ifdef MULE_FEATURES_SOUND
+    virtual void doBeep() {}
+    virtual bool playWaveFile(MULE_OTHER_STRINGTYPE filename) {}
+    virtual MULE_OTHER_STRINGTYPE getSoundBackend() {}
+#endif
 protected:
     void platformInitializationException(const int& erc, const MULE_OTHER_STRINGTYPE& message) {
         muleprintf("libMule " + muleinttostr(MULE_VERSION_MAJOR) + "." + muleinttostr(MULE_VERSION_MINOR) + "." + muleinttostr(MULE_VERSION_UPDATE) + " Platform Initialization Error\n");

@@ -53,8 +53,19 @@ public:
     MULE_OTHER_STRINGTYPE getPlatformName() {
         return platformClass->getPlatformName();
     }
-    virtual bool deleteFile(MULE_OTHER_STRINGTYPE file) {
+    bool deleteFile(MULE_OTHER_STRINGTYPE file) {
 	return platformClass->deleteFile(file);
+    }
+#endif
+#ifdef MULE_FEATURES_SOUND
+    void doBeep() {
+	platformClass->doBeep();
+    }
+    bool playWaveFile(MULE_OTHER_STRINGTYPE file) {
+	return platformClass->playWaveFile();
+    }
+    MULE_OTHER_STRINGTYPE getSoundBackend() {
+	return platformClass->getSoundBackend();
     }
 #endif
 

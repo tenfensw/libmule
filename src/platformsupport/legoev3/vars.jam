@@ -33,6 +33,9 @@ if $(ENABLE_USERFRIENDLYCLASSES) = yes {
 	C++FLAGS += -DMULE_FEATURES_EASYMOTORS ;
 }
 
+if $(ENABLE_SOUND) = yes {
+        C++FLAGS += -DMULE_FEATURES_SOUND ;
+}
 
 C++FLAGS += -DMULE_OTHER_HWPINTYPE=unsigned -DMULE_OTHER_STRINGTYPE=std::string -std=c++0x ;
 C++FLAGS += -Isrc/platformsupport/legoev3 -Isrc/3rdparty/EV3-API-master/API ;

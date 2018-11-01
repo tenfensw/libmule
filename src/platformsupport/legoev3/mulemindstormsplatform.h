@@ -37,6 +37,13 @@ public:
     bool fileExists(MULE_OTHER_STRINGTYPE file);
     bool deleteFile(MULE_OTHER_STRINGTYPE file);
 #endif
+#ifdef MULE_FEATURES_SOUND
+    void doBeep();
+    bool playWaveFile(MULE_OTHER_STRINGTYPE filename);
+    MULE_OTHER_STRINGTYPE getSoundBackend() {
+	return "lego";
+    }
+#endif
 
 private:
     std::vector<MuleDevice*> devlist;
