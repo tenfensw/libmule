@@ -1,4 +1,5 @@
 before_script:
+  - dpkg --add-architecture i386
   - apt-get update -qq && apt-get install -y -qq ftjam gcc g++ wget bsdtar clang libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386
   - mkdir -v toolchains
   - sh -c "cd toolchains && wget http://releases.linaro.org/archive/15.06/components/toolchain/binaries/4.8/arm-linux-gnueabi/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz && tar -xvJf gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz"
