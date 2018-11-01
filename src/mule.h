@@ -17,3 +17,6 @@
 #include "fileio/mulefile.h"
 #include "fileio/muledirectoryfunctions.h"
 #endif
+#ifdef MULE_FEATURES_SOUND
+#include "sound/mulesoundplayer.h"
+#endif
