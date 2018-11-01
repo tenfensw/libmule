@@ -12,6 +12,10 @@ dummyplatform_and_tests:
     - /usr/bin/g++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01
     - ./tests/run-test01
     - /usr/bin/g++ -g -Os tests/test02-mulefile-currentdirectory.cpp libMule.a -Isrc -o tests/run-test02
+    - touch ./popcorn.txt
+    - sh -c "echo \"Testing 1 2 3\" > popcorn.txt"
+    - ./tests/run-test02
+    - sh -c "if test -e \"./popcorn.txt\"; then rm -r -f popcorn.txt; fi"
     - ./tests/run-test02
     - ftjam -sMULETARGET=dummy -sCC=/usr/bin/gcc -sCXX=/usr/bin/g++ -q clean
     - rm -r -f ./tests/run-test0* ./src/core/muleconfig.*
