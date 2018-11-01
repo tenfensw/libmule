@@ -6,6 +6,9 @@
 #include <cstdlib>
 #include <unistd.h>
 #include "core/muleconfig.h"
+#ifdef MULE_PLATFORM_LEGOEV3
+#include <ev3.h>
+#endif
 
 void mulestrmodreplace(MULE_OTHER_STRINGTYPE& subject, const MULE_OTHER_STRINGTYPE& search, const MULE_OTHER_STRINGTYPE& replace);
 MULE_OTHER_STRINGTYPE muleyesno(const bool& in);

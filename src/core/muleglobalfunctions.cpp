@@ -19,6 +19,10 @@ void muleprintf(MULE_OTHER_STRINGTYPE in) {
 #ifdef MULE_FEATURES_SUPPORTSCOUT
     std::cout << in << std::endl;
 #endif
+#ifdef MULE_PLATFORM_LEGOEV3
+    LcdPrintf('0', in.c_str());
+    Wait(1000);
+#endif
     return;
 }
 
