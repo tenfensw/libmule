@@ -70,7 +70,7 @@ void mulesleep(const double& seconds) {
 #ifdef MULE_PLATFORM_LEGOEV3
 	Wait((int)(seconds * 1000));
 #elif defined(MULE_OS_UNIX)
-	std::system("sleep " + muleinttostr((int)(ceil(seconds))));
+	std::system(MULE_OTHER_STRINGTYPE("sleep " + muleinttostr((int)(ceil(seconds)))).c_str());
 #else
 	muleprintf("[libMule/WARNING] mulesleep is not supported on this platform");
 	return;
