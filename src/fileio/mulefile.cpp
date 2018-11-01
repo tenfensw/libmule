@@ -4,7 +4,7 @@ MuleFile::MuleFile(const MULE_OTHER_STRINGTYPE& filename) {
 	muledebug("MuleFile(" + filename + ");");
 	fileName = filename;
 	mulestrmodreplace(fileName, "\\", "/");
-	mulestrmodreplace(fileName, "./", mulegetcwd());
+	mulestrmodreplace(fileName, "./", MULE_OTHER_STRINGTYPE(mulegetcwd() + "/"));
 	muledebug("Filename after replacements is " + fileName);
 	mcpLocalClass = MuleApplication::getRunningInstance()->getPlatformClass();
 	if (mcpLocalClass->fileExists("./" + fileName))
