@@ -20,6 +20,7 @@ dummyplatform_and_tests:
     - ./tests/run-test02
     - sh -c "if test -e \"./popcorn.txt\"; then rm -r -f popcorn.txt; fi"
     - ./tests/run-test02
+    - /usr/bin/g++ -g -Os tests/test03-mulesound-beeping.cpp libMule.a -Isrc -o tests/run-test03
     - ftjam -sDEBUG=yes -sMULETARGET=dummy -sCC=/usr/bin/gcc -sCXX=/usr/bin/g++ -q clean
     - rm -r -f ./tests/run-test0* ./src/core/muleconfig.*
 
@@ -28,6 +29,7 @@ legoev3platform_and_tests_linaroalternativetoolchain:
     - ftjam -sDEBUG=yes -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -sCXX=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -sLINK=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -sLINKFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -q all
     - $PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API
     - $PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -g -Os tests/test02-mulefile-currentdirectory.cpp libMule.a -Isrc -o tests/run-test02 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API
+    - $PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -g -Os tests/test03-mulesound-beeping.cpp libMule.a -Isrc -o tests/run-test03 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API
     - ftjam -sDEBUG=yes -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -sCXX=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -sLINK=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ -sLINKFLAGS="-march=armv5 -mtune=arm9 -static-libstdc++ -static-libgcc" -q clean
     - rm -r -f -v tests/run-test0* src/core/muleconfig.*
 
@@ -38,6 +40,7 @@ dummyplatform_and_tests_llvmalternativetoolchain:
     - ./tests/run-test01
     - /usr/bin/clang++ -g -Os tests/test02-mulefile-currentdirectory.cpp libMule.a -Isrc -o tests/run-test02
     - ./tests/run-test02
+    - /usr/bin/clang++ -g -Os tests/test03-mulesound-beeping.cpp libMule.a -Isrc -o tests/run-test03
     - ftjam -sDEBUG=yes -sMULETARGET=dummy -sCC=/usr/bin/clang -sCXX=/usr/bin/clang++ -q clean
     - rm -r -f ./tests/run-test0* ./src/core/muleconfig.*
 
@@ -46,5 +49,6 @@ legoev3platform_and_tests:
     - ftjam -sDEBUG=yes -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv4t  -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-gcc -sCXX=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -sLINK=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -sLINKFLAGS="-march=armv4t  -static-libstdc++ -static-libgcc" -q all
     - $PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API
     - $PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -g -Os tests/test02-mulefile-currentdirectory.cpp libMule.a -Isrc -o tests/run-test02 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API
+    - $PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -g -Os tests/test03-mulesound-beeping.cpp libMule.a -Isrc -o tests/run-test03 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API
     - ftjam -sDEBUG=yes -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv4t  -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -sCXX=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -sLINK=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -sLINKFLAGS="-march=armv4t  -static-libstdc++ -static-libgcc" -q clean
     - rm -r -f -v tests/run-test0* src/core/muleconfig.*
