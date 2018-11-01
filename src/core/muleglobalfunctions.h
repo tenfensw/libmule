@@ -4,7 +4,7 @@
 #include <sstream>
 #include <exception>
 #include <cstdlib>
-#include <cmash>
+#include <cmath>
 #include <unistd.h>
 #include "core/muleconfig.h"
 #ifdef MULE_PLATFORM_LEGOEV3
