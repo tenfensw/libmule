@@ -4,6 +4,7 @@ before_script:
   - mkdir -v toolchains
   - sh -c "cd toolchains && wget http://releases.linaro.org/archive/15.06/components/toolchain/binaries/4.8/arm-linux-gnueabi/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz && tar -xvJf gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi.tar.xz"
   - sh -c "cd toolchains && wget https://sourcery.mentor.com/GNUToolchain/package12225/public/arm-none-linux-gnueabi/arm-2013.11-33-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2 && tar -xvjf arm-2013.11-33-arm-none-linux-gnueabi-i686-pc-linux-gnu.tar.bz2 && mv -v arm-2013.11/ codesourcery-gcc/"
+  - sh -c "cd toolchains && wget http://releases.linaro.org/components/toolchain/binaries/latest-5/aarch64_be-linux-gnu/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu.tar.xz && tar -xvJf gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu.tar.xz"
   - ftjam -v
   - gcc -dumpversion
   - gcc -v
@@ -52,3 +53,13 @@ legoev3platform_and_tests:
     - $PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -g -Os tests/test03-mulesound-beeping.cpp libMule.a -Isrc -o tests/run-test03 -static-libstdc++ -static-libgcc -Isrc/3rdparty/EV3-API-master/API
     - ftjam -sDEBUG=yes -sMULETARGET=legoev3 -sMULECOMPILERFLAGS="-march=armv4t  -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc -sCXX=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -sLINK=$PWD/toolchains/codesourcery-gcc/bin/arm-none-linux-gnueabi-c++ -sLINKFLAGS="-march=armv4t  -static-libstdc++ -static-libgcc" -q clean
     - rm -r -f -v tests/run-test0* src/core/muleconfig.*
+
+raspberrypiplatform_and_tests:
+  script:
+    - ftjam -sDEBUG=yes -sMULETARGET=rpi -sMULECOMPILERFLAGS="-march=armv8-a -mtune=cortex-a53 -static-libstdc++ -static-libgcc" -sLINKFLAGS="-march=armv8-a -mtune=cortex-a53 -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-gcc -sCXX=$PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-g++ -sLINK=$PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-g++ -q all
+    - $PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-g++ -g -Os -static-libstdc++ -static-libgcc -march=armv8-a -mtune=cortex-a53 tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01
+    - $PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-g++ -g -Os -static-libstdc++ -static-libgcc -march=armv8-a -mtune=cortex-a53 tests/test02-mulefile-currentdirectory.cpp libMule.a -Isrc -o tests/run-test02
+    - $PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-g++ -g -Os -static-libstdc++ -static-libgcc -march=armv8-a -mtune=cortex-a53 tests/test03-mulesound-beeping.cpp libMule.a -Isrc -o tests/run-test03
+    - ftjam -sDEBUG=yes -sMULETARGET=rpi -sMULECOMPILERFLAGS="-march=armv8-a -mtune=cortex-a53 -static-libstdc++ -static-libgcc" -sLINKFLAGS="-march=armv8-a -mtune=cortex-a53 -static-libstdc++ -static-libgcc" -sCC=$PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-gcc -sCXX=$PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-g++ -sLINK=$PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-g++ -q clean
+    - rm -r -f -v tests/run-test0* src/core/muleconfig.*
+  

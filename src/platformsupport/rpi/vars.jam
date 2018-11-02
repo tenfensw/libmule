@@ -1,0 +1,34 @@
+# Jambase override variables for Raspberry Pi platform
+# Part of libMule
+
+C++FLAGS = -Os -DMULE_PLATFORM_RPI ;
+MULETARGETOS = linux ;
+C++FLAGS += -DMULE_OS_UNIX -DMULE_OS_LINUX ;
+
+if $(DEBUG) {
+	C++FLAGS += -g -DMULE_FEATURES_DEBUG ;
+}
+
+if $(ENABLE_DEVICES) = yes {
+	C++FLAGS += -DMULE_FEATURES_SENSORS ;
+}
+
+if $(ENABLE_FILEIO) = yes {
+	C++FLAGS += -DMULE_FEATURES_FILEIO ;
+}
+
+if $(ENABLE_USERFRIENDLYCLASSES) = yes {
+	C++FLAGS += -DMULE_FEATURES_EASYMOTORS ;
+}
+
+if $(ENABLE_SOUND) = yes {
+	C++FLAGS += -DMULE_FEATURES_SOUND ;
+}
+
+C++FLAGS += -DMULE_OTHER_HWPINTYPE=unsigned -DMULE_OTHER_STRINGTYPE=std::string -DMULE_FEATURES_SUPPORTSCOUT ;
+C++FLAGS += -Isrc/platformsupport/rpi ;
+LINK = $(C++) ;
+LINKFLAGS = "" ;
+
+MULEPLATFORMSOURCES = src/platformsupport/rpi/muleraspberrypiplatform.cpp ;
+

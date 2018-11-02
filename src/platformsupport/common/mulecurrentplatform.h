@@ -14,6 +14,10 @@
 #include "platformsupport/legoev3/mulemindstormsplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleMindstormsPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME std::string("legoev3")
+#elif defined(MULE_PLATFORM_RPI)
+#include "platformsupport/rpi/muleraspberrypiplatform.h"
+#define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleRaspberryPiPlatform
+#define MULE_INTERNAL_CURRENTPLATFORMNAME std::string("rpi")
 #else
 #error No supported platforms were detected
 #endif

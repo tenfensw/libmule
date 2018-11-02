@@ -20,7 +20,7 @@ void muleprintf(MULE_OTHER_STRINGTYPE in) {
     std::cout << in << std::endl;
 #endif
 #ifdef MULE_PLATFORM_LEGOEV3
-    LcdPrintf('0', in.c_str());
+    LcdPrintf('0', MULE_OTHER_STRINGTYPE(in + "\n").c_str());
     Wait(1000);
 #endif
     return;
