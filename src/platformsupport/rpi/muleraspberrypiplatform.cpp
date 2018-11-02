@@ -65,7 +65,7 @@ bool MuleRaspberryPiPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HW
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("ct = " + muleinttostr((int)(ct)));
     try {
-	    if (level == 0)
+	    if (ct == 0)
 		*(gpioReg + GPCLR0 + PI_BANK) = PI_BIT;
 	    else
 		*(gpioReg + GPSET0 + PI_BANK) = PI_BIT;
