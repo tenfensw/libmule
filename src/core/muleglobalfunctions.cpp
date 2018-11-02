@@ -76,3 +76,12 @@ void mulesleep(const double& seconds) {
 	return;
 #endif
 }
+
+void mulemicrosecsleep(const int& microseconds) {
+#ifdef MULE_OS_LINUX
+	usleep(microseconds);
+#else
+	mulesleep(((1/100000) * microseconds));
+#endif
+}
+

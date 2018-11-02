@@ -48,6 +48,18 @@ bool MuleDevice::setMode(const MULE_OTHER_HWPINTYPE& mode) {
 }
 
 bool MuleDevice::trigger(const MULE_OTHER_HWPINTYPE& pulselen, const MULE_OTHER_HWPINTYPE& level) {
-    muleexception(2, "Unimplemented (MuleDevice::trigger)", true);
-    return false;
+	muledebug("Software implementation of GPIO trigger is active");
+	try {
+		this->write(level);
+		mulemicrosecsleep(pulselen);
+		if (level != 0)
+			this->write(0);
+		else
+			this->write(1);
+		return true;
+	}
+	catch (...) {
+		muledebug("ASSERT or SEGFAULT was caused, will return false");
+	}
+	return false;
 }

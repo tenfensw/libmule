@@ -19,4 +19,5 @@ void muledebug(MULE_OTHER_STRINGTYPE debugout);
 MULE_OTHER_STRINGTYPE mulegetcwd();
 void muleexception(const int& errcode, const MULE_OTHER_STRINGTYPE& errtext, const bool& cancatch);
 void mulesleep(const double& seconds);
+void mulemicrosecsleep(const int& microseconds);
 #endif // MULEGLOBALFUNCTIONS_H
