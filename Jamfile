@@ -12,7 +12,7 @@ MULEVERSIONUPDATE = 0 ;
 echo "====================================================================" ;
 echo "| libMule - Microcontroller-universal library (that is Extendable) |" ;
 echo "|           Written by Tim K (timprogrammer@rambler.ru)            |" ;
-echo "|                  Licensed under GNU GPLv3.                       |" ;
+echo "|                Licensed under GNU LGPLv2.1.                      |" ;
 echo "====================================================================" ;
 echo "" ;
 
