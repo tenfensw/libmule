@@ -29,7 +29,7 @@ else {
 
 ENABLE_DEVICES ?= yes ;
 ENABLE_FILEIO ?= yes ;
-ENABLE_USERFRIENDLYCLASSES ?= yes ;
+ENABLE_ADDITIONALDEVICES ?= yes ;
 ENABLE_SOUND ?= yes ;
 
 if $(CXX) {
@@ -42,6 +42,10 @@ if $(ENABLE_FILEIO) = yes {
 
 if $(ENABLE_SOUND) = yes {
 	include src/sound/module.jam ;
+}
+
+if $(ENABLE_ADDITIONALDEVICES) = yes {
+	include src/additionaldevices/module.jam ;
 }
 
 echo "Target platform operating system: $(MULETARGETOS)" ;
@@ -69,6 +73,6 @@ if $(MULEBROKENPLATFORM) {
 	}
 }
 
-Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEFILEIOSOURCES) $(MULESOUNDSOURCES) ;
+Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEADDITIONALDEVICESSOURCES) $(MULEFILEIOSOURCES) $(MULESOUNDSOURCES) ;
 GenerateMuleConfig src/core/muleconfig.h ;
 Depends src/core/muleconfig.cpp : src/core/muleconfig.h ;
