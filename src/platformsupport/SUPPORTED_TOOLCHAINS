@@ -10,3 +10,6 @@ libMule uses EV3-API C library so that things such as motors and sound would be 
 These are the tested (and the only officially supported) configurations:
 - Mentor CodeSourcery Lite 2013.11 (GCC 4.8.1) on Linux
 - Linaro 2015.06 (GCC 4.8.1) on Linux
+
+======= Raspberry Pi =======
+A C++11-compartible compiler for ARMv8-A Big-endian is enough to build libMule. All the tests and binaries are compiled with Linaro 2017.11 (GCC 5.5.0) on Linux.
