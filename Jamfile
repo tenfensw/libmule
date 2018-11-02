@@ -59,6 +59,11 @@ if $(MULECOMPILERFLAGS) {
 	CCFLAGS += $(MULECOMPILERFLAGS) ;
 }
 
+if $(MULEBROKENPLATFORM) {
+	echo "ERROR!!! Support for platform $(MULETARGET) is currently broken and will be restored in a future libMule release." ;
+	return 2 ;
+}
+
 Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEFILEIOSOURCES) $(MULESOUNDSOURCES) ;
 GenerateMuleConfig src/core/muleconfig.h ;
 Depends src/core/muleconfig.cpp : src/core/muleconfig.h ;

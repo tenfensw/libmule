@@ -1,6 +1,7 @@
 # Jambase override variables for Raspberry Pi platform
 # Part of libMule
 
+MULEBROKENPLATFORM = yes
 C++FLAGS = -Os -DMULE_PLATFORM_RPI ;
 MULETARGETOS = linux ;
 C++FLAGS += -DMULE_OS_UNIX -DMULE_OS_LINUX -std=c++11 ;
