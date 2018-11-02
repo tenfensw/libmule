@@ -35,9 +35,6 @@
 #define GPPUD	37
 #define GPPUDCLK0	38
 #define GPPUDCLK1	39
-unsigned piModel;
-unsigned piRev;
-static volatile uint32_t  *gpioReg = MAP_FAILED;
 #define PI_BANK	(gpio>>5)
 #define PI_BIT	(1<<(gpio&0x1F))
 #define PI_INPUT	0
@@ -86,6 +83,7 @@ public:
 
 private:
     std::vector<MuleDevice*> devlist;
+    static volatile uint32_t  *gpioReg = MAP_FAILED;    
 };
 
 #endif // MULERASPBERRYPIPLATFORM_H
