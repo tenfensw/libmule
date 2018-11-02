@@ -2,5 +2,18 @@ In this folder third-party components will be downloaded. They are usually
 needed to support various platforms. To download these components, run the
 ./download-3rdparty-components.sh script.
 
-Notice that the code was not included in this repo because it is licensed
-under a license incompatible with GNU GPLv3.
+These are the libs that are downloaded by the script:
+
+1. EV3-API
+   License: GNU GPLv2/BSD License
+   Description: Needed for legoev3 platform to work, a really nice C wrapper
+   to LEGO's proprietary EV3 API
+   Code URL: https://github.com/c4ev3/EV3-API
+   GPLv2 URL: https://www.gnu.org/licenses/old-licenses/gpl-2.0.ru.html
+   BSD URL: https://en.wikipedia.org/wiki/BSD_licenses
+
+2. tiny_gpio.c
+   License: Public Domain License
+   Descriptions: Needed for rpi platform to work, a stripped-down lightweight
+   version of pigpio licensed under Public Domain License
+   Code URL: http://abyz.me.uk/rpi/pigpio/examples.html
