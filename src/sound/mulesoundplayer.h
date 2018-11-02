@@ -11,7 +11,7 @@ class MuleSoundPlayer {
 	  MuleSoundPlayer();
 	  ~MuleSoundPlayer();
 	  void addToPlaylist(MULE_OTHER_STRINGTYPE filename);
-	  void addToPlaylist(const MuleFile& file);
+	  void addToPlaylist(MuleFile file);
 	  const std::vector<MuleFile> getPlaylist();
 	  void clearPlaylist();
 	  void removeFromPlaylist(MULE_OTHER_STRINGTYPE filename);

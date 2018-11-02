@@ -1,14 +1,14 @@
 #include "core/muleglobalfunctions.h"
 
-void mulestrmodreplace(MULE_OTHER_STRINGTYPE& subject, const MULE_OTHER_STRINGTYPE& search,
-                          const MULE_OTHER_STRINGTYPE& replace) {
+void mulestrmodreplace(MULE_OTHER_STRINGTYPE& subject, MULE_OTHER_STRINGTYPE search,
+                          MULE_OTHER_STRINGTYPE replace) {
     size_t pos = 0;
     while ((pos = subject.find(search, pos)) != MULE_OTHER_STRINGTYPE::npos) {
          subject.replace(pos, search.length(), replace);
          pos += replace.length();
     }
 }
-MULE_OTHER_STRINGTYPE muleyesno(const bool& in) {
+MULE_OTHER_STRINGTYPE muleyesno(bool in) {
     if (in == true)
         return "yes";
     else
@@ -46,7 +46,7 @@ MULE_OTHER_STRINGTYPE mulegetcwd() {
 }
 
 
-void muleexception(const int& errcode, const MULE_OTHER_STRINGTYPE& errtext, const bool& cancatch) {
+void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch) {
     muleprintf("libMule Application Exception");
     muleprintf("An error occured while running the code of current application.");
     muleprintf("");
@@ -66,7 +66,7 @@ void muleexception(const int& errcode, const MULE_OTHER_STRINGTYPE& errtext, con
 }
 
 
-void mulesleep(const double& seconds) {
+void mulesleep(double seconds) {
 #ifdef MULE_PLATFORM_LEGOEV3
 	Wait((int)(seconds * 1000));
 #elif defined(MULE_OS_UNIX)
@@ -77,7 +77,7 @@ void mulesleep(const double& seconds) {
 #endif
 }
 
-void mulemicrosecsleep(const int& microseconds) {
+void mulemicrosecsleep(int microseconds) {
 #ifdef MULE_OS_LINUX
 	usleep(microseconds);
 #else

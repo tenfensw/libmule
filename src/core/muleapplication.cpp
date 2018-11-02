@@ -64,7 +64,7 @@ MULE_OTHER_STRINGTYPE MuleApplication::getCurrentDirectory() {
 	return mulegetcwd();
 }
 
-void MuleApplication::exit(const int& status) {
+void MuleApplication::exit(int status) {
 	internalCleanUp();
 	std::exit(status);
 }

@@ -5,7 +5,7 @@
 #include <dirent.h>
 #include "fileio/mulefile.h"
 
-std::vector<MuleFile> mulels(const MULE_OTHER_STRINGTYPE& indir) {
+std::vector<MuleFile> mulels(MULE_OTHER_STRINGTYPE indir) {
 	DIR *dir;
 	struct dirent *ent;
 	if ((dir = opendir (indir.c_str())) != NULL) {
@@ -18,7 +18,7 @@ std::vector<MuleFile> mulels(const MULE_OTHER_STRINGTYPE& indir) {
 	return std::vector<MuleFile>();
 }
 
-bool mulemkdir(const MULE_OTHER_STRINGTYPE& indir) {
+bool mulemkdir(MULE_OTHER_STRINGTYPE indir) {
 	MULE_OTHER_STRINGTYPE cmd;
 #ifdef MULE_OS_UNIX
 	cmd = MULE_OTHER_STRINGTYPE("mkdir -p " + indir);
@@ -31,7 +31,7 @@ bool mulemkdir(const MULE_OTHER_STRINGTYPE& indir) {
 		return false;
 }
 
-bool mulermdir(const MULE_OTHER_STRINGTYPE& indir) {
+bool mulermdir(MULE_OTHER_STRINGTYPE indir) {
 	MULE_OTHER_STRINGTYPE cmd;
 #ifdef MULE_OS_UNIX
 	cmd = MULE_OTHER_STRINGTYPE("rm -r -f " + indir);

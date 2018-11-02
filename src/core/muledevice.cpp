@@ -1,7 +1,7 @@
 #include "core/muledevice.h"
 #include "core/muleapplication.h"
 
-MuleDevice::MuleDevice(const MULE_OTHER_HWPINTYPE& pin)
+MuleDevice::MuleDevice(MULE_OTHER_HWPINTYPE pin)
 {
     if (dvinit(pin))
         muledebug("MuleDevice with pin " + muleinttostr(pin) + " successfully initialized");
@@ -9,7 +9,7 @@ MuleDevice::MuleDevice(const MULE_OTHER_HWPINTYPE& pin)
         muleexception(8, "MuleDevice(" + muleinttostr(pin) + ") could not be initialized", true);
 }
 
-bool MuleDevice::dvinit(const MULE_OTHER_HWPINTYPE& pin) {
+bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
     pinNum = pin;
     if (!(MuleApplicationWideData::appWideFirstInstance))
         return false;
@@ -32,7 +32,7 @@ MULE_OTHER_HWPINTYPE MuleDevice::read() {
     return convertedMcpInstance->readFromPin(pinNum);
 }
 
-bool MuleDevice::write(const MULE_OTHER_HWPINTYPE& val) {
+bool MuleDevice::write(MULE_OTHER_HWPINTYPE val) {
     MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
     return convertedMcpInstance->writeToPin(pinNum, val);
 }
@@ -42,12 +42,12 @@ MULE_OTHER_HWPINTYPE MuleDevice::mode() {
     return convertedMcpInstance->getPinMode(pinNum);
 }
 
-bool MuleDevice::setMode(const MULE_OTHER_HWPINTYPE& mode) {
+bool MuleDevice::setMode(MULE_OTHER_HWPINTYPE mode) {
     MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
     return convertedMcpInstance->setPinMode(pinNum, mode);
 }
 
-bool MuleDevice::trigger(const MULE_OTHER_HWPINTYPE& pulselen, const MULE_OTHER_HWPINTYPE& level) {
+bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE level) {
 	muledebug("Software implementation of GPIO trigger is active");
 	try {
 		this->write(level);

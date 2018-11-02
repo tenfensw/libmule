@@ -23,7 +23,7 @@ void MuleSoundPlayer::addToPlaylist(MULE_OTHER_STRINGTYPE filename) {
 		playlist.push_back(MuleFile(filename));
 }
 
-void MuleSoundPlayer::addToPlaylist(const MuleFile& file) {
+void MuleSoundPlayer::addToPlaylist(MuleFile file) {
 	playlist.push_back(file);
 }
 

@@ -1,6 +1,6 @@
 #include "fileio/mulefile.h"
 
-MuleFile::MuleFile(const MULE_OTHER_STRINGTYPE& filename) {
+MuleFile::MuleFile(MULE_OTHER_STRINGTYPE filename) {
 	muledebug("MuleFile(" + filename + ");");
 	fileName = filename;
 	mulestrmodreplace(fileName, "\\", "/");
@@ -26,7 +26,7 @@ bool MuleFile::exists() {
 	return mcpLocalClass->fileExists(fileName);
 }
 
-bool MuleFile::write(const MULE_OTHER_STRINGTYPE& val) {
+bool MuleFile::write(MULE_OTHER_STRINGTYPE val) {
 	muledebug("Called MuleFile::write(" + val + ")");
 	if (mcpLocalClass->writeToFile(fileName, val)) {
 		readContents = val;
@@ -36,7 +36,7 @@ bool MuleFile::write(const MULE_OTHER_STRINGTYPE& val) {
 		return false;
 }
 
-bool MuleFile::append(const MULE_OTHER_STRINGTYPE& val) {
+bool MuleFile::append(MULE_OTHER_STRINGTYPE val) {
 	if (write(readContents + "\n" + val)) {
 		readContents = readContents + "\n" + val;
 		return true;

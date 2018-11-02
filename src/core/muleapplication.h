@@ -24,7 +24,7 @@ public:
     std::vector<MuleDevice*> getDevices();
     MULE_OTHER_STRINGTYPE getCurrentDirectory();
     static MuleApplication* getRunningInstance();
-    void exit(const int& status);
+    void exit(int status);
     bool areNecessaryPartsReady;
 
 private:

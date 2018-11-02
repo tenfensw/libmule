@@ -35,7 +35,7 @@ public:
     virtual bool stopAllSounds() {}
 #endif
 protected:
-    void platformInitializationException(const int& erc, const MULE_OTHER_STRINGTYPE& message) {
+    void platformInitializationException(int erc, MULE_OTHER_STRINGTYPE message) {
         muleprintf("libMule " + muleinttostr(MULE_VERSION_MAJOR) + "." + muleinttostr(MULE_VERSION_MINOR) + "." + muleinttostr(MULE_VERSION_UPDATE) + " Platform Initialization Error\n");
         muleprintf( "A critical error occured during the initialization of the device platform.\n");
         muleprintf("\n");
