@@ -32,8 +32,8 @@ std::vector<MuleDevice*> MuleRaspberryPiPlatform::getDevices() {
 MULE_OTHER_HWPINTYPE MuleRaspberryPiPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     int reg, shift;
-    reg   =  gpio/10;
-    shift = (gpio%10) * 3;
+    reg  = pin/10;
+    shift = (pin%10) * 3;
     return (*(gpioReg + reg) >> shift) & 7;
 }
 
@@ -42,8 +42,8 @@ bool MuleRaspberryPiPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HW
     muledebug("mode = " + muleinttostr((int)(mode)));
     try {
 	int reg, shift;
-	reg   =  gpio/10;
-	shift = (gpio%10) * 3;
+	reg = pin/10;
+	shift = (pin%10) * 3;
 	gpioReg[reg] = (gpioReg[reg] & ~(7<<shift)) | (mode<<shift);
 	return true;
     }
