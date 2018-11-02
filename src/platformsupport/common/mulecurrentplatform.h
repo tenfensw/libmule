@@ -9,15 +9,15 @@
 #ifdef MULE_PLATFORM_DUMMY
 #include "platformsupport/dummy/muledummyplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleDummyPlatform
-#define MULE_INTERNAL_CURRENTPLATFORMNAME std::string("dummy")
+#define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("dummy")
 #elif defined(MULE_PLATFORM_LEGOEV3)
 #include "platformsupport/legoev3/mulemindstormsplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleMindstormsPlatform
-#define MULE_INTERNAL_CURRENTPLATFORMNAME std::string("legoev3")
+#define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("legoev3")
 #elif defined(MULE_PLATFORM_RPI)
 #include "platformsupport/rpi/muleraspberrypiplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleRaspberryPiPlatform
-#define MULE_INTERNAL_CURRENTPLATFORMNAME std::string("rpi")
+#define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("rpi")
 #else
 #error No supported platforms were detected
 #endif
