@@ -6,6 +6,7 @@ MuleRaspberryPiPlatform::MuleRaspberryPiPlatform() {
 }
 
 bool MuleRaspberryPiPlatform::initialize() {
+	// this function is based on gpioInitialise() function from tiny_gpio.c
 	int fd;
 	fd = open("/dev/gpiomem", O_RDWR | O_SYNC) ;
 	if (fd < 0) {
@@ -21,7 +22,7 @@ bool MuleRaspberryPiPlatform::initialize() {
 	devlist.clear();
 	for (int i = 0; i < 54; i++)
 		devlist.push_back(new MuleDevice(i));
-	return true;;
+	return true;
 }
 
 #ifdef MULE_FEATURES_SENSORS
@@ -30,6 +31,7 @@ std::vector<MuleDevice*> MuleRaspberryPiPlatform::getDevices() {
 }
 
 MULE_OTHER_HWPINTYPE MuleRaspberryPiPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
+    // this function is based on gpioGetMode() function from tiny_gpio.c
     muledebug("pin = " + muleinttostr((int)(pin)));
     int reg, shift;
     reg  = pin/10;
@@ -38,12 +40,12 @@ MULE_OTHER_HWPINTYPE MuleRaspberryPiPlatform::getPinMode(MULE_OTHER_HWPINTYPE pi
 }
 
 bool MuleRaspberryPiPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {
-    muledebug("pin = " + muleinttostr((int)(pin)));
+    // this function is based on gpioSetMode() function from tiny_gpio.c
+    muledebug("pin = " + muleinttostr((int)(mode));
     muledebug("mode = " + muleinttostr((int)(mode)));
     try {
-	int reg, shift;
-	reg = pin/10;
-	shift = (pin%10) * 3;
+	int reg = pin/10;
+	int shift = (pin%10) * 3;
 	gpioReg[reg] = (gpioReg[reg] & ~(7<<shift)) | (mode<<shift);
 	return true;
     }
@@ -54,6 +56,7 @@ bool MuleRaspberryPiPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HW
 }
 
 MULE_OTHER_HWPINTYPE MuleRaspberryPiPlatform::readFromPin(MULE_OTHER_HWPINTYPE pin) {
+    // this function is based on gpioRead() function from tiny_gpio.c
     muledebug("pin = " + muleinttostr((int)(pin)));
     if ((*(gpioReg + GPLEV0 + PI_BANK) & PI_BIT) != 0)
 	return 1;
@@ -62,6 +65,7 @@ MULE_OTHER_HWPINTYPE MuleRaspberryPiPlatform::readFromPin(MULE_OTHER_HWPINTYPE p
 }
 
 bool MuleRaspberryPiPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {
+    // this function is based on gpioWrite() function from tiny_gpio.c
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("ct = " + muleinttostr((int)(ct)));
     try {
@@ -78,6 +82,7 @@ bool MuleRaspberryPiPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HW
 }
 
 bool MuleRaspberryPiPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
+    // this function is based on gpioSetPullUpDown() function from tiny_gpio.c
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("val = " + muleinttostr((int)(val)));
     try {

@@ -1,7 +1,7 @@
 // Some functions from this class are heavily based on a little C program called tiny_gpio.c. It was created by the same author, 
 // who made the pigpio library. The source code of tiny_gpio.c can be viewed here: http://abyz.me.uk/rpi/pigpio/examples.html
 // That code was released under a public domain license, but I could not resist to mention about tiny_gpio.c here, as it helped
-// me a lot during the creation of libMule.
+// me a lot during the creation of Raspberry Pi 3 backend for libMule.
 
 #ifndef MULERASPBERRYPIPLATFORM_H
 #define MULERASPBERRYPIPLATFORM_H
