@@ -21,6 +21,7 @@ bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
     	mcpInstance = (void*)(maInstance->getPlatformClass());
     	MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
     	convertedMcpInstance->getPinMode(pin);
+	this->setPinType(dvprobepin());
     }
     else
 	muledebug("maInstance->areNecessaryPartsReady != true");
@@ -48,18 +49,48 @@ bool MuleDevice::setMode(MULE_OTHER_HWPINTYPE mode) {
 }
 
 bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE level) {
-	muledebug("Software implementation of GPIO trigger is active");
-	try {
-		this->write(level);
-		mulemicrosecsleep(pulselen);
-		if (level != 0)
-			this->write(0);
-		else
-			this->write(1);
-		return true;
-	}
-	catch (...) {
-		muledebug("ASSERT or SEGFAULT was caused, will return false");
-	}
-	return false;
+    muledebug("Software implementation of GPIO trigger is active");
+    try {
+    	this->write(level);
+    	mulemicrosecsleep(pulselen);
+    	if (level != 0)
+    		this->write(0);
+    	else
+    		this->write(1);
+    	return true;
+    }
+    catch (...) {
+    	muledebug("ASSERT or SEGFAULT was caused, will return false");
+    }
+    return false;
 }
+
+#ifdef MULE_FEATURES_ADDITIONALDEVICES
+
+int MuleDevice::dvprobepin() {
+	// TODO implement dvprobepin()
+	return Other;
+}
+
+bool MuleDevice::setPinType(int type) {
+	if (!(type > (Other - 1) && type < (TemperatureSensor + 1)))
+		return false;
+	pType = type;
+	if (type == Button)
+		setMode(MULE_INPUT);
+}
+
+#else
+
+int MuleDevice::dvprobepin() {
+	return Other;
+}
+
+bool MuleDevice::setPinType(int type) {
+	if (type != Other)
+		return false;
+	else
+		return true;
+}
+
+#endif

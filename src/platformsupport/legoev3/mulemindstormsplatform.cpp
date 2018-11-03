@@ -26,17 +26,13 @@ std::vector<MuleDevice*> MuleMindstormsPlatform::getDevices() {
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
-    platformInitializationException(9, "Not finished yet");
-    return 0;
+    return MULE_OUTPUT;
 }
 
 bool MuleMindstormsPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("mode = " + muleinttostr((int)(mode)));
-    if (pin == 5)
-	return writeToPin(pin, mode);
-    else
-	return false;
+    return false;
 }
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::readFromPin(MULE_OTHER_HWPINTYPE pin) {

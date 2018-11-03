@@ -24,6 +24,8 @@
 #define MULE_HOMEDIRECTORY "/home/" + MULE_OTHER_STRINGTYPE(getenv("USER"))
 #define MULE_DOCUMENTSDIRECTORY MULE_HOMEDIRECTORY + "/Documents"
 #define MULE_TEMPDIRECTORY "/tmp"
+#define MULE_INPUT	PI_INPUT
+#define MULE_OUTPUT	PI_OUTPUT
 
 // Raspberry Pi-related defines
 #define GPSET0	7

@@ -16,6 +16,8 @@
 #define MULE_DOCUMENTSDIRECTORY "/undefined/path"
 #endif
 #define MULE_TEMPDIRECTORY "/tmp"
+#define MULE_INPUT  0
+#define MULE_OUTPUT 1
 
 
 class MuleDummyPlatform : public MuleCommonPlatform

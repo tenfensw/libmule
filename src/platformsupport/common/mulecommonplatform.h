@@ -34,6 +34,10 @@ public:
     virtual MULE_OTHER_STRINGTYPE getSoundBackend() {}
     virtual bool stopAllSounds() {}
 #endif
+#ifdef MULE_FEATURES_ADDITIONALDEVICES
+#endif
+
+
 protected:
     void platformInitializationException(int erc, MULE_OTHER_STRINGTYPE message) {
         muleprintf("libMule " + muleinttostr(MULE_VERSION_MAJOR) + "." + muleinttostr(MULE_VERSION_MINOR) + "." + muleinttostr(MULE_VERSION_UPDATE) + " Platform Initialization Error\n");

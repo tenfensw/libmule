@@ -13,6 +13,8 @@
 #define MULE_HOMEDIRECTORY "/home/root/lms2012/timkoisoft/libMule"
 #define MULE_DOCUMENTSDIRECTORY "/home/root/lms2012/timkoisoft/libMule"
 #define MULE_TEMPDIRECTORY "/tmp"
+#define MULE_INPUT 0
+#define MULE_OUTPUT 1
 
 class MuleMindstormsPlatform : public MuleCommonPlatform
 {
