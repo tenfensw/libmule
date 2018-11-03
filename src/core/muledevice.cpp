@@ -78,7 +78,7 @@ int MuleDevice::dvprobepin() {
 }
 
 bool MuleDevice::setPinType(int type) {
-	if (!(type > (Other - 1) && type < (TemperatureSensor + 1)))
+	if (type < 0)
 		return false;
 	pType = type;
 	if (type == Button)

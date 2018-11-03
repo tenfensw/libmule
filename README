@@ -22,7 +22,7 @@ they were untested. QMake or Boost.Build are both not supported (QMake is used s
 
 Also, to build Mule, you'll need a C++ cross-compiler for your platform. For Raspberry Pi, you can follow this guide to build a GCC 
 cross-compiler: https://solarianprogrammer.com/2018/05/06/building-gcc-cross-compiler-raspberry-pi/. As for LEGO EV3, well, your only 
-choice is to use this toolchain: https://github.com/c4ev3/toolchain.
+choice is to use Mentor CodeSourcery Lite 2013.11 on a 32-bit Linux distro.
 
 After that, navigate to the source code directory of libMule. Set the MULETARGET environment variable to "rpi" if you want to build the 
 Raspberry Pi version of the library, "legoev3" if you want to build the LEGO EV3 version of the library or "dummy" if you want to enjoy 
