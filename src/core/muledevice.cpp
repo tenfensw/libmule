@@ -67,7 +67,7 @@ bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE lev
 
 bool MuleDevice::setPullUpDown(MULE_OTHER_HWPINTYPE val) {
     MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
-    return convertedMcpInstance->setPullUpDowb(pinNum, val);
+    return convertedMcpInstance->setPullUpDown(pinNum, val);
 }
 
 #ifdef MULE_FEATURES_ADDITIONALDEVICES
