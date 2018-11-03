@@ -17,10 +17,10 @@ for Argument in $*; do
 		if echo "$DEFINEWITHOUTHEADER" | grep -q "="; then
 			DEFINENAME=`echo "$DEFINEWITHOUTHEADER" | cut -d '=' -f1`
 			DEFINEVAL=`echo "$DEFINEWITHOUTHEADER" | cut -d '=' -f2`
-			DEFINEOUT="#define $DEFINENAME $DEFINEVAL"
+			DEFINEOUT="# ifndef $DEFINENAME\n# define $DEFINENAME $DEFINEVAL\n# endif"
 		else
 			DEFINENAME="$DEFINEWITHOUTHEADER"
-			DEFINEOUT="#define $DEFINENAME"
+			DEFINEOUT="# ifndef $DEFINENAME\n# define $DEFINENAME\n# endif"
 		fi
 		OUTCONTENTS="$OUTCONTENTS\n$DEFINEOUT"
 	else

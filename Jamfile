@@ -29,7 +29,7 @@ else {
 
 ENABLE_DEVICES ?= yes ;
 ENABLE_FILEIO ?= yes ;
-ENABLE_ADDITIONALDEVICES ?= yes ;
+ENABLE_ADDITIONALDEVICES ?= no ;
 ENABLE_SOUND ?= yes ;
 
 if $(CXX) {
