@@ -41,7 +41,7 @@ MULE_OTHER_HWPINTYPE MuleRaspberryPiPlatform::getPinMode(MULE_OTHER_HWPINTYPE pi
 
 bool MuleRaspberryPiPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {
     // this function is based on gpioSetMode() function from tiny_gpio.c
-    muledebug("pin = " + muleinttostr((int)(mode));
+    muledebug("pin = " + muleinttostr((int)(mode)));
     muledebug("mode = " + muleinttostr((int)(mode)));
     try {
 	int reg = pin/10;
