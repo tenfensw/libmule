@@ -12,6 +12,8 @@
 #include "platformsupport/dummy/muledummyplatform.h"
 #elif defined(MULE_PLATFORM_LEGOEV3)
 #include "platformsupport/legoev3/mulemindstormsplatform.h"
+#elif defined(MULE_PLATFORM_RPI)
+#include "platformsupport/rpi/muleraspberrypiplatform.h"
 #endif
 #ifdef MULE_FEATURES_FILEIO
 #include "fileio/mulefile.h"
