@@ -76,6 +76,24 @@ bool MuleRaspberryPiPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HW
     }
     return false;
 }
+
+bool MuleRaspberryPiPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
+    muledebug("pin = " + muleinttostr((int)(pin)));
+    muledebug("val = " + muleinttostr((int)(val)));
+    try {
+	*(gpioReg + GPPUD) = val;
+	mulemicrosecsleep(20);
+	*(gpioReg + GPPUDCLK0 + PI_BANK) = PI_BIT;
+	mulemicrosecsleep(20);
+	*(gpioReg + GPPUD) = 0;
+	*(gpioReg + GPPUDCLK0 + PI_BANK) = 0;
+	return true;
+    }
+    catch (...) {
+    	muledebug("setPullUpDown failed, return false");
+    }
+    return false;
+}
 #endif
 
 #ifdef MULE_FEATURES_FILEIO

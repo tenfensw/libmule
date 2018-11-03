@@ -42,6 +42,9 @@ public:
     bool writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {
         return platformClass->writeToPin(pin, ct);
     }
+    bool setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
+	return platformClass->setPullUpDown(pin, val);
+    }
 #endif
 #ifdef MULE_FEATURES_FILEIO
     MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file) {

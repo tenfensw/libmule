@@ -39,6 +39,7 @@ public:
 	return pinType();
     }
     bool setPinType(int type);
+    bool setPullUpDown(MULE_OTHER_HWPINTYPE val);
 
 private:
     bool dvinit(MULE_OTHER_HWPINTYPE pin);

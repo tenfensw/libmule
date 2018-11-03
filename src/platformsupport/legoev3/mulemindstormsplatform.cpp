@@ -32,7 +32,8 @@ MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin
 bool MuleMindstormsPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("mode = " + muleinttostr((int)(mode)));
-    return false;
+    muledebug("make the user happy, return true");
+    return true;
 }
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::readFromPin(MULE_OTHER_HWPINTYPE pin) {
@@ -70,6 +71,13 @@ bool MuleMindstormsPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWP
     }
     else
     	return false;
+}
+
+bool MuleMindstormsPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
+    muledebug("pin = " + muleinttostr((int)(pin)));
+    muledebug("val = " + muleinttostr((int)(val)));
+    muledebug("make the user happy, return true");
+    return true;
 }
 #endif
 

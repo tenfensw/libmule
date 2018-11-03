@@ -65,6 +65,11 @@ bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE lev
     return false;
 }
 
+bool MuleDevice::setPullUpDown(MULE_OTHER_HWPINTYPE val) {
+    MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
+    return convertedMcpInstance->setPullUpDowb(pinNum, val);
+}
+
 #ifdef MULE_FEATURES_ADDITIONALDEVICES
 
 int MuleDevice::dvprobepin() {

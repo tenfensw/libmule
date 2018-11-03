@@ -44,6 +44,13 @@ bool MuleDummyPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYP
     platformInitializationException(2, "Unimplemented");
     return false;
 }
+
+bool MuleDummyPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
+    muledebug("pin = " + muleinttostr((int)(pin)));
+    muledebug("val = " + muleinttostr((int)(val)));
+    platformInitializationException(2, "Unimplemented");
+    return false;
+}
 #endif
 
 #ifdef MULE_FEATURES_FILEIO
