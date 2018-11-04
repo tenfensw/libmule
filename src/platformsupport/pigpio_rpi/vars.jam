@@ -1,0 +1,43 @@
+# Jambase override variables for Raspberry Pi platform
+# Part of libMule
+actions FetchPigpio {
+	if test -e "./src/3rdparty/.stamp_pigpio"; then
+		exit 0
+	else
+		sh -c "cd ./src/3rdparty && ./download-3rdparty-components.sh && touch ./.stamp_pigpio"
+		exit 0
+	fi
+}
+
+MULETARGETOS = linux ;
+C++FLAGS += -pthread -DMULE_OS_UNIX -DMULE_OS_LINUX -std=c++11 ;
+C++FLAGS += -Os -DMULE_PLATFORM_PIGPIO ;
+
+if $(DEBUG) {
+	C++FLAGS += -g -DMULE_FEATURES_DEBUG ;
+}
+
+if $(ENABLE_DEVICES) = yes {
+	C++FLAGS += -DMULE_FEATURES_SENSORS ;
+}
+
+if $(ENABLE_FILEIO) = yes {
+	C++FLAGS += -DMULE_FEATURES_FILEIO ;
+}
+
+if $(ENABLE_SOUND) = yes {
+	C++FLAGS += -DMULE_FEATURES_SOUND ;
+}
+
+if $(ENABLE_ADDITIONALDEVICES) = yes {
+        C++FLAGS += -DMULE_FEATURES_ADDITIONALDEVICES -DMULE_OTHER_MOTORSTOPCODE=-789 ;
+}
+
+C++FLAGS += -DMULE_OTHER_HWPINTYPE=unsigned -DMULE_OTHER_STRINGTYPE=std::string -DMULE_FEATURES_SUPPORTSCOUT ;
+C++FLAGS += -Isrc/platformsupport/pigpio_rpi -Isrc/3rdparty/pigpio-master ;
+LINK = $(C++) ;
+LINKFLAGS = "-lrt" ;
+
+FetchPigpio src/3rdparty/.stamp_pigpio ;
+MULEPLATFORMSOURCES = src/3rdparty/pigpio-master/pigpio.c src/3rdparty/pigpio-master/command.c src/platformsupport/pigpio_rpi/mulepigpioplatform.cpp ;
+Depends $(MULEPLATFORMSOURCES) : src/3rdparty/.stamp_pigpio ;

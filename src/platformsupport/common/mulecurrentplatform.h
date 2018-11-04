@@ -18,6 +18,10 @@
 #include "platformsupport/rpi/muleraspberrypiplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleRaspberryPiPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("rpi")
+#elif defined(MULE_PLATFORM_PIGPIO)
+#include "platformsupport/pigpio_rpi/mulepigpioplatform.h"
+#define MULE_INTERNAL_CURRENTPLATFORMCLASS MulePigpioPlatform
+#define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("pigpio")
 #else
 #error No supported platforms were detected
 #endif
