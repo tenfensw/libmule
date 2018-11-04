@@ -29,12 +29,20 @@ else {
 
 ENABLE_DEVICES ?= yes ;
 ENABLE_FILEIO ?= yes ;
-ENABLE_ADDITIONALDEVICES ?= no ;
+ENABLE_ADDITIONALDEVICES ?= yes ;
 ENABLE_SOUND ?= yes ;
 
 if $(CXX) {
 	C++ = $(CXX) ;
 }
+
+if $(MINIMAL) {
+	ENABLE_DEVICES = yes ;
+	ENABLE_FILEIO = no ;
+	ENABLE_ADDITIONALDEVICES = no ;
+	ENABLE_SOUND = no ;
+}
+
 include src/platformsupport/$(MULETARGET)/vars.jam ;
 if $(ENABLE_FILEIO) = yes {
 	include src/fileio/module.jam ;

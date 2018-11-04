@@ -1,8 +1,3 @@
 # Additional devices module
-echo "Module unfinished, won't build additionaldevices" ;
-if $(STILLBUILDBROKENPLATFORMS) {
-	echo "skip module additionaldevices" ;
-}
-else {
-	MULEADDITIONALDEVICESSOURCES = mulemotordevice.cpp ;
-}
+echo "[WARNING] Module additionaldevices is unfinished" ;
+MULEADDITIONALDEVICESSOURCES = mulemotordevice.cpp ;
