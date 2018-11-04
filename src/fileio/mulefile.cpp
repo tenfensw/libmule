@@ -46,8 +46,7 @@ bool MuleFile::append(MULE_OTHER_STRINGTYPE val) {
 }
 
 MULE_OTHER_STRINGTYPE MuleFile::getParentDirectory() {
-	muleexception(2, "Unimplemented", true);
-	return "";
+	return fileName.substr(0, fileName.find_last_of("/"));
 }
 
 bool MuleFile::remove() {
