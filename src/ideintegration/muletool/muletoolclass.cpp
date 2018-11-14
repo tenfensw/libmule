@@ -3,15 +3,25 @@
 MuleToolClass::MuleToolClass(int argc, char** argv) {
 #ifdef _WIN32
 	dirsepchar = '\\';
-	userHomeDir = std::string(std::getenv("USERPROFILE"));
+	try {
+		userHomeDir = std::string(std::getenv("USERPROFILE"));
+	}
+	catch (...) {
+		userHomeDir = "C:\\";
+	}
 #else
 	dirsepchar = '/';
-	userHomeDir = "/home/" + std::string(std::getenv("USER"));
+	try {
+		userHomeDir = "/home/" + std::string(std::getenv("USER"));
 #  if defined(__APPLE__) && defined(__MACH__)
-	userHomeDir = "/Users/" + std::string(std::getenv("USER"));
+		userHomeDir = "/Users/" + std::string(std::getenv("USER"));
 #  elif defined(__BEOS__)
-	userHomeDir = "/boot/home/" + std::string(std::getenv("USER"));
+		userHomeDir = "/boot/home";
 #  endif
+	}
+	catch (...) {
+		userHomeDir = "/";
+	}
 #endif
 	successfullyInitialized = init(argc, argv);
 }
