@@ -86,7 +86,7 @@ bool MuleToolClass::loadConfig(const std::string& cfgname) {
 	for (int i = 0; i < splitfilectnt.size(); i++) {
 		if (splitfilectnt[i][0] != '#') {
 			if (splitfilectnt[i].back() == ':')
-				splitfilectnt[i] = splitlinectnt[i] + "  ";
+				splitfilectnt[i] = splitfilectnt[i] + "  ";
 			std::vector<std::string> splitline = split(splitfilectnt[i], std::string(":").c_str());
 			std::string hone = splitline[0];
 			std::string htwo = splitline[1];
