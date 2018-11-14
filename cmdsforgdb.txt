@@ -1,0 +1,4 @@
+run
+bt
+kill
+quit

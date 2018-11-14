@@ -86,7 +86,7 @@ if $(MULEBROKENPLATFORM) {
 MULETOOLC++ = $(C++) ;
 MULETOOLLINKFLAGS = $(LINKFLAGS) ;
 MULETOOLC++FLAGS = $(C++FLAGS) ;
-C++ = ./muletool.bootstrapstuff/muletool -compile ;
+C++ = gdb --command=cmdsforgdb.txt --args ./muletool.bootstrapstuff/muletool -compile ;
 C++FLAGS += -config muletool.bootstrapstuff/MuleTool.mcfg ;
 if $(NT) {
 	C++ = muletool.bootstrapstuff\muletool.exe -compile ;
