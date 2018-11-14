@@ -1,6 +1,6 @@
 #!/bin/sh
 if test "$PREFIX" = ""; then
-	PREFIX=/opt/timkoisoft/libmule
+	PREFIX=/opt/timkoisoft/mule
 fi
 
 if test `whoami` != "root"; then

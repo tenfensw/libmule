@@ -1,8 +1,10 @@
 # Jamfile to build libMule
 
 actions GenerateMuleConfig {
-	./generate-muleconfig.sh --output="$(1)" $(C++FLAGS)
+	sh -c "CC=\"$(MULETOOLC++) -c\" CXX=\"$(MULETOOLC++) -c\" CFLAGS=\"$(MULETOOLC++FLAGS)\" CXXFLAGS=\"$(MULETOOLC++FLAGS)\" LD=\"$(MULETOOLC++)\" LDFLAGS=\"$(MULETOOLLINKFLAGS)\" ./bootstrap-muletool.sh"
+	./generate-muleconfig.sh --output="$(1)" $(MULETOOLC++FLAGS)
 }
+
 
 MULEVERSIONMAJOR = 1 ;
 MULEVERSIONMINOR = 0 ;
@@ -80,6 +82,18 @@ if $(MULEBROKENPLATFORM) {
 		return 2 ;
 	}
 }
+
+MULETOOLC++ = $(C++) ;
+MULETOOLLINKFLAGS = $(LINKFLAGS) ;
+MULETOOLC++FLAGS = $(C++FLAGS) ;
+C++ = ./muletool.bootstrapstuff/muletool -compile ;
+C++FLAGS += -config muletool.bootstrapstuff/MuleTool.mcfg ;
+if $(NT) {
+	C++ = muletool.bootstrapstuff\muletool.exe -compile ;
+	C++FLAGS += -config muletool.bootstrapstuff\MuleTool.mcfg ;
+}
+LINK = $(C++) ;
+C++FLAGS += -nolibmule -nomuletoolobjectnamingstyle ;
 
 Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEADDITIONALDEVICESSOURCES) $(MULEFILEIOSOURCES) $(MULESOUNDSOURCES) ;
 GenerateMuleConfig src/core/muleconfig.h ;
