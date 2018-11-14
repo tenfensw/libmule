@@ -44,7 +44,8 @@ LINK = $(C++) ;
 LINKFLAGS = "" ;
 
 FetchEV3API src/3rdparty/.stamp_ev3api ;
-MULEPLATFORMSOURCES = src/3rdparty/EV3-API-master/API/ev3.c src/3rdparty/EV3-API-master/API/ev3_button.c src/3rdparty/EV3-API-master/API/ev3_command.c src/3rdparty/EV3-API-master/API/ev3_lcd.c src/3rdparty/EV3-API-master/API/ev3_output.c src/3rdparty/EV3-API-master/API/ev3sensor.c src/3rdparty/EV3-API-master/API/ev3_sound.c src/3rdparty/EV3-API-master/API/ev3_timer.c src/platformsupport/legoev3/mulemindstormsplatform.cpp ;
+MULEPLATFORMSOURCES = src/3rdparty/EV3-API-master/API/ev3.c src/3rdparty/EV3-API-master/API/ev3_button.c src/3rdparty/EV3-API-master/API/ev3_command.c src/3rdparty/EV3-API-master/API/ev3_lcd.c src/3rdparty/EV3-API-master/API/ev3_output.c src/3rdparty/EV3-API-master/API/ev3_sensor.c src/3rdparty/EV3-API-master/API/ev3_sound.c src/3rdparty/EV3-API-master/API/ev3_timer.c src/platformsupport/legoev3/mulemindstormsplatform.cpp ;
 Depends $(MULEPLATFORMSOURCES) : src/3rdparty/.stamp_ev3api ;
+
 
 
