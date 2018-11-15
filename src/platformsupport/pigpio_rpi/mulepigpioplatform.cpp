@@ -59,7 +59,7 @@ bool MulePigpioPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPI
 #ifdef MULE_FEATURES_FILEIO
 MULE_OTHER_STRINGTYPE MulePigpioPlatform::readFromFile(MULE_OTHER_STRINGTYPE file) {
     muledebug("file = " + file);
-    std::ifstream t(file);
+    std::ifstream t(file.c_str());
     return MULE_OTHER_STRINGTYPE((std::istreambuf_iterator<char>(t)),
                                     std::istreambuf_iterator<char>());
 }
@@ -67,7 +67,7 @@ MULE_OTHER_STRINGTYPE MulePigpioPlatform::readFromFile(MULE_OTHER_STRINGTYPE fil
 bool MulePigpioPlatform::writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {
     muledebug("MulePigpioPlatform::writeToFile(" + file + "," + ct + ") called");
     try {
-	    std::ofstream stream(file);
+	    std::ofstream stream(file.c_str());
 	    stream << ct;
 	    stream.close();
 	    return true;

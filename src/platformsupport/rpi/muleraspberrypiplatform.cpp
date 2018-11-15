@@ -104,7 +104,7 @@ bool MuleRaspberryPiPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER
 #ifdef MULE_FEATURES_FILEIO
 MULE_OTHER_STRINGTYPE MuleRaspberryPiPlatform::readFromFile(MULE_OTHER_STRINGTYPE file) {
     muledebug("file = " + file);
-    std::ifstream t(file);
+    std::ifstream t(file.c_str());
     return MULE_OTHER_STRINGTYPE((std::istreambuf_iterator<char>(t)),
                                     std::istreambuf_iterator<char>());
 }
@@ -112,7 +112,7 @@ MULE_OTHER_STRINGTYPE MuleRaspberryPiPlatform::readFromFile(MULE_OTHER_STRINGTYP
 bool MuleRaspberryPiPlatform::writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {
     muledebug("MuleRaspberryPiPlatform::writeToFile(" + file + "," + ct + ") called");
     try {
-	    std::ofstream stream(file);
+	    std::ofstream stream(file.c_str());
 	    stream << ct;
 	    stream.close();
 	    return true;
