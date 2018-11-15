@@ -9,7 +9,7 @@ if test `whoami` != "root"; then
 	exit 0
 fi
 
-for DirStruct in $PREFIX/include $PREFIX/include/libmule $PREFIX/include/libmule/core $PREFIX/include/libmule/platformsupport/common $PREFIX/include/libmule/platformsupport $PREFIX/include/libmule/platformsupport/legoev3 $PREFIX/include/libmule/platformsupport/dummy $PREFIX/include/libmule/3rdparty  $PREFIX/include/libmule/3rdparty/EV3-API-master/API $PREFIX/lib; do
+for DirStruct in $PREFIX/include $PREFIX/include/libmule $PREFIX/include/libmule/core $PREFIX/include/libmule/platformsupport/common $PREFIX/include/libmule/platformsupport $PREFIX/include/libmule/platformsupport/legoev3 $PREFIX/include/libmule/platformsupport/dummy $PREFIX/include/libmule/3rdparty  $PREFIX/include/libmule/3rdparty/EV3-API-master/API $PREFIX/lib $PREFIX/bin $PREFIX/etc; do
 	if test ! -e "$DirStruct"; then
 		printf "creating directory $DirStruct... "
 		if mkdir -p "$DirStruct"; then
@@ -31,3 +31,7 @@ for File in $(find "$SRCDIR" -type f -name "*.h"); do
 done
 
 cp libMule.a "$PREFIX/lib/libMule.a"
+cp muletool.bootstrapstuff/muletool "$PREFIX/bin/muletool"
+cp muletool.bootstrapstuff/MuleTool.mcfg "$PREFIX/etc/MuleTool.mcfg.old"
+sh -c "cat \"$PREFIX/etc/MuleTool.mcfg.old\" | sed \"s+^PREFIX^+$PREFIX+g\" > \"$PREFIX/etc/MuleTool.mcfg\""
+rm -r -f "$PREFIX/etc/MuleTool.mcfg.old"
