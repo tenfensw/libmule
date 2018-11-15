@@ -1,7 +1,7 @@
 # Jambase override variables for Raspberry Pi platform
 # Part of libMule
 
-echo "[WARNING] The original tinygpio-based Raspberry Pi platform is deprecated and will be removed in libMule 1.5. Please use pigpio-based Raspberry Pi platform instead (pigpio_rpi)."
+echo "[WARNING] The original tinygpio-based Raspberry Pi platform is deprecated and will be removed in libMule 1.5. Please use pigpio-based Raspberry Pi platform instead (pigpio_rpi)." ;
 MULETARGETOS = linux ;
 C++FLAGS += -DMULE_OS_UNIX -DMULE_OS_LINUX -std=c++11 ;
 C++FLAGS += -Os -DMULE_PLATFORM_RPI ;
