@@ -348,7 +348,7 @@ void MuleToolClass::parseArguments() {
 		else if (cliArgs[i] == "-quiet")
 			beQuiet = true;
 		else {
-			if ((fileExists(cliArgs[i])) || (cliArgs[i][0] == '-' && cliArgs[i][1] == 'D') || (cliArgs[i][0] == '-' && cliArgs[i][1] == 'I'))
+			if ((fileExists(cliArgs[i])) || (cliArgs[i][0] == '-' && cliArgs[i][1] == 'D') || (cliArgs[i][0] == '-' && cliArgs[i][1] == 'I') || (cliArgs[i][0] == '-' && cliArgs[i][1] == 's'))
 				actionArgs.push_back(cliArgs[i]);
 		}
 	}
