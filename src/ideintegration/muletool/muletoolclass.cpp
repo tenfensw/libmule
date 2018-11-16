@@ -95,7 +95,7 @@ bool MuleToolClass::loadConfig(const std::string& cfgname) {
 	std::vector<std::string> splitfilectnt = split(filectnt, std::string("\n").c_str());
 	for (int i = 0; i < splitfilectnt.size(); i++) {
 		if (splitfilectnt[i][0] != '#') {
-			if (splitfilectnt[i].back() == ':')
+			if (lastStringChar(splitfilectnt[i]) == ':')
 				splitfilectnt[i] = splitfilectnt[i] + "  ";
 			std::vector<std::string> splitline = split(splitfilectnt[i], std::string(":").c_str());
 			std::string hone = splitline[0];
@@ -153,7 +153,7 @@ bool MuleToolClass::fileExists(const std::string& fname) {
 }
 
 std::string MuleToolClass::readFromFileToString(const std::string& fname) {
-	std::ifstream t(fname);
+	std::ifstream t(fname.c_str());
 	return std::string((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
 }
 
@@ -176,6 +176,7 @@ std::vector<std::string> MuleToolClass::fillPossibleLocationsVector() {
 	possibleLocations.push_back("/usr/share/timkoisoft/libmule");
 	possibleLocations.push_back("/usr/share/timkoisoft/mule");
 #else
+	possibleLocations.push_back(std::string(userHomeDir + "\\timkoisoft\\libmule");
 	possibleLocations.push_back(std::string(std::getenv("APPDATA")) + "\\Timkoisoft\\Mule\\etc");
 	possibleLocations.push_back(std::string(std::getenv("APPDATA")) + "\\Timkoisoft\\Mule");
 	possibleLocations.push_back(std::string(std::getenv("APPDATA")) + "\\Timkoisoft\\libMule\\etc");
@@ -347,6 +348,8 @@ void MuleToolClass::parseArguments() {
 		}
 		else if (cliArgs[i] == "-quiet")
 			beQuiet = true;
+		else if (cliArgs[i] == "-lazy")
+			actionToRun = "lazymode";
 		else {
 			if ((fileExists(cliArgs[i])) || (cliArgs[i][0] == '-' && cliArgs[i][1] == 'D') || (cliArgs[i][0] == '-' && cliArgs[i][1] == 'I') || (cliArgs[i][0] == '-' && cliArgs[i][1] == 's'))
 				actionArgs.push_back(cliArgs[i]);
@@ -477,3 +480,37 @@ std::vector<std::string> MuleToolClass::getDirectoryContents(const std::string& 
 	return std::vector<std::string>();
 }
 
+std::string MuleToolClass::getVariableValue(const std::string& vname) {
+	if (vname == "CC")
+		return compilerCC;
+	else if (vname == "CXX" || vname == "C++")
+		return compilerCXX;
+	else if (vname == "CFLAGS" || vname == "CCFLAGS")
+		return compilerFlags_CC;
+	else if (vname == "CXXFLAGS" || vname == "C++FLAGS")
+		return compilerFlags_CXX;
+	else if (vname == "LD" || vname == "LINK")
+		return linkerLD;
+	else if (vname == "LDFLAGS" || vname == "LINKFLAGS")
+		return linkerFlags_LD;
+	else if (vname == "LIBMULE")
+		return std::string(libMuleInclude + dirsepchar + ".." + dirsepchar + "..");
+	else if (vname == "TARGET")
+		return libMuleTarget;
+	else if (vname == "DEPLOY")
+		return deploy_copyFile;
+	else if (vname == "RUN")
+		return deploy_runFile;
+	else if (vname == "INTERNAL_CONFNAME")
+		return configFilePath;
+	else if (vname == "INTERNAL_HOMEDIR")
+		return userHomeDir;
+	return "";
+}
+
+char MuleToolClass::lastStringChar(const std::string& stritself) {
+	int strlength = 0;
+	while (stritself[strlength] != '\0')
+		strlength = strlength + 1;
+	return stritself[strlength - 1];
+}

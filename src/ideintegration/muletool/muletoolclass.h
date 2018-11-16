@@ -29,6 +29,7 @@ class MuleToolClass {
 	  MuleToolClass(int argc, char** argv);
 	  ~MuleToolClass();
 	  int run();
+	  std::string getVariableValue(const std::string& vname);
 	
 	private:
 	  bool init(int argc, char** argv);
@@ -43,6 +44,7 @@ class MuleToolClass {
 	  void parseArguments();
 	  void viewHeaderMessage();
 	  void viewHelp();
+	  void printInternalValues();
 	  bool detectAndLoadConfig();
 	  int compileFiles();
 	  int linkProgram();
@@ -51,6 +53,7 @@ class MuleToolClass {
 	  std::string readFromFileToString(const std::string& fname);
 	  std::string getCurrentDirectory();
 	  std::string replaceContextAlternatives(const std::string& vname, const std::string& vval);
+	  char lastStringChar(const std::string& stritself);
 	  
 	  // private class-wide variables
 	  bool successfullyInitialized;
