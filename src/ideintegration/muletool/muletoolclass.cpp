@@ -65,7 +65,7 @@ bool MuleToolClass::init(int argc, char** argv) {
 		actionToRun = "printhelp";
 		return true;	
 	}
-	else if (needToDumpConfigFileName == false)
+	else
 		parseArguments();
 		
 	if (detectAndLoadConfig() == false)
