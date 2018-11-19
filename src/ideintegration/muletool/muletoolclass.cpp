@@ -33,8 +33,8 @@ bool MuleToolClass::init(int argc, char** argv) {
 	// convert char** to vector
 	for (int i = 1; i < argc; i++)
 		cliArgs.push_back(std::string(argv[i]));
-		
 	currentProgName = std::string(argv[0]);
+	actionToRun = "nmtd";
 	
 	if ((stringVectorContains(cliArgs, "-quiet") == false) && (stringVectorContains(cliArgs, "-q") == false)) {
 		beQuiet = false;
@@ -318,7 +318,6 @@ std::string MuleToolClass::replaceContextAlternatives(const std::string& vname, 
 }
 
 void MuleToolClass::parseArguments() {
-	actionToRun = "nmtd"; // this means "not much to do"
 	actionArgs.clear();
 	for (int i = 0; i < cliArgs.size(); i++) {
 		if (cliArgs[i] == "-compile") {

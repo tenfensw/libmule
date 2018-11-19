@@ -88,14 +88,20 @@ if $(MULEBROKENPLATFORM) {
 MULETOOLC++ = $(C++) ;
 MULETOOLLINKFLAGS = $(LINKFLAGS) ;
 MULETOOLC++FLAGS = $(C++FLAGS) ;
-C++ = ./muletool.bootstrapstuff/muletool -compile ;
-C++FLAGS += -config muletool.bootstrapstuff/MuleTool.mcfg ;
 if $(NT) {
 	C++ = muletool.bootstrapstuff\muletool.exe -compile ;
 	C++FLAGS += -config muletool.bootstrapstuff\MuleTool.mcfg ;
+	CCFLAGS += -config muletool.bootstrapstuff\MuleTool.mcfg ;
 }
+else {
+	C++ = ./muletool.bootstrapstuff/muletool -compile ;
+	C++FLAGS += -config muletool.bootstrapstuff/MuleTool.mcfg ;
+	CCFLAGS += -config muletool.bootstrapstuff/MuleTool.mcfg ;
+}
+CC = $(C++) ;
 LINK = $(C++) ;
 C++FLAGS += -nolibmule -nomuletoolobjectnamingstyle ;
+CCFLAGS += -nolibmule -nomuletoolobjectnamingstyle ;
 
 Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEADDITIONALDEVICESSOURCES) $(MULEFILEIOSOURCES) $(MULESOUNDSOURCES) ;
 GenerateMuleConfig src/core/muleconfig.h ;
