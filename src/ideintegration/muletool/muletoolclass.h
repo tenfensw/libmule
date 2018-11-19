@@ -59,6 +59,7 @@ class MuleToolClass {
 	  bool successfullyInitialized;
 	  bool beQuiet;
 	  bool haveToDetectConfig;
+	  bool needToDumpConfigFileName;
 	  bool doNotIncludeLibMule;
 	  bool useShortObjectFileNames;
 	  std::vector<std::string> cliArgs;

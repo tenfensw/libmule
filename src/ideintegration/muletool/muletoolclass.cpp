@@ -54,16 +54,23 @@ bool MuleToolClass::init(int argc, char** argv) {
 	else
 		haveToDetectConfig = true;
 	
+	if (stringVectorContains(cliArgs, "-internal-printconfigfile") == true) {
+		actionToRun = "printconfigfilename";
+		needToDumpConfigFileName = true;
+	}
+	else
+		needToDumpConfigFileName = false;
+	
 	if ((stringVectorContains(cliArgs, "--help") == true) || (stringVectorContains(cliArgs, "-help") == true) || (stringVectorContains(cliArgs, "-h") == true)) {
 		actionToRun = "printhelp";
 		return true;	
 	}
-	else
+	else if (needToDumpConfigFileName == false)
 		parseArguments();
 		
 	if (detectAndLoadConfig() == false)
 		return false;
-		
+	
 	return true;
 }
 
@@ -228,6 +235,10 @@ int MuleToolClass::run() {
 		return linkProgram();
 	else if (actionToRun == "deploy")
 		return deployProgram();
+	else if (actionToRun == "printconfigfilename") {
+		std::cout << configFilePath << std::endl;
+		return 0;
+	}
 	return -1;
 }
 
