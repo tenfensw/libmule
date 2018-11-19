@@ -1,7 +1,7 @@
 # Jamfile to build libMule
 
 actions GenerateMuleConfig {
-	sh -c "CC=\"$(MULETOOLC++) -c\" CXX=\"$(MULETOOLC++) -c\" CFLAGS=\"$(MULETOOLC++FLAGS)\" CXXFLAGS=\"$(MULETOOLC++FLAGS)\" LD=\"$(MULETOOLC++)\" LDFLAGS=\"$(MULETOOLLINKFLAGS)\" ./bootstrap-muletool.sh"
+	sh -c "CC=\"$(MULETOOLCC) -c\" CXX=\"$(MULETOOLC++) -c\" CFLAGS=\"$(MULETOOLCCFLAGS)\" CXXFLAGS=\"$(MULETOOLC++FLAGS)\" LD=\"$(MULETOOLC++)\" LDFLAGS=\"$(MULETOOLLINKFLAGS)\" ./bootstrap-muletool.sh"
 	./generate-muleconfig.sh --output="$(1)" $(MULETOOLC++FLAGS)
 }
 
@@ -85,8 +85,10 @@ if $(MULEBROKENPLATFORM) {
 	}
 }
 
+MULETOOLCC = $(CC) ;
 MULETOOLC++ = $(C++) ;
 MULETOOLLINKFLAGS = $(LINKFLAGS) ;
+MULETOOLCCFLAGS = $(CCFLAGS) ;
 MULETOOLC++FLAGS = $(C++FLAGS) ;
 if $(NT) {
 	C++ = muletool.bootstrapstuff\muletool.exe -compile ;
@@ -100,8 +102,8 @@ else {
 }
 CC = $(C++) ;
 LINK = $(C++) ;
-C++FLAGS += -nolibmule -nomuletoolobjectnamingstyle ;
-CCFLAGS += -nolibmule -nomuletoolobjectnamingstyle ;
+C++FLAGS += -nolibmule -nomuletoolobjectnamingstyle -quiet ;
+CCFLAGS += -nolibmule -nomuletoolobjectnamingstyle -quiet ;
 
 Library libMule : src/core/muleconfig.cpp $(MULEPLATFORMSOURCES) src/core/muleglobalfunctions.cpp src/core/muledevice.cpp src/core/muleapplication.cpp src/platformsupport/common/mulecurrentplatform.cpp $(MULEADDITIONALDEVICESSOURCES) $(MULEFILEIOSOURCES) $(MULESOUNDSOURCES) ;
 GenerateMuleConfig src/core/muleconfig.h ;
