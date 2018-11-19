@@ -73,6 +73,8 @@ if $(MULECOMPILERFLAGS) {
 	CCFLAGS += $(MULECOMPILERFLAGS) ;
 }
 
+C++FLAGS += -DMULE_OTHER_GENERICTYPE=-768 ;
+
 if $(MULEBROKENPLATFORM) {
 	echo "ERROR!!! Support for platform $(MULETARGET) is currently broken and will be restored in a future libMule release." ;
 	if $(STILLBUILDBROKENPLATFORMS) {

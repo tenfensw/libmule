@@ -37,6 +37,7 @@ if $(ENABLE_ADDITIONALDEVICES) = yes {
         C++FLAGS += -DMULE_FEATURES_ADDITIONALDEVICES -DMULE_OTHER_MOTORSTOPCODE=-789 ;
 }
 
+C++FLAGS += -DBUILTINOUTPUTDEVICE=6 ;
 C++FLAGS += -DMULE_OTHER_HWPINTYPE=unsigned -DMULE_OTHER_STRINGTYPE=std::string -std=c++0x ;
 C++FLAGS += -Isrc/platformsupport/legoev3 -Isrc/3rdparty/EV3-API-master/API ;
 CCFLAGS += -Isrc/3rdparty/EV3-API-master/API ;
