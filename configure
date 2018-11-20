@@ -21,7 +21,7 @@ Usage: $0 [arguments]
 						The default value for this option
 						is $PREFIX.
 	
-	-modules[all/minimal/list]		build a stripped-down version of
+	-modules=[all/minimal/list]		build a stripped-down version of
 						libMule with only several modules
 						specified. Specify the modules in
 						a list seperated by a comma. If you
@@ -381,7 +381,7 @@ echo "done!"
 
 if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 	printf "Downloading required third-party libraries (this might take a while)... "
-	if sh -c "cd \"$SOURCEDIR/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh" > "$CDIR/dl.log" 2>&1; then
+	if sh -c "cd \"$SOURCEDIR/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh" > "$CDIR/dl.log" 2>&1; then
 		echo "done!"
 		rm -r -f "$CDIR/dl.log"
 	else
