@@ -1,0 +1,558 @@
+#!/bin/sh
+# libMule configure script
+# Copyright (c) Tim K <timprogrammer@rambler.ru> 2018. Part of libMule. 
+# Licensed under GNU LGPLv2.1.
+
+# some functions
+niceheader() {
+	echo "===================================================================="
+	echo "| libMule - Microcontroller-Universal Library (that is Extendable) |"
+	echo "|                       Version $MULEVERSION                       |"
+	echo "|    Copyright (c) Tim K <timprogrammer@rambler.ru> 2018. Licensed |"
+	echo "|                       under GNU LGPLv2.1.                        |"
+	echo "===================================================================="
+}
+
+showhelp() {
+	cat <<EOF
+Usage: $0 [arguments]
+
+	-prefix=[directory]			set libMule installation prefix.
+						The default value for this option
+						is $PREFIX.
+	
+	-modules[all/minimal/list]		build a stripped-down version of
+						libMule with only several modules
+						specified. Specify the modules in
+						a list seperated by a comma. If you
+						want to build a barely working version
+						of libMule, you may specify
+						-modules=minimal option, which will only
+						build the "core" module. Or if you, on
+						the other hand, want to build libMule
+						with all modules enable, just specify
+						this by passing the -modules=all option
+						on the command line. The default value
+						for this option is always "all".
+	
+	-platform=[platform name]		set target platform for which you
+						are planning to create applications
+						using libMule.
+
+	-platformcc=[path to your C cross-	specify the C cross-compiler that
+	compiler]				produces code for the target plat-
+						form.
+						
+	-platformcxx=[path to your C++ cross-	specify the C++ cross-compiler that
+	compiler]				produces code for the target plat-
+						form.
+						
+	-platformld=[path to your cross-lin-	this option rarely needs to be speci-
+	ker]					fied, as, usually, your C++ compiler
+						is also used as a linker. However, if
+						this is not the case for your C++
+						cross-compiler, then specify a seperate
+						linker program with this option.
+	
+	-platformar=[path to the ar utility]	specify the GNU ar utility that can
+						produce native static libraries for the
+						target platform.
+						
+	-platformcompilerflags=[flags]		specify this option if you want to call
+						your C/C++ cross-compilers with additional
+						options.
+						
+	-platformos=[linux/qnx/bsd/unix/posix]	manually specify the operating system that
+						is installed on your device. Use this option
+						if you use an unofficial firmware.
+						
+All bugs should be reported to mailto:timprogrammer@rambler.ru.
+libMule configure script version $TOOLVERSION running on $HOSTOS
+EOF
+	exit 0
+}
+
+showerror() {
+	echo "[ERROR $1] $2"
+	exit $1
+}
+
+showwarning() {
+	echo "[WARNING] $1"
+}
+
+# set all variables first
+MULEVERSIONMAJOR=0
+MULEVERSIONMINOR=4
+MULEVERSIONUPDATE=0
+MULEVERSION=$MULEVERSIONMAJOR.$MULEVERSIONMINOR.$MULEVERSIONUPDATE
+TOOLVERSION=20112018-initialrelease
+if test "$PREFIX" = ""; then
+	PREFIX=/opt/timkoisoft/libmule
+fi
+HOSTCC=$CC
+HOSTCXX=$CXX
+HOSTCFLAGS=$CFLAGS
+HOSTCXXFLAGS=$CXXFLAGS
+HOSTLD=$LD
+HOSTLDFLAGS=$LDFLAGS
+HOSTAR=$AR
+HOSTQMAKE=
+if test "$TARGETCC" = "" && test "$TARGETCXX" = "" && test "$TARGETCFLAGS" = "" && test "$TARGETCXXFLAGS" = "" && test "$TARGETLD" = "" && test "$TARGETLDFLAGS" = "" && test "$TARGETAR" = ""; then
+	TARGETCC=
+	TARGETCXX=
+	TARGETCFLAGS=
+	TARGETCXXFLAGS=
+	TARGETLD=
+	TARGETLDFLAGS=
+	TARGETAR=
+fi
+TARGETNAME=$MULETARGET
+TARGETOS=posix
+MODULES=all
+SOURCEDIR=`dirname $0`
+SOURCEDIR=`sh -c "cd \"$SOURCEDIR\" && pwd"`
+CDIR=`pwd`
+THINGSTODEFINE="MULE_VERSION_MAJOR=$MULEVERSIONMAJOR MULE_VERSION_MINOR=$MULEVERSIONMINOR MULE_VERSION_UPDATE=$MULEVERSIONUPDATE"
+RUNDOWNLOADERSCRIPT=no
+CURRENTDATE=`date +"%d.%m.%Y %H:%M:%S"`
+DEPLOYCMD=""
+RUNCMD=""
+PLATFORMSOURCES=""
+PLATFORMHEADERS=""
+LIBSOURCES=""
+LIBHEADERS=""
+HOSTOS=""
+
+# display a beautiful header
+niceheader
+echo ""
+
+# detect the host operating system first
+if test `uname` = "Linux"; then
+	HOSTOS="Linux `uname -m`"
+	if test -e "/etc/mandriva-release"; then
+		HOSTOS="Mandriva Linux `uname -m`"
+	elif test -e "/etc/redhat-release"; then
+		HOSTOS="RedHat Linux `uname -m`"
+	elif command -v dpkg > /dev/null 2>&1; then
+		HOSTOS="Debian Linux `uname -m`"
+	elif command -v pacman > /dev/null 2>&1; then
+		HOSTOS="Arch Linux `uname -m`"
+	fi
+elif (uname | grep -q "BSD") || test `uname` = "Darwin"; then
+	HOSTOS="4.4BSD `uname -m`"
+elif test `uname` = "SunOS"; then
+	HOSTOS="Sun Solaris `uname -m`"
+else
+	HOSTOS="UNIX-like operating system `uname -m`"
+fi
+
+# parse the arguments
+for Argument in $*; do
+	if test "$Argument" = "--help" || test "$Argument" = "-help" || test "$Argument" = "-h" || test "$Argument" = "/?" || test "$Argument" = "-?"; then
+		showhelp
+		exit 0
+	fi
+	FIRSTHALF=`echo "$Argument" | cut -d '=' -f1`
+	SECONDHALF=`echo "$Argument" | cut -d '=' -f2`
+	if test "$FIRSTHALF" = "-target" || test "$FIRSTHALF" = "-platform"; then
+		TARGETNAME="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-targetcc" || test "$FIRSTHALF" = "-platformcc"; then
+		TARGETCC="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-targetcxx" || test "$FIRSTHALF" = "-platformcxx"; then
+		TARGETCXX="$SECONDHALF"
+		TARGETLD="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-targetld" || test "$FIRSTHALF" = "-platformld"; then
+		TARGETLD="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-targetcflags" || test "$FIRSTHALF" = "-targetcompilerflags" || test "$FIRSTHALF" = "-targetcxxflags" || test "$FIRSTHALF" = "-platformcompilerflags" || test "$FIRSTHALF" = "-platformcxxflags" || test "$FIRSTHALF" = "-platformcflags"; then
+		TARGETCXXFLAGS="$TARGETCXXFLAGS $SECONDHALF"
+		TARGETCFLAGS="$TARGETCFLAGS $SECONDHALF"
+	elif test "$FIRSTHALF" = "-targetldflags" || test "$FIRSTHALF" = "-platformldflags" || test "$FIRSTHALF" = "-targetlinkerflags" || test "$FIRSTHALF" = "-platformlinkerflags"; then
+		TARGETLDFLAGS="$SECONDHALF $TARGETLDFLAGS"
+	elif test "$FIRSTHALF" = "-targetos" || test "$FIRSTHALF" = "-platformos"; then
+		TARGETOS="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-targetar" || test "$FIRSTHALF" = "-platformar"; then
+		TARGETAR="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-targetarch" || test "$FIRSTHALF" = "-platformarch" || test "$FIRSTHALF" = "-targetcpu" || test "$FIRSTHALF" = "-platformcpu"; then
+		TARGETCPU="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-prefix"; then
+		PREFIX="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-qmake"; then
+		HOSTQMAKE="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-modules"; then
+		MODULES="$SECONDHALF"
+	else
+		showwarning "Unknown option: $FIRSTHALF"
+	fi
+		
+done
+
+echo "This script is running on $HOSTOS"
+
+if test "$TARGETNAME" = "rpi"; then
+	TARGETNAME=pigpio_rpi
+	showwarning "tiny_gpio-based \"rpi\" platform was deprecated and removed from libMule. Please use \"pigpio_rpi\" platform instead."
+fi
+
+if test "$HOSTCC" = "" && test "$HOSTCXX" = ""; then
+	printf "Trying to find any supported host C++ compilers... "
+	if command -v clang++ > /dev/null 2>&1; then
+		HOSTCC=clang
+		HOSTCXX=clang++
+		HOSTLD=$HOSTCXX
+		echo "LLVM detected"
+	elif command -v gcc > /dev/null 2>&1; then
+		HOSTCC=gcc
+		HOSTCXX=g++
+		HOSTLD=$HOSTCXX
+		echo "GNU C/C++ detected"
+	elif command -v CC > /dev/null 2>&1; then
+		HOSTCC=cc
+		HOSTCXX=CC
+		HOSTLD=$HOSTCXX
+		echo "Sun Studio C/C++ detected"
+	elif command -v c++ > /dev/null 2>&1; then
+		HOSTCC=cc
+		HOSTCXX=c++
+		HOSTLD=$HOSTCXX
+		echo "Unknown POSIX-compliant C/C++ compiler detected"
+	else
+		echo "none were detected"
+		showerror 1 "No supported C++ compilers that can generate native code for THIS COMPUTER were found"
+	fi
+fi
+if test "$HOSTAR" = ""; then
+	if command -v ar > /dev/null 2>&1; then
+		HOSTAR=ar
+	else
+		showerror 14 "Neither GNU ar nor BSD ar nor Sun Studio ar are installed on this computer. Please install GNU binutils, BSD development tools or Sun Studio 12."
+	fi
+fi
+echo "Host C compiler is $HOSTCC"
+echo "Host C++ compiler is $HOSTCXX"
+echo "Host linker is $HOSTLD"
+if ($HOSTCXX -v 2>&1 | grep -q "clang") || ($HOSTCXX -v 2>&1 | grep -q "gcc"); then
+	HOSTCXXFLAGS="-c -g -Os -Wall -Wextra $HOSTCXXFLAGS"
+	HOSTCFLAGS="-c -g -Os -Wall -Wextra $HOSTCFLAGS"
+	HOSTLDFLAGS="-Os $HOSTLDFLAGS"
+elif $HOSTCXX -V 2>&1 | grep -q "Sun C++"; then
+	HOSTCXXFLAGS="-c -g -fast -xO3"
+	HOSTCFLAGS="-c -g -fast -xO3"
+	HOSTLDFLAGS="-fast -xO3"
+else
+	HOSTCXXFLAGS="-c $HOSTCXXFLAGS"
+	HOSTCFLAGS="-c $HOSTCFLAGS"
+fi
+
+if test "$TARGETNAME" = ""; then
+	showerror 3 "Please specify the target platform by re-running $0 with \"-platform=<platform name here>\" flag."
+fi
+
+if test ! -e "$SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg"; then
+	showerror 2 "The platform you've specified ($TARGETNAME) is not supported by libMule"
+fi
+
+while read configfileline; do
+	FIRSTHALF=`echo "$configfileline" | cut -d ':' -f1`
+	SECONDHALF=`echo "$configfileline" | cut -d ':' -f2`
+	if test "$FIRSTHALF" = "OS" && test "$TARGETOS" = "posix"; then
+		if test "$SECONDHALF" = "Linux" || test "$SECONDHALF" = "linux"; then
+			TARGETOS=linux
+			THINGSTODEFINE="MULE_OS_LINUX MULE_OS_UNIX $THINGSTODEFINE"
+		elif test "$SECONDHALF" = "QNX" || test "$SECONDHALF" = "qnx"; then
+			TARGETOS=qnx
+			THINGSTODEFINE="MULE_OS_QNX MULE_OS_UNIX $THINGSTODEFINE"
+		elif test "$SECONDHALF" = "BSD" || test "$SECONDHALF" = "bsd"; then
+			TARGETOS=unix
+			THINGSTODEFINE="MULE_OS_BSD MULE_OS_UNIX $THINGSTODEFINE"
+		elif test "$SECONDHALF" = "UNIX" || test "$SECONDHALF" = "unix"; then
+			TARGETOS=unix
+			THINGSTODEFINE="MULE_OS_UNIX $THINGSTODEFINE"
+		else
+			TARGETOS=posix
+			THINGSTODEFINE="MULE_OS_UNIX $THINGSTODEFINE"
+		fi
+	elif test "$FIRSTHALF" = "PlatformID"; then
+		THINGSTODEFINE="$SECONDHALF $THINGSTODEFINE"
+	elif test "$FIRSTHALF" = "HardwarePinType"; then
+		THINGSTODEFINE="MULE_OTHER_HWPINTYPE=$SECONDHALF $THINGSTODEFINE"
+	elif test "$FIRSTHALF" = "MotorStopCode"; then
+		THINGSTODEFINE="MULE_OTHER_MOTORSTOPCODE=$SECONDHALF $THINGSTODEFINE"
+	elif test "$FIRSTHALF" = "StringType"; then
+		if test "$SECONDHALF" = "stdstring" || test "$SECONDHALF" = "string"; then
+			THINGSTODEFINE="MULE_OTHER_STRINGTYPE=std::string $THINGSTODEFINE"
+		fi
+	elif test "$FIRSTHALF" = "Defines"; then
+		THINGSTODEFINE="$SECONDHALF $THINGSTODEFINE"
+	elif test "$FIRSTHALF" = "HasCout"; then
+		if test "$SECONDHALF" = "yes" || test "$SECONDHALF" = "true"; then
+			THINGSTODEFINE="MULE_FEATURES_SUPPORTSCOUT $THINGSTODEFINE"
+		fi
+	elif test "$FIRSTHALF" = "Requires3rdPartyDownloads"; then
+		if test "$SECONDHALF" = "yes" || test "$SECONDHALF" = "true"; then
+			showwarning "The platform you have chosen depends on third-party libraries. By continuing to build libMule, you agree to the terms of licenses used by the downloaded libraries. See $SOURCEDIR/src/3rdparty/README for more info."
+			RUNDOWNLOADERSCRIPT=yes
+		fi
+	elif test "$FIRSTHALF" = "AdditionalCompilerFlags"; then
+		TARGETCXXFLAGS="$TARGETCXXFLAGS $SECONDHALF"
+		TARGETCFLAGS="$TARGETCFLAGS $SECONDHALF"
+	elif test "$FIRSTHALF" = "AdditionalLinkerFlags"; then
+		TARGETLDFLAGS="$TARGETLDFLAGS $SECONDHALF"
+	elif test "$FIRSTHALF" = "DeployCommand"; then
+		DEPLOYCMD="$SECONDHALF"
+	elif test "$FIRSTHALF" = "RemoteRunCommand"; then
+		RUNCMD="$SECONDHALF"
+	elif test "$FIRSTHALF" = "Sources"; then
+		for SourceFilePL in $SECONDHALF; do
+			PLATFORMSOURCES="$SOURCEDIR/src/platformsupport/$TARGETNAME/$SourceFilePL $PLATFORMSOURCES"
+		done
+	elif test "$FIRSTHALF" = "Headers"; then
+		for HeaderPL in $SECONDHALF; do
+			PLATFORMHEADERS="$SOURCEDIR/src/platformsupport/$TARGETNAME/$HeaderPL $PLATFORMHEADERS"
+		done
+	fi
+done < "$SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg"
+
+echo "Platform configuration file $SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg was imported successfully, can continue"
+if test "$TARGETNAME" = "dummy"; then
+	TARGETCC=$HOSTCC
+	TARGETCXX=$HOSTCXX
+	TARGETLD=$HOSTLD
+	DEPLOYCMD="echo %A"
+	RUNCMD="%A"
+else
+	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
+		showerror 4 "No C++ compiler for the TARGET PLATFORM was specified. Please re-run $0 with \"-platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> -platformar=<path to the GNU ar (or any other POSIX-compartible ar utility) program>\" flags."
+	fi
+	if test "$TARGETLD" = ""; then
+		TARGETLD=$TARGETCXX
+	fi
+fi
+
+echo "Target C compiler is $TARGETCC"
+echo "Target C++ compiler is $TARGETCXX"
+echo "Target linker is $TARGETLD"
+if ($TARGETCXX -v 2>&1 | grep -q "clang") || ($TARGETCXX -v 2>&1 | grep -q "gcc"); then
+	TARGETCXXFLAGS="-c -Os -Wall -Wextra $TARGETCXXFLAGS"
+	TARGETCFLAGS="-c -Os -Wall -Wextra $TARGETCFLAGS"
+	TARGETLDFLAGS="-static-libgcc -static-libstdc++"
+elif $TARGETCXX -V 2>&1 | grep -q "Sun C++"; then
+	TARGETCXXFLAGS="-c -fast -xO3 $TARGETCXXFLAGS"
+	TARGETCFLAGS="-c -fast -xO3 $TARGETCFLAGS"
+	TARGETLDFLAGS=""
+else
+	showerror 5 "Unsupported C++ cross-compiler $TARGETCXX. Please try to find either a GCC or a Clang toolchain for your target platform."
+fi
+
+if test -e "$CDIR/MuleToolBootstrapFiles"; then
+	rm -r -f "$CDIR/MuleToolBootstrapFiles"
+fi
+
+mkdir "$CDIR/MuleToolBootstrapFiles"
+printf "Creating $CDIR/MuleToolBootstrapFiles/muletool.."
+if $TARGETLD $TARGETLDFLAGS -I$SOURCEDIR/src/ideintegration/muletool -DTOOLPREFIX=\"$PREFIX\" -o "$CDIR/MuleToolBootstrapFiles/muletool" "$SOURCEDIR/src/ideintegration/muletool/muletoolclass.cpp" "$SOURCEDIR/src/ideintegration/muletool/main.cpp" ; then
+	echo ". done!"
+else
+	echo ". failed!"
+	showerror 9 "Failed to link $CDIR/MuleToolBootstrapFiles/muletool"
+fi
+
+printf "Creating $CDIR/MuleToolBootstrapFiles/MuleTool.mcfg... "
+echo "# Automatically generated by libMule configure script on $CURRENTDATE" > "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "# paths to various tools, including C and C++ compilers, as well as the linker" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "CC:$TARGETCC" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "CXX:$TARGETCXX" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "LD:$TARGETLD" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "# you may modify these variables in case if you want MuleTool to invoke compilers with different flags" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "CFLAGS:$TARGETCFLAGS" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "CXXFLAGS:$TARGETCXXFLAGS" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "LDFLAGS:$TARGETLDFLAGS" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "# deployment support" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "LIBMULE:$PREFIX" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "TARGET:$TARGETNAME" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "DEPLOY:$DEPLOYCMD" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "RUN:$RUNCMD" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+echo "done!"
+
+
+if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
+	printf "Downloading required third-party libraries (this might take a while)... "
+	if sh -c "cd \"$SOURCEDIR/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh" > "$CDIR/dl.log" 2>&1; then
+		echo "done!"
+		rm -r -f "$CDIR/dl.log"
+	else
+		echo "failed!"
+		cat "$CDIR/dl.log"
+		rm -r -f "$CDIR/dl.log"
+		showerror 12 "Third-party libraries could not be downloaded properly"
+	fi
+fi
+
+# deal with modules
+if test "$MODULES" = "all" || test "$MODULES" = "everything"; then
+	MODULES="core,fileio,sound,additionaldevices"
+elif test "$MODULES" = "minimal"; then
+	MODULES="core"
+fi
+MODULES=`echo "$MODULES" | sed 's/,/ /g'`
+MODULES=" $MODULES" # workaround for a further discovered bug in this script that never could detect "core" as an available module
+echo "$MODULES"
+
+for ModuleName in $MODULES; do
+	POSSIBLEMODULESFILELIST=`find "$SOURCEDIR/src" -type f -name "module.mcfg"`
+	ModuleGatheredSources=""
+	ModuleGatheredHeaders=""
+	ModuleGatheredPrefix=""
+	FoundProperModule=no
+	printf "Preparing module $ModuleName... "
+	for ModuleFileDescription in $POSSIBLEMODULESFILELIST; do
+		if cat "$ModuleFileDescription" | grep -q "Name:$ModuleName"; then
+			FoundProperModule=yes
+			echo " " >> "$ModuleFileDescription" # a workaround so that the whole file would be read and parsed by configure and not just a tiny part of it
+			while read moduleline; do
+				FIRSTHALF=`echo "$moduleline" | cut -d ':' -f1`
+				SECONDHALF=`echo "$moduleline" | cut -d ':' -f2`
+				if test "$FIRSTHALF" = "Subdir"; then
+					ModuleGatheredPrefix="$SOURCEDIR/src/$SECONDHALF"
+				elif test "$FIRSTHALF" = "Sources"; then
+					echo "$SECONDHALF"
+					for ModuleSourceFile in $SECONDHALF; do
+						ModuleGatheredSources="$ModuleGatheredPrefix/$ModuleSourceFile $ModuleGatheredSources"
+					done
+				elif test "$FIRSTHALF" = "Headers"; then
+					for ModuleHeadFile in $SECONDHALF; do
+						ModuleGatheredHeaders="$ModuleGatheredPrefix/$ModuleHeadFile $ModuleGatheredHeaders"
+					done
+				elif test "$FIRSTHALF" = "ModuleID"; then
+					THINGSTODEFINE="$THINGSTODEFINE $SECONDHALF"
+				elif test "$FIRSTHALF" = "BrokenPlatforms"; then
+					for PlatformInModule in $SECONDHALF; do
+						if test "$PlatformInModule" = "$TARGETNAME"; then
+							echo "failed!"
+							showerror 11 "Module $ModuleName does not work with your target platform. Try disabling it."
+						fi
+					done
+				elif test "$FIRSTHALF" = "Requires"; then
+					for ModuleDependency in $SECONDHALF; do
+						if echo "$MODULES" | grep -q " $ModuleDependency"; then
+							sleep 1
+						else
+							echo "failed!"
+							showerror 9 "Module $ModuleName requires $ModuleDependency to be enabled, you have disabled that module (or your platform does not support it). Please enable that module to continue."
+						fi
+					done
+				fi
+			done < "$ModuleFileDescription"
+			break
+		fi
+	done
+	if test "$FoundProperModule" = "no"; then
+		echo "failed!"
+		showerror 10 "No such module: $ModuleName"
+	fi
+	LIBSOURCES="$LIBSOURCES $ModuleGatheredSources"
+	LIBHEADERS="$LIBHEADERS $ModuleGatheredHeaders"
+	echo "done!"
+done
+LIBSOURCES="$PLATFORMSOURCES $LIBSOURCES"
+LIBHEADERS="$PLATFORMHEADERS $LIBHEADERS"
+
+if test -e "$CDIR/src"; then
+	rm -r -f "$CDIR/src"
+fi
+mkdir -p "$CDIR/src/core"
+printf "Creating $CDIR/src/core/muleconfig.h... "
+echo "// Automatically generated by libMule configure script on $CURRENTDATE" > "$CDIR/src/core/muleconfig.h"
+echo "// muleconfig.h" >> "$CDIR/src/core/muleconfig.h"
+echo "// Part of libMule - Microcontroller Library (that is Extendable)" >> "$CDIR/src/core/muleconfig.h"
+echo "// Copyright (c) Tim K <timprogrammer@rambler.ru> 2018. Licensed under GNU LGPLv2.1." >> "$CDIR/src/core/muleconfig.h"
+echo "" >> "$CDIR/src/core/muleconfig.h"
+echo "#ifndef MULECONFIG_H" >> "$CDIR/src/core/muleconfig.h"
+echo "#define MULECONFIG_H" >> "$CDIR/src/core/muleconfig.h"
+for DefineGen in $THINGSTODEFINE; do
+	FIRSTHALF=""
+	SECONDHALF=""
+	if echo "$DefineGen" | grep -q "="; then
+		FIRSTHALF=`echo "$DefineGen" | cut -d '=' -f1`
+		SECONDHALF=`echo "$DefineGen" | cut -d '=' -f2`
+	else
+		FIRSTHALF="$DefineGen"
+		SECONDHALF=""
+	fi
+	echo "#define $FIRSTHALF $SECONDHALF" >> "$CDIR/src/core/muleconfig.h"
+done
+echo "#endif" >> "$CDIR/src/core/muleconfig.h"
+echo "done!"
+
+printf "Creating required subdirectories."
+for LibDirFile in $LIBSOURCES $LIBHEADERS; do
+	DIRNAME=`dirname "$LibDirFile"`
+	DIRNAME=`echo "$DIRNAME" | sed "s+$SOURCEDIR++g"`
+	if test -e "$CDIR/$DIRNAME"; then
+		printf '.'
+	else
+		if mkdir -p "$CDIR/$DIRNAME" > /dev/null 2>&1; then
+			printf '.'
+		else
+			printf ". failed!"
+			showerror 13 "Failed to create all the required subdirectories"
+		fi
+	fi
+done
+echo ". done!"
+
+printf "Removing source directory path out of \$LIBSOURCES and \$LIBHEADERS variables so that make would be happy... "
+FINALSOURCES=""
+FINALHEADERS=""
+FINALTARGETS=""
+for LibSourceFileAgain in $LIBSOURCES; do
+	TOWRITESOURCE=`echo "$LibSourceFileAgain" | sed "s+$SOURCEDIR/++g"`
+	FINALSOURCES="$FINALSOURCES $TOWRITESOURCE"
+	TOWRITESOURCE="$TOWRITESOURCE.libmulebuild.o"
+	FINALTARGETS="$FINALTARGETS $TOWRITESOURCE"
+done
+for LibHeaderFileAgain in $LIBHEADERS; do
+	TOWRITEHEADER=`echo "$LibHeaderFileAgain" | sed "s+$SOURCEDIR/++g"`
+	FINALHEADERS="$FINALHEADERS $TOWRITEHEADER"
+done
+echo "done!"
+
+printf "Creating $CDIR/Makefile... "
+if test -e "$CDIR/Makefile"; then
+	rm -r -f "$CDIR/Makefile"
+fi
+echo "# Automatically generated by libMule configuration script on $CURRENTDATE" > "$CDIR/Makefile"
+echo "MULETOOL ?= \"$CDIR/MuleToolBootstrapFiles/muletool\"" >> "$CDIR/Makefile"
+echo "SOURCEDIR ?= $SOURCEDIR" >> "$CDIR/Makefile"
+echo "AR ?= $TARGETAR" >> "$CDIR/Makefile"
+echo "HEADERS = $FINALHEADERS" >> "$CDIR/Makefile"
+echo "TARGETS = $FINALTARGETS" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+echo "all lib: build-static-libmule" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+echo "build-static-libmule:" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "\$(MAKE) \$(TARGETS)" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "ar rcs libMule.a \$(TARGETS)" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+echo "\$(TARGETS):" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "\$(MULETOOL) -config MuleToolBootstrapFiles/MuleTool.mcfg -compile \$(SOURCEDIR)/\$(shell printf \`dirname \"\$@\"\` && printf '/' && printf \`basename \"\$@\" .libmulebuild.o\`) -o \"\$@\" -nolibmule -I\$(SOURCEDIR)/src -Isrc" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+echo "clean:" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "rm -r -f libMule.a \$(TARGETS)" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+echo "distclean: clean" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "rm -r -f MuleToolBootstrapFiles/ src/core/muleconfig.h" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+echo "done!"
+echo ""
+echo "Finished! Now run \"make\"."
+exit 0
