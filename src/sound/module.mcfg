@@ -1,0 +1,8 @@
+Name:sound
+Subdir:sound
+Sources:mulesoundplayer.cpp
+Headers:mulesoundplayer.h
+Requires:fileio
+ModuleID:MULE_FEATURES_SOUND
+ 
+ 

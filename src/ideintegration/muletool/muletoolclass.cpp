@@ -166,8 +166,8 @@ std::string MuleToolClass::readFromFileToString(const std::string& fname) {
 
 std::vector<std::string> MuleToolClass::fillPossibleLocationsVector() {
 	std::vector<std::string> possibleLocations;
-	possibleLocations.push_back(TOOLPREFIX + dirsepchar + "etc");
-	possibleLocations.push_back(TOOLPREFIX);
+	possibleLocations.push_back(std::string(TOOLPREFIX) + dirsepchar + "etc");
+	possibleLocations.push_back(std::string(TOOLPREFIX));
 	possibleLocations.push_back(getCurrentDirectory() + dirsepchar + "etc");
 	possibleLocations.push_back(getCurrentDirectory());
 	possibleLocations.push_back(userHomeDir + dirsepchar + ".timkoisoft" + dirsepchar + "mule");
@@ -398,6 +398,9 @@ int MuleToolClass::compileFiles() {
 		cflags = cflags + " -I" + libMuleInclude;
 		cxxflags = cxxflags + " -I" + libMuleInclude;
 	}
+	bool oneFileNoNeedToIgnoreOutput = false;
+	if ((filesToCompile.size() < 2) && (stringVectorContains(actionArgs, "-o") == true))
+		oneFileNoNeedToIgnoreOutput = true;
 	for (int j = 0; j < filesToCompile.size(); j++) {
 		std::string extension = split(filesToCompile[j], ".").back();
 		std::string buildcmd;
@@ -414,8 +417,11 @@ int MuleToolClass::compileFiles() {
 		for (int i = 1; i < (veconame.size() - 1); i++)
 			outobjectname = outobjectname + "." + veconame[i];
 		outobjectname = outobjectname + ".o";
-		buildcmd = buildcmd + " -o \"" + outobjectname + "\" \"" + filesToCompile[j] + "\"";
-		if (fileExists(outobjectname)) {
+		if (oneFileNoNeedToIgnoreOutput == false)
+			buildcmd = buildcmd + " -o \"" + outobjectname + "\" \"" + filesToCompile[j] + "\"";
+		else
+			buildcmd = buildcmd + " \"" + filesToCompile[j] + "\"";
+		if ((fileExists(outobjectname)) && (oneFileNoNeedToIgnoreOutput == false)) {
 #ifdef _WIN32
 			std::cout << "del /q " << outobjectname << std::endl;
 			std::system(std::string("del /q \"" + outobjectname + "\"").c_str());

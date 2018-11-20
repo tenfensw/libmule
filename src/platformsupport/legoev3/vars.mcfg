@@ -1,0 +1,12 @@
+OS:Linux
+PlatformID:MULE_PLATFORM_LEGOEV3
+HardwarePinType:unsigned
+StringType:stdstring
+MotorStopCode:-789
+Defines:
+HasCout:no
+Requires3rdPartyDownloads:yes
+AdditionalCompilerFlags:-Isrc/3rdparty/EV3-API-master/API
+AdditionalLinkerFlags:
+Sources:../../3rdparty/EV3-API-master/API/ev3.c ../../3rdparty/EV3-API-master/API/ev3_button.c ../../3rdparty/EV3-API-master/API/ev3_command.c ../../3rdparty/EV3-API-master/API/ev3_lcd.c ../../3rdparty/EV3-API-master/API/ev3_output.c ../../3rdparty/EV3-API-master/API/ev3_sensor.c ../../3rdparty/EV3-API-master/API/ev3_sound.c ../../3rdparty/EV3-API-master/API/ev3_timer.c mulemindstormsplatform.cpp
+Headers:../../3rdparty/EV3-API-master/API/ev3.h ../../3rdparty/EV3-API-master/API/ev3_button.h ../../3rdparty/EV3-API-master/API/ev3_command.h ../../3rdparty/EV3-API-master/API/ev3_lcd.h ../../3rdparty/EV3-API-master/API/ev3_output.h ../../3rdparty/EV3-API-master/API/ev3_sensor.h ../../3rdparty/EV3-API-master/API/ev3_sound.h ../../3rdparty/EV3-API-master/API/ev3_timer.h

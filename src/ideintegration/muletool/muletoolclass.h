@@ -22,7 +22,6 @@
 #define TOOLBUGURL std::string("timprogrammer@rambler.ru")
 #define TOOLVERSION std::string("14112018-working")
 #define TOOLTARGET std::string("any")
-#define TOOLPREFIX std::string(".")
 
 class MuleToolClass {
 	public:
