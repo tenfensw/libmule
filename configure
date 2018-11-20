@@ -351,7 +351,7 @@ fi
 
 mkdir "$CDIR/MuleToolBootstrapFiles"
 printf "Creating $CDIR/MuleToolBootstrapFiles/muletool.."
-if $TARGETLD $TARGETLDFLAGS -I$SOURCEDIR/src/ideintegration/muletool -DTOOLPREFIX=\"$PREFIX\" -o "$CDIR/MuleToolBootstrapFiles/muletool" "$SOURCEDIR/src/ideintegration/muletool/muletoolclass.cpp" "$SOURCEDIR/src/ideintegration/muletool/main.cpp" ; then
+if $HOSTLD $HOSTLDFLAGS -I$SOURCEDIR/src/ideintegration/muletool -DTOOLPREFIX=\"$PREFIX\" -o "$CDIR/MuleToolBootstrapFiles/muletool" "$SOURCEDIR/src/ideintegration/muletool/muletoolclass.cpp" "$SOURCEDIR/src/ideintegration/muletool/main.cpp" ; then
 	echo ". done!"
 else
 	echo ". failed!"
