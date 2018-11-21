@@ -17,31 +17,20 @@ See also src/platformsupport/SUPPORTED_TOOLCHAINS to get more info about tested 
 ====== Building Mule ======
 WARNING!!! Mule does not work on Windows unless you use Cygwin.
 
-To build Mule, you'll need either Perforce Jam 2.5 (or 2.6) build system. You may use FreeType Jam or any other fork if you want, but 
-they were untested. QMake or Boost.Build are both not supported (QMake is used so that the project could be opened in Qt Creator). 
+To build Mule for your device, you'll need:
+- GNU bash and GNU make
+- A toolchain for your target device with a C++ cross-compiler and ar utility
 
-Also, to build Mule, you'll need a C++ cross-compiler for your platform. For Raspberry Pi, you can follow this guide to build a GCC 
-cross-compiler: https://solarianprogrammer.com/2018/05/06/building-gcc-cross-compiler-raspberry-pi/. As for LEGO EV3, well, your only 
-choice is to use Mentor CodeSourcery Lite 2013.11 on a 32-bit Linux distro.
+After that, navigate to the source code directory of libMule. Then, run ./configure:
 
-After that, navigate to the source code directory of libMule. Set the MULETARGET environment variable to "rpi" if you want to build the 
-Raspberry Pi version of the library, "legoev3" if you want to build the LEGO EV3 version of the library or "dummy" if you want to enjoy 
-a crashing non-working version of Mule with unimplemented functions and barely working file IO backend.
+# ./configure -prefix=<path to the directory where libMule will be installed> -platform=<your platform name*> \
+	      -platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> \
+	      -platformar=<path to the ar utility that produces static libraries for the TARGET device>
 
-# export MULETARGET=<platform name>
-
-If you've installed your cross-compiler in a path other than /usr/bin, /bin or /usr/local/bin, then you might want to set the C++ 
-variable, too:
-
-# export CXX=<path to your C++ compiler>
-# export CC=<path to your C compiler>
-
-Now just run Jam:
-# jam -q lib
-
-To install, run ./install-libmule.sh:
-# PREFIX=<install prefix here> ./install-libmule.sh
+After configure generates a Makefile, run make:
+# make
+# su -c "make install"
 
 That's it!
 
-
+* Platform names for each supported device: "legoev3" for LEGO EV3, "pigpio_rpi" for Raspberry Pi, "dummy" for the dummy platform
