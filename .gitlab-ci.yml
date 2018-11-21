@@ -8,19 +8,19 @@ before_script:
 
 dummyplatform_and_tests:
   script:
-    - ftjam -sDEBUG=yes -sMULETARGET=dummy -sCC=/usr/bin/gcc -sCXX=/usr/bin/g++ -q all
-    - /usr/bin/g++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01
+    - mkdir dummyplatform-gcc-builddir
+    - sh -c "cd dummyplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ ../configure -platform=dummy -modules=all && make"
+    - /usr/bin/g++ -g -Os tests/test01-muleapplication-test.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test01
     - ./tests/run-test01
-    - /usr/bin/g++ -g -Os tests/test02-mulefile-currentdirectory.cpp libMule.a -Isrc -o tests/run-test02
+    - /usr/bin/g++ -g -Os tests/test02-mulefile-currentdirectory.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test02
     - touch ./popcorn.txt
     - sh -c "echo \"Testing 1 2 3\" > popcorn.txt"
     - cat ./popcorn.txt
     - ./tests/run-test02
     - sh -c "if test -e \"./popcorn.txt\"; then rm -r -f popcorn.txt; fi"
     - ./tests/run-test02
-    - /usr/bin/g++ -g -Os tests/test03-mulesound-beeping.cpp libMule.a -Isrc -o tests/run-test03
-    - ftjam -sDEBUG=yes -sMULETARGET=dummy -sCC=/usr/bin/gcc -sCXX=/usr/bin/g++ -q clean
-    - rm -r -f ./tests/run-test0* ./src/core/muleconfig.*
+    - /usr/bin/g++ -g -Os tests/test03-mulesound-beeping.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test03
+    - rm -r -f ./tests/run-test0* ./dummyplatform-gcc-builddir/
 
 legoev3platform_and_tests_linaroalternativetoolchain:
   script:
