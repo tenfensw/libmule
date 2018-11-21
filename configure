@@ -234,7 +234,7 @@ echo "Host C compiler is $HOSTCC"
 echo "Host C++ compiler is $HOSTCXX"
 echo "Host linker is $HOSTLD"
 if ($HOSTCXX -v 2>&1 | grep -q "clang") || ($HOSTCXX -v 2>&1 | grep -q "gcc"); then
-	HOSTCXXFLAGS="-c -g -Os -Wall -Wextra $HOSTCXXFLAGS"
+	HOSTCXXFLAGS="-c -g -Os -Wall -Wextra $HOSTCXXFLAGS -std=gnu++11"
 	HOSTCFLAGS="-c -g -Os -Wall -Wextra $HOSTCFLAGS"
 	HOSTLDFLAGS="-Os $HOSTLDFLAGS"
 elif $HOSTCXX -V 2>&1 | grep -q "Sun C++"; then
@@ -334,7 +334,7 @@ echo "Target C compiler is $TARGETCC"
 echo "Target C++ compiler is $TARGETCXX"
 echo "Target linker is $TARGETLD"
 if ($TARGETCXX -v 2>&1 | grep -q "clang") || ($TARGETCXX -v 2>&1 | grep -q "gcc"); then
-	TARGETCXXFLAGS="-c -Os -Wall -Wextra $TARGETCXXFLAGS"
+	TARGETCXXFLAGS="-c -Os -Wall -Wextra $TARGETCXXFLAGS -std=gnu++11"
 	TARGETCFLAGS="-c -Os -Wall -Wextra $TARGETCFLAGS"
 	TARGETLDFLAGS="-static-libgcc -static-libstdc++"
 elif $TARGETCXX -V 2>&1 | grep -q "Sun C++"; then
