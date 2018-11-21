@@ -256,7 +256,6 @@ fi
 while read configfileline; do
 	FIRSTHALF=`echo "$configfileline" | cut -d ':' -f1`
 	SECONDHALF=`echo "$configfileline" | cut -d ':' -f2`
-	SECONDHALF=`echo "$SECONDHALF" | sed "s+^SOURCEDIR^+$SOURCEDIR+g"`
 	if test "$FIRSTHALF" = "OS" && test "$TARGETOS" = "posix"; then
 		if test "$SECONDHALF" = "Linux" || test "$SECONDHALF" = "linux"; then
 			TARGETOS=linux
@@ -382,7 +381,7 @@ echo "done!"
 
 if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 	printf "Downloading required third-party libraries (this might take a while)... "
-	if sh -c "cd \"$SOURCEDIR/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh" > "$CDIR/dl.log" 2>&1; then
+	if sh -c "cd \"$CDIR/src/3rdparty\" && \"$SOURCEDIR/src/3rdparty/download-3rdparty-components.sh\" clean && \"$SOURCEDIR/src/3rdparty/download-3rdparty-components.sh\"" > "$CDIR/dl.log" 2>&1; then
 		echo "done!"
 		rm -r -f "$CDIR/dl.log"
 	else
@@ -520,6 +519,7 @@ for LibHeaderFileAgain in $LIBHEADERS; do
 	TOWRITEHEADER=`echo "$LibHeaderFileAgain" | sed "s+$SOURCEDIR/++g"`
 	FINALHEADERS="$FINALHEADERS $TOWRITEHEADER"
 done
+
 echo "done!"
 
 printf "Creating $CDIR/Makefile... "
