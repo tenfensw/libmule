@@ -4,6 +4,7 @@
 #include <sstream>
 #include <exception>
 #include <cstdlib>
+#include <cstdarg>
 #include <cmath>
 #include <unistd.h>
 #include "core/muleconfig.h"
