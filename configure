@@ -462,7 +462,11 @@ LIBSOURCES="$PLATFORMSOURCES $LIBSOURCES"
 LIBHEADERS="$PLATFORMHEADERS $LIBHEADERS"
 
 if test -e "$CDIR/src"; then
-	rm -r -f "$CDIR/src"
+	if test ! -e "$CDIR/src/3rdparty"; then
+		rm -r -f "$CDIR/src"
+	else
+		sh -c "cd \"$CDIR/src\" && for Dir in */; do if test \"\$Dir\" != \"3rdparty/\"; then rm -r -f \$Dir; fi; done"
+	fi
 fi
 mkdir -p "$CDIR/src/core"
 printf "Creating $CDIR/src/core/muleconfig.h... "
