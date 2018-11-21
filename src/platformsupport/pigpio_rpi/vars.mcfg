@@ -10,3 +10,4 @@ AdditionalCompilerFlags:-I$(SOURCEDIR)/src/3rdparty/pigpio-master
 AdditionalLinkerFlags:-lrt
 Sources:../../3rdparty/pigpio-master/pigpio.c ../../3rdparty/pigpio-master/command.c mulepigpioplatform.cpp
 Headers:../../3rdparty/pigpio-master/pigpio.h ../../3rdparty/pigpio-master/command.h mulepigpioplatform.h
+ 

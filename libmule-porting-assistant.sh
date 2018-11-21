@@ -1,13 +1,235 @@
 #!/bin/bash
 # libMule Porting Assistant
 
+openinpreferrededitor() {
+	PREFERREDEDITOR=
+	if test "$EDITOR" != ""; then
+		PREFERREDEDITOR=$EDITOR
+	else
+		if command -v nano > /dev/null 2>&1; then
+			PREFERREDEDITOR=nano
+		elif command -v xemacs > /dev/null 2>&1; then
+			PREFERREDEDITOR=xemacs
+		elif command -v emacs > /dev/null 2>&1; then
+			PREFERREDEDITOR=emacs
+		elif command -v vim > /dev/null 2>&1; then
+			PREFERREDEDITOR=vim
+		else
+			PREFERREDEDITOR=vi
+		fi
+	fi
+	echo "Your preferred editor appears to be $PREFERREDEDITOR, if not, then set the EDITOR variable properly."
+	sleep 1
+	$PREFERREDEDITOR $1
+}
+
+changepinsstrings() {
+	printf "Which C++ type can handle values recieved from microcontroller's pins? (unsigned or int) {default: unsigned} "
+	read userinput_pin
+	printf "Which string type is supported by $PLATFORMNAME (stdstring) {default: stdstring} "
+	read userinput_str
+	if test "$userinput_pin" != "unsigned" && test "$userinput_pin" != "int"; then
+		userinput_pin=unsigned
+	fi
+	userinput_str=stdstring
+	PLATFORMSTRING=$userinput_str
+	PLATFORMHWPINTYPE=$userinput_pin
+}
+
+changestopcode() {
+	echo "[WARNING] It is not recommended that you change this setting, because you might break servo motor stopping mechanism used by libMule. Modify with caution!"
+	sleep 2
+	printf "Which stop code? {default: -789} "
+	read userinput_sc
+	if test "$userinput_sc" = ""; then
+		userinput_sc=-789
+	fi
+	PLATFORMSTOPCODE=$userinput_sc
+}
+
+changeos() {
+	printf "Which OS? (linux, qnx, bsd, unix or posix) {default: $PLATFORMOS} "
+	read userinput_os
+	if test "$userinput_os" = "linux" || test "$userinput_os" = "Linux"; then
+		userinput_os=Linux
+	elif test "$userinput_os" = "qnx" || test "$userinput_os" = "QNX"; then
+		userinput_os=QNX
+	elif test "$userinput_os" = "bsd" || test "$userinput_os" = "BSD" || test "$userinput_os" = "unix" || test "$userinput_os" = "UNIX"; then
+		userinput_os=UNIX
+	else
+		userinput_os=POSIX
+	fi
+	PLATFORMOS=$userinput_os
+}
+
+changeadditionaldefines() {
+	echo "Here is the list of defines:"
+	echo "========================================================"
+	echo " ID  | Name and (possibly) value                        "
+	echo "========================================================"
+	DEFCOUNT=0
+	for DefineNum in $PLATFORMADDITIONALDEFINES; do
+		DEFCOUNT=$(( $DEFCOUNT + 1 ))
+		echo "$DEFCOUNT  | $DefineNum"
+	done
+	echo "========================================================"
+	echo ""
+	echo "What would you like to do?"
+	echo "[1] Add a define"
+	echo "[2] Remove a specific define"
+	echo "[3] Clear all these defines"
+	echo "[4] Abort"
+	echo "ALL YOUR CHANGES ARE AUTOMATICALLY SAVED!!!"
+	printf "Your choice (1-4): "
+	read userinput_nc
+	if test "$userinput_nc" != "1" && test "$userinput_nc" != "2" && test "$userinput_nc" != "3" && test "$userinput_nc" != "4"; then
+		userinput_nc=4
+	fi
+	if test "$userinput_nc" = "1"; then
+		printf "What to add? (NAME=VALUE) "
+		read userinput_dn
+		if test "$userinput_dn" = ""; then
+			echo "Aborted"
+			return 1
+		else
+			PLATFORMADDITIONALDEFINES="$userinput_dn $PLATFORMADDITIONALDEFINES"
+			echo "Added successfully!"
+			return 0
+		fi
+	elif test "$userinput_nc" = "2"; then
+		printf "Which one to remove (enter the ID)? "
+		read userinput_dr
+		if test "$userinput_dr" = "" || test "$userinput_dr" = "0"; then
+			echo "Aborted"
+			return 2
+		else
+			NEWDEFINES=""
+			DEFINERINDEX=0
+			for DefineNR in $PLATFORMADDITIONALDEFINES; do
+				DEFINERINDEX=$(( $DEFINERINDEX + 1 ))
+				if test "$DEFINERINDEX" != "$userinput_dr"; then
+					NEWDEFINES="$NEWDEFINES $DefineNR"
+				fi
+			done
+			PLATFORMADDITIONALDEFINES="$NEWDEFINES"
+			echo "Removed successfully!"
+			return 0
+		fi
+	elif test "$userinput_nc" = "3"; then
+		printf "Really? (yes/no) {default: no} "
+		read userinput_dc
+		if test "$userinput_dc" = ""; then
+			userinput_dc=NO
+		fi
+		if test "$userinput_dc" = "Y" || test "$userinput_dc" = "YES" || test "$userinput_dc" = "yes" || test "$userinput_dc" = "y" || test "$userinput_dc" = "true"; then
+			userinput_dc=yes
+		else
+			userinput_dc=no
+		fi
+		if test "$userinput_dc" = "yes"; then
+			PLATFORMADDITIONALDEFINES=""
+			echo "Removed successfully!"
+			return 0
+		else
+			echo "Aborted"
+			return 3
+		fi
+	else
+		echo "Aborted"
+		return 4
+	fi
+}
+
+changedependencies() {
+	printf "Does $PLATFORMNAME need any third-party libraries to work? (yes or no) {default: no} "
+	read userinput_tl
+	if test "$userinput_tl" = "yes" || test "$userinput_tl" = "Y" || test "$userinput_tl" = "YES" || test "$userinput_tl" = "y"; then
+		userinput_tl=yes
+	else
+		userinput_tl=no
+	fi
+	if test "$userinput_tl" = "no"; then
+		PLATFORMDOWNLOADS=no
+		echo "Aborted"
+		return 1
+	fi
+	PLATFORMDOWNLOADS=yes
+	printf "Would you like to edit src/3rdparty/download-3rdparty-components.sh? (yes or no) {default: yes} "
+	read userinput_editsh
+	if test "$userinput_editsh" = "N" || test "$userinput_editsh" = "NO" || test "$userinput_editsh" = "n" || test "$userinput_editsh" = "no"; then
+		userinput_editsh=no
+	else
+		userinput_editsh=yes
+	fi
+	if test "$userinput_editsh" = "yes"; then
+		openinpreferrededitor ./src/3rdparty/download-3rdparty-components.sh
+	else
+		echo "Aborted"
+		return 2
+	fi
+}
+
+changesourcecode() {
+	FCOUNT=0
+	printf "Here is a list of headers that you can modify: "
+	for HeaderFile in $PLATFORMHEADERS; do
+		FCOUNT=$(( $FCOUNT + 1 ))
+		printf "($FCOUNT) $HeaderFile "
+	done
+	echo ""
+	printf "Here is a list of sources that you can modify: "
+	for SourceFile in $PLATFORMSOURCES; do
+		FCOUNT=$(( $FCOUNT + 1 ))
+		printf "($FCOUNT) $SourceFile "
+	done
+	echo ""
+	echo "What would you like to do?"
+	echo "[1] Add an existing file or directory"
+	echo "[2] Remove one of the listed files"
+	echo "[3] Edit one of the listed files"
+	echo "[4] Abort"
+	printf "Your choice (1-3): "
+	read userchoice_tmp
+	if test "$userchoice_tmp" != "1" && test "$userchoice_tmp" != "2" && test "$userchoice_tmp" != "3"; then
+		userchoice_tmp=4
+	fi
+	if test "$userchoice_tmp" = "1"; then
+		echo TODO
+	elif test "$userchoice_tmp" = "2"; then
+		echo TODO
+	elif test "$userchoice_tmp" = "3"; then
+		echo TODO
+	else
+		echo "Aborted"
+		return 4
+	fi
+}
+
+changecflags() {
+	echo "# Edit these variables accordingly and save this file" > /tmp/muleport.cflags
+	echo "AdditionalCompilerFlags:$PLATFORMCFLAGS" >> /tmp/muleport.cflags
+	echo "AdditionalLinkerFlags:$PLATFORMLDFLAGS" >> /tmp/muleport.cflags
+	echo "" >> /tmp/muleport.cflags
+	openinpreferrededitor /tmp/muleport.cflags
+	while read FileLine; do
+		FIRSTHALF=`echo "$FileLine" | cut -d ':' -f1`
+		SECONDHALF=`echo "$FileLine" | cut -d ':' -f2`
+		if test "$FIRSTHALF" = "AdditionalCompilerFlags"; then
+			PLATFORMCFLAGS="$SECONDHALF"
+		elif test "$FIRSTHALF" = "AdditionalLinkerFlags"; then
+			PLATFORMLDFLAGS="$SECONDHALF"
+		fi
+	done < /tmp/muleport.cflags
+	rm -r -f /tmp/muleport.cflags
+}
+
 editormainmenu() {
 	echo "Which setting you would like to modify?"
-	echo "[1] Change $PLATFORMNAME's firmware operating system type"
-	echo "[2] Change $PLATFORMNAME C++ pin type and string type"
-	echo "[3] Change $PLATFORMNAME's stop code (used only for motors and servos)"
-	echo "[4] Change $PLATFORMNAME compile-time defines"
-	echo "[5] Change $PLATFORMNAME's third-party dependencies"
+	echo "[1] Change $PLATFORMNAME's firmware operating system type (current: $PLATFORMOS)"
+	echo "[2] Change $PLATFORMNAME C++ pin type and string type (current: $PLATFORMHWPINTYPE pins and $PLATFORMSTRING strings)"
+	echo "[3] Change $PLATFORMNAME's stop code (used only for motors and servos, current: $PLATFORMSTOPCODE)"
+	echo "[4] Change $PLATFORMNAME compile-time defines (current: $PLATFORMADDITIONALDEFINES)"
+	echo "[5] Change $PLATFORMNAME's third-party dependencies (depends on third-party libraries: $PLATFORMDOWNLOADS)"
 	echo "[6] Add/remove additional compiler/linker flags used when building libMule for $PLATFORMNAME"
 	echo "[7] Edit $PLATFORMNAME source code and header files"
 	echo "[8] Exit libMule Porting Assistant"
@@ -17,19 +239,19 @@ editormainmenu() {
 		userchoice_tmp=8
 	fi
 	if test "$userchoice_tmp" = "1"; then
-		echo "not finished yet"
+		changeos
 	elif test "$userchoice_tmp" = "2"; then
-		echo "not finished yet"
+		changepinsstrings
 	elif test "$userchoice_tmp" = "3"; then
-		echo "not finished yet"
+		changestopcode
 	elif test "$userchoice_tmp" = "4"; then
-		echo "not finished yet"
+		changeadditionaldefines
 	elif test "$userchoice_tmp" = "5"; then
-		echo "not finished yet"
+		changedependencies
 	elif test "$userchoice_tmp" = "6"; then
-		echo "not finished yet"
+		changecflags
 	elif test "$userchoice_tmp" = "7"; then
-		echo "not finished yet"
+		changesourcecode
 	elif test "$userchoice_tmp" = "8"; then
 		printf "Save changes? Type \"yes\" or \"no\". {default: no} "
 		read useranswer_toq
@@ -227,6 +449,8 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	echo "};" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "#endif"  >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "#include \"platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h\"" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo ""  >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "$tmp_deviceclassname::$tmp_deviceclassname() {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "      // TODO: implement device initialization code here" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
