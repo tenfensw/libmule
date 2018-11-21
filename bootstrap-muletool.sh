@@ -3,7 +3,7 @@ MULEBOOTSTRAP_CXX=
 MULEBOOTSTRAP_CXXFLAGS=
 MULEBOOTSTRAP_LD=
 MULEBOOTSTRAP_LDFLAGS=
-MULEBOOTSTRAP_COMMONFLAGS="-I$PWD/src/ideintegration/muletool"
+MULEBOOTSTRAP_COMMONFLAGS="-I$PWD/src/ideintegration/muletool -DTOOLPREFIX=\\\".\\\""
 
 if test -e "$PWD/muletool.bootstrapstuff"; then
 	rm -r -f "$PWD/muletool.bootstrapstuff"
