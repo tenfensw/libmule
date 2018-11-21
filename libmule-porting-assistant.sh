@@ -1,16 +1,77 @@
 #!/bin/bash
 # libMule Porting Assistant
 
+editormainmenu() {
+	echo "Which setting you would like to modify?"
+	echo "[1] Change $PLATFORMNAME's firmware operating system type"
+	echo "[2] Change $PLATFORMNAME C++ pin type and string type"
+	echo "[3] Change $PLATFORMNAME's stop code (used only for motors and servos)"
+	echo "[4] Change $PLATFORMNAME compile-time defines"
+	echo "[5] Change $PLATFORMNAME's third-party dependencies"
+	echo "[6] Add/remove additional compiler/linker flags used when building libMule for $PLATFORMNAME"
+	echo "[7] Edit $PLATFORMNAME source code and header files"
+	echo "[8] Exit libMule Porting Assistant"
+	printf "Your choice (1-8): "
+	read userchoice_tmp;
+	if test "$userchoice_tmp" = ""; then
+		userchoice_tmp=8
+	fi
+	if test "$userchoice_tmp" = "1"; then
+		echo "not finished yet"
+	elif test "$userchoice_tmp" = "2"; then
+		echo "not finished yet"
+	elif test "$userchoice_tmp" = "3"; then
+		echo "not finished yet"
+	elif test "$userchoice_tmp" = "4"; then
+		echo "not finished yet"
+	elif test "$userchoice_tmp" = "5"; then
+		echo "not finished yet"
+	elif test "$userchoice_tmp" = "6"; then
+		echo "not finished yet"
+	elif test "$userchoice_tmp" = "7"; then
+		echo "not finished yet"
+	elif test "$userchoice_tmp" = "8"; then
+		printf "Save changes? Type \"yes\" or \"no\". {default: no} "
+		read useranswer_toq
+		if test "$useranswer_toq" = "true" || test "$useranswer_toq" = "yes" || test "$useranswer_toq" = "YES" || test "$useranswer_toq" = "y" || test "$useranswer_toq" = "Y"; then
+			useranswer_toq=yes
+		else
+			useranswer_toq=no
+		fi
+		if test "$useranswer_toq" = "yes"; then
+			echo "not finished yet"
+		fi
+		echo "Aborted"
+		exit 0
+	fi
+	editormainmenu
+}
+
+TOOLVERSION=0.4.0
 PLATFORMNAME=
 PLATFORMDEFINE=
+PLATFORMOS=
+PLATFORMHWPINTYPE=
+PLATFORMSTRING=
+PLATFORMSTOPCODE=
+PLATFORMADDITIONALDEFINES=
+PLATFORMCOUT=no
+PLATFORMDOWNLOADS=no
+PLATFORMCFLAGS=
+PLATFORMLDFLAGS=
+PLATFORMSOURCES=
+PLATFORMHEADERS=
 
-echo "Welcome to libMule Porting Assistant! What would you like to do?"
+echo "Welcome to libMule Porting Assistant $TOOLVERSION! What would you like to do?"
 echo "[1] Create a new platform from scratch"
 echo "[2] Create a new platform basing on an existing one"
 echo "[3] Load and modify an existing platform"
 echo "[4] Exit"
 printf "Enter your choice (1-4): "
 read userinput_tmp
+if test "$userinput_tmp" != "1" && test "$userinput_tmp" != "2" && test "$userinput_tmp" != "3" && test "$userinput_tmp" != "4"; then
+	userinput_tmp=4
+fi
 SELECTEDACTIONID=$userinput_tmp
 if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	printf "How will your platform be called? "
@@ -275,5 +336,64 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	rm -r -f ./src/platformsupport/common/mulecurrentplatform.h.old
 	echo "Platform creation finished, now you can reconfigure it to your needs"
 	echo ""
+elif test "$SELECTEDACTIONID" = "3"; then
+	printf "Which platform? "
+	read PLATFORMNAME
+	PLATFORMNAME=`echo "$PLATFORMNAME" | sed 's/ //g'`
+	if test "$PLATFORMNAME" = ""; then
+		echo "Nothing was specified, aborted"
+		exit 10
+	fi
+	if test ! -e "./src/platformsupport/$PLATFORMNAME/vars.mcfg"; then
+		echo "[ERROR] Platform $PLATFORMNAME is not supported by this version of libMule or does not exist"
+		exit 11
+	fi
+elif test "$SELECTEDACTIONID" = "4"; then
+	echo "Aborted"
+	exit 0
 fi
 
+echo " " >> ./src/platformsupport/$PLATFORMNAME/vars.mcfg
+printf "Loading src/platformsupport/$PLATFORMNAME/vars.mcfg."
+while read linefrommcfg; do
+	printf '.'
+	HALFONE=`echo "$linefrommcfg" | cut -d ':' -f1`
+	HALFTWO=`echo "$linefrommcfg" | cut -d ':' -f2`
+	if test "$HALFONE" = "OS"; then
+		PLATFORMOS="$HALFTWO"
+	elif test "$HALFONE" = "PlatformID"; then
+		PLATFORMDEFINE=`echo "$HALFTWO" | sed 's/MULE_PLATFORM_//g'`
+	elif test "$HALFONE" = "HardwarePinType"; then
+		PLATFORMHWPINTYPE=$HALFTWO
+	elif test "$HALFONE" = "StringType"; then
+		PLATFORMSTRING=$HALFTWO
+	elif test "$HALFONE" = "MotorStopCode"; then
+		PLATFORMSTOPCODE=$HALFTWO
+	elif test "$HALFONE" = "Defines"; then
+		PLATFORMADDITIONALDEFINES="$HALFTWO"
+	elif test "$HALFONE" = "HasCout"; then
+		if test "$HALFTWO" = "true" || test "$HALFTWO" = "Y" || test "$HALFTWO" = "y" || test "$HALFTWO" = "yes" || test "$HALFTWO" = "YES"; then
+			HALFTWO=yes
+		else
+			HALFTWO=no
+		fi
+		PLATFORMCOUT=$HALFTWO
+	elif test "$HALFONE" = "Requires3rdPartyDownloads"; then
+		if test "$HALFTWO" = "true" || test "$HALFTWO" = "Y" || test "$HALFTWO" = "y" || test "$HALFTWO" = "yes" || test "$HALFTWO" = "YES"; then
+			HALFTWO=yes
+		else
+			HALFTWO=no
+		fi
+		PLATFORMDOWNLOADS=$HALFTWO
+	elif test "$HALFONE" = "Sources"; then
+		PLATFORMSOURCES="$HALFTWO"
+	elif test "$HALFONE" = "Headers"; then
+		PLATFORMHEADERS="$HALFTWO"
+	elif test "$HALFONE" = "AdditionalCompilerFlags"; then
+		PLATFORMCFLAGS="$HALFTWO"
+	elif test "$HALFONE" = "AdditionalLinkerFlags"; then
+		PLATFORMLDFLAGS="$HALFTWO"
+	fi
+done < ./src/platformsupport/$PLATFORMNAME/vars.mcfg
+echo ". done!"
+editormainmenu
