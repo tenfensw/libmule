@@ -123,6 +123,7 @@ PLATFORMHEADERS=""
 LIBSOURCES=""
 LIBHEADERS=""
 HOSTOS=""
+ADDITIONALINCLUDES=""
 
 # display a beautiful header
 niceheader
@@ -295,8 +296,7 @@ while read configfileline; do
 			RUNDOWNLOADERSCRIPT=yes
 		fi
 	elif test "$FIRSTHALF" = "AdditionalCompilerFlags"; then
-		TARGETCXXFLAGS="$TARGETCXXFLAGS $SECONDHALF"
-		TARGETCFLAGS="$TARGETCFLAGS $SECONDHALF"
+		ADDITIONALINCLUDES="$SECONDHALF $ADDITIONALINCLUDES"
 	elif test "$FIRSTHALF" = "AdditionalLinkerFlags"; then
 		TARGETLDFLAGS="$TARGETLDFLAGS $SECONDHALF"
 	elif test "$FIRSTHALF" = "DeployCommand"; then
@@ -381,7 +381,7 @@ echo "done!"
 
 if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 	printf "Downloading required third-party libraries (this might take a while)... "
-	if sh -c "cd \"$CDIR/src/3rdparty\" && \"$SOURCEDIR/src/3rdparty/download-3rdparty-components.sh\" clean && \"$SOURCEDIR/src/3rdparty/download-3rdparty-components.sh\"" > "$CDIR/dl.log" 2>&1; then
+	if sh -c "cd \"$SOURCEDIR/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh" > "$CDIR/dl.log" 2>&1; then
 		echo "done!"
 		rm -r -f "$CDIR/dl.log"
 	else
@@ -462,11 +462,7 @@ LIBSOURCES="$PLATFORMSOURCES $LIBSOURCES"
 LIBHEADERS="$PLATFORMHEADERS $LIBHEADERS"
 
 if test -e "$CDIR/src"; then
-	if test ! -e "$CDIR/src/3rdparty"; then
-		rm -r -f "$CDIR/src"
-	else
-		sh -c "cd \"$CDIR/src\" && for Dir in */; do if test \"\$Dir\" != \"3rdparty/\"; then rm -r -f \$Dir; fi; done"
-	fi
+	rm -r -f "$CDIR/src"
 fi
 mkdir -p "$CDIR/src/core"
 printf "Creating $CDIR/src/core/muleconfig.h... "
@@ -547,7 +543,7 @@ echo "ar rcs libMule.a \$(TARGETS)" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "\$(TARGETS):" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
-echo "\$(MULETOOL) -config MuleToolBootstrapFiles/MuleTool.mcfg -compile \$(SOURCEDIR)/\$(shell printf \`dirname \"\$@\"\` && printf '/' && printf \`basename \"\$@\" .libmulebuild.o\`) -o \"\$@\" -nolibmule -I\$(SOURCEDIR)/src -Isrc" >> "$CDIR/Makefile"
+echo "\$(MULETOOL) -quiet -config MuleToolBootstrapFiles/MuleTool.mcfg -compile \$(SOURCEDIR)/\$(shell printf \`dirname \"\$@\"\` && printf '/' && printf \`basename \"\$@\" .libmulebuild.o\`) -o \"\$@\" -nolibmule -I\$(SOURCEDIR)/src -Isrc $ADDITIONALINCLUDES" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "clean:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
