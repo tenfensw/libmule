@@ -35,11 +35,11 @@ dummyplatform_and_tests_llvmalternativetoolchain:
   script:
     - mkdir dummyplatform-clang-builddir
     - sh -c "cd dummyplatform-clang-builddir && CC=/usr/bin/clang CXX=/usr/bin/clang++ LD=/usr/bin/clang++ ../configure -platform=dummy -modules=all && make"
-    - /usr/bin/clang++ -g -Os tests/test01-muleapplication-test.cpp libMule.a -Isrc -o tests/run-test01
+    - /usr/bin/clang++ -g -Os tests/test01-muleapplication-test.cpp dummyplatform-clang-builddir/libMule.a -Isrc -o tests/run-test01
     - ./tests/run-test01
-    - /usr/bin/clang++ -g -Os tests/test02-mulefile-currentdirectory.cpp libMule.a -Isrc -o tests/run-test02
+    - /usr/bin/clang++ -g -Os tests/test02-mulefile-currentdirectory.cpp dummyplatform-clang-builddir/libMule.a -Isrc -o tests/run-test02
     - ./tests/run-test02
-    - /usr/bin/clang++ -g -Os tests/test03-mulesound-beeping.cpp libMule.a -Isrc -o tests/run-test03
+    - /usr/bin/clang++ -g -Os tests/test03-mulesound-beeping.cpp dummyplatform-clang-builddir/libMule.a -Isrc -o tests/run-test03
     - sh -c "cd dummyplatform-clang-builddir && make clean"
     - rm -r -f ./dummyplatform-clang-builddir ./tests/run-test0*
 
