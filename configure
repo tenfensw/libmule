@@ -256,6 +256,7 @@ fi
 while read configfileline; do
 	FIRSTHALF=`echo "$configfileline" | cut -d ':' -f1`
 	SECONDHALF=`echo "$configfileline" | cut -d ':' -f2`
+	SECONDHALF=`echo "$SECONDHALF" | sed "s+^SOURCEDIR^+$SOURCEDIR+g"`
 	if test "$FIRSTHALF" = "OS" && test "$TARGETOS" = "posix"; then
 		if test "$SECONDHALF" = "Linux" || test "$SECONDHALF" = "linux"; then
 			TARGETOS=linux
