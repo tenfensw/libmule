@@ -13,7 +13,7 @@
 
 void mulestrmodreplace(MULE_OTHER_STRINGTYPE& subject, MULE_OTHER_STRINGTYPE search, MULE_OTHER_STRINGTYPE replace);
 MULE_OTHER_STRINGTYPE muleyesno(bool in);
-void muleprintf(MULE_OTHER_STRINGTYPE in, ...) const;
+void muleprintf(MULE_OTHER_STRINGTYPE in, ...);
 MULE_OTHER_STRINGTYPE muleinttostr(int in);
 void muledebug(MULE_OTHER_STRINGTYPE debugout);
 MULE_OTHER_STRINGTYPE mulegetcwd();

@@ -15,7 +15,7 @@ MULE_OTHER_STRINGTYPE muleyesno(bool in) {
         return "no";
 }
 
-void muleprintf(MULE_OTHER_STRINGTYPE in, ...) const {
+void muleprintf(MULE_OTHER_STRINGTYPE in, ...) {
     va_list otherargs;
     va_start(otherargs, in);
 #ifdef MULE_FEATURES_SUPPORTSCOUT
