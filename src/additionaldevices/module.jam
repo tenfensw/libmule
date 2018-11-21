@@ -1,3 +1,0 @@
-# Additional devices module
-echo "[WARNING] Module additionaldevices is unfinished" ;
-MULEADDITIONALDEVICESSOURCES = src/additionaldevices/mulemotordevice.cpp ;

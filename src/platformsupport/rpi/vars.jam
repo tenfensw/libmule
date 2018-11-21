@@ -1,6 +1,0 @@
-# Jambase override variables for Raspberry Pi platform
-# Part of libMule
-
-echo "[WARNING] The original tinygpio-based Raspberry Pi platform is deprecated and will be removed in libMule 1.5. Please use pigpio-based Raspberry Pi platform instead (pigpio_rpi)." ;
-MULETARGET = pigpio_rpi ;
-include src/platformsupport/pigpio_rpi/vars.jam ;
