@@ -457,12 +457,11 @@ int MuleToolClass::linkProgram() {
 	}
 	if (haveOutput == false)
 		ldflags = ldflags + " -o a.out";
-	if (doNotIncludeLibMule == false)
-		ldflags = ldflags + " " + libMuleLib;
-	
 	std::string buildcmd = linkerLD + " " + ldflags;
 	for (int j = 0; j < filesToCompile.size(); j++)
 		buildcmd = buildcmd + " " + filesToCompile[j];
+	if (doNotIncludeLibMule == false)
+		ldflags = ldflags + " " + libMuleLib;
 	std::cout << buildcmd << std::endl;
 	if (std::system(buildcmd.c_str()) != 0)
 		return 12;
