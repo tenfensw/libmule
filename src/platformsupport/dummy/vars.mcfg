@@ -7,10 +7,7 @@ Defines:
 HasCout:yes
 Requires3rdPartyDownloads:no
 AdditionalCompilerFlags:
+AdditionalLinkerFlags:
 Sources:muledummyplatform.cpp
 Headers:muledummyplatform.h
-
- 
- 
- 
  
