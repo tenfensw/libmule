@@ -124,6 +124,7 @@ LIBSOURCES=""
 LIBHEADERS=""
 HOSTOS=""
 ADDITIONALINCLUDES=""
+ADDITIONALLIBS=""
 
 # display a beautiful header
 niceheader
@@ -298,6 +299,11 @@ while read configfileline; do
 	elif test "$FIRSTHALF" = "AdditionalCompilerFlags"; then
 		ADDITIONALINCLUDES="$SECONDHALF $ADDITIONALINCLUDES"
 	elif test "$FIRSTHALF" = "AdditionalLinkerFlags"; then
+		ADDITIONALLIBS="$TARGETLDFLAGS $SECONDHALF"
+	elif test "$FIRSTHALF" = "AfterBuildCompilerFlags"; then
+		TARGETCXXFLAGS="$TARGETCXXFLAGS $SECONDHALF"
+		TARGETCFLAGS="$TARGETCFLAGS $SECONDHALF"
+	elif test "$FIRSTHALF" = "AfterBuildLinkerFlags"; then
 		TARGETLDFLAGS="$TARGETLDFLAGS $SECONDHALF"
 	elif test "$FIRSTHALF" = "DeployCommand"; then
 		DEPLOYCMD="$SECONDHALF"
