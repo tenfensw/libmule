@@ -311,6 +311,9 @@ std::string MuleToolClass::replaceContextAlternatives(const std::string& vname, 
 			if ((i < (stringLength(vval) - 1)) && (vval[i + 1] == 'A')) {
 				i = i + 1;
 				result = result + calt;
+			else if ((i < (stringLength(vval) - 1)) && (vval[i + 1] == 'P')) {
+				i = i + 1;
+				result = result + TOOLPREFIX;
 			}
 		}
 	}
