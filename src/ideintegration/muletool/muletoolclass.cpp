@@ -137,9 +137,9 @@ bool MuleToolClass::loadConfig(const std::string& cfgname) {
 
 std::vector<std::string> MuleToolClass::split(const std::string& origstr, const char* delim) {
 	std::vector<std::string> result;
-	char* strToSplit = new char[origstr.size() + 1];
+	char* strToSplit = new char[stringLength(origstr) + 1];
 	std::copy(origstr.begin(), origstr.end(), strToSplit);
-	strToSplit[origstr.size()] = '\0';
+	strToSplit[stringLength(origstr)] = '\0';
 
 	char* strtokedstring = strtok(strToSplit, delim);
 	result.push_back(std::string(strtokedstring));
@@ -304,11 +304,11 @@ std::string MuleToolClass::replaceContextAlternatives(const std::string& vname, 
 		calt = deploy_binName;
 	
 	std::string result = "";
-	for (int i = 0; i < vval.size(); i++) {
+	for (int i = 0; i < stringLength(vval); i++) {
 		if (vval[i] != '%')
 			result = result + vval[i];
 		else {
-			if ((i < (vval.size() - 1)) && (vval[i + 1] == 'A')) {
+			if ((i < (stringLength(vval) - 1)) && (vval[i + 1] == 'A')) {
 				i = i + 1;
 				result = result + calt;
 			}
@@ -411,12 +411,14 @@ int MuleToolClass::compileFiles() {
 		else
 			buildcmd = "echo \"skip " + filesToCompile[j] + "\"";
 		std::string outobjectname = filesToCompile[j];
+		outobjectname = replaceSubstring(outobjectname, "..", "{U}");
 		// create a proper object filename
 		std::vector<std::string> veconame = split(outobjectname, ".");
 		outobjectname = veconame[0];
-		for (int i = 1; i < (veconame.size() - 1); i++)
+		for (int i = 1; i < (stringLength(veconame) - 1); i++)
 			outobjectname = outobjectname + "." + veconame[i];
 		outobjectname = outobjectname + ".o";
+		outobjectname = replaceSubstring(outobjectname, "{U}", "..");
 		if (oneFileNoNeedToIgnoreOutput == false)
 			buildcmd = buildcmd + " -o \"" + outobjectname + "\" \"" + filesToCompile[j] + "\"";
 		else
@@ -529,4 +531,23 @@ char MuleToolClass::lastStringChar(const std::string& stritself) {
 	while (stritself[strlength] != '\0')
 		strlength = strlength + 1;
 	return stritself[strlength - 1];
+}
+
+std::string MuleToolClass::replaceSubstring(const std::string& origstring, const std::string& tofind, const std::string& toreplace) {
+	size_t theindex = 0;
+	std::string result = origstring;
+	while (true) {
+		theindex = result.find(tofind, theindex);
+		if (theindex == std::string::npos)
+			break;
+		
+		result.replace(theindex, stringLength(tofind), toreplace);
+		
+		theindex = theindex + stringLength(tofind);
+	}
+	return result;
+}
+
+int MuleToolClass::stringLength(const std::string& origstring) {
+	return strlen(origstring.c_str());
 }

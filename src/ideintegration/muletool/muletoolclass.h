@@ -1,6 +1,7 @@
 #ifndef MULETOOLCLASS_H
 #define MULETOOLCLASS_H
 #include <iostream>
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>
@@ -55,6 +56,8 @@ class MuleToolClass {
 	  std::string readFromFileToString(const std::string& fname);
 	  std::string getCurrentDirectory();
 	  std::string replaceContextAlternatives(const std::string& vname, const std::string& vval);
+	  std::string replaceSubstring(const std::string& origstring, const std::string& tofind, const std::string& toreplace);
+	  int stringLength(const std::string& origstring);
 	  char lastStringChar(const std::string& stritself);
 	  
 	  // private class-wide variables
