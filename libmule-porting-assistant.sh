@@ -78,8 +78,7 @@ changeadditionaldefines() {
 	echo "[1] Add a define"
 	echo "[2] Remove a specific define"
 	echo "[3] Clear all these defines"
-	echo "[4] Abort"
-	echo "ALL YOUR CHANGES ARE AUTOMATICALLY SAVED!!!"
+	echo "[4] Abort and go back to the main menu"
 	printf "Your choice (1-4): "
 	read userinput_nc
 	if test "$userinput_nc" != "1" && test "$userinput_nc" != "2" && test "$userinput_nc" != "3" && test "$userinput_nc" != "4"; then
@@ -94,7 +93,6 @@ changeadditionaldefines() {
 		else
 			PLATFORMADDITIONALDEFINES="$userinput_dn $PLATFORMADDITIONALDEFINES"
 			echo "Added successfully!"
-			return 0
 		fi
 	elif test "$userinput_nc" = "2"; then
 		printf "Which one to remove (enter the ID)? "
@@ -113,7 +111,6 @@ changeadditionaldefines() {
 			done
 			PLATFORMADDITIONALDEFINES="$NEWDEFINES"
 			echo "Removed successfully!"
-			return 0
 		fi
 	elif test "$userinput_nc" = "3"; then
 		printf "Really? (yes/no) {default: no} "
@@ -129,7 +126,6 @@ changeadditionaldefines() {
 		if test "$userinput_dc" = "yes"; then
 			PLATFORMADDITIONALDEFINES=""
 			echo "Removed successfully!"
-			return 0
 		else
 			echo "Aborted"
 			return 3
@@ -138,6 +134,7 @@ changeadditionaldefines() {
 		echo "Aborted"
 		return 4
 	fi
+	changeadditionaldefines
 }
 
 changedependencies() {
@@ -187,22 +184,90 @@ changesourcecode() {
 	echo "[1] Add an existing file or directory"
 	echo "[2] Remove one of the listed files"
 	echo "[3] Edit one of the listed files"
-	echo "[4] Abort"
+	echo "[4] Abort and go back to the main menu"
 	printf "Your choice (1-3): "
 	read userchoice_tmp
 	if test "$userchoice_tmp" != "1" && test "$userchoice_tmp" != "2" && test "$userchoice_tmp" != "3"; then
 		userchoice_tmp=4
 	fi
 	if test "$userchoice_tmp" = "1"; then
-		echo TODO
-	elif test "$userchoice_tmp" = "2"; then
-		echo TODO
-	elif test "$userchoice_tmp" = "3"; then
-		echo TODO
+		printf "Path to the file (or to the directory): "
+		read userinput_fn
+		if test "$userinput_fn" = ""; then
+			echo "Aborted"
+		else
+			if test -e "$userinput_fn"; then
+				echo "$userinput_fn exists"
+				if ls "$userinput_fn/" > /dev/null 2>&1; then
+					echo "$userinput_fn is a directory"
+					for SourceFileRDIR in `find "$userinput_fn" -type f -name "*.cpp"` `find "$userinput_fn" -type f -name "*.c"` `find "$userinput_fn" -type f -name "*.cxx"` `find "$userinput_fn" -type f -name "*.C"` `find "$userinput_fn" -type f -name "*.cc"` `find "$userinput_fn" -type f -name "*.c++"`; do
+						RealSourceRDIR=`echo "$SourceFileRDIR" | sed "s+./+../../+g" | sed "s+$FULLPWD/+../../+g"`
+						PLATFORMSOURCES="$PLATFORMSOURCES $RealSourceRDIR"
+					done
+					for HeaderRDIR in `find "$userinput_fn" -type f -name "*.h"` `find "$userinput_fn" -type f -name "*.hpp"`; do
+						RealHeaderRDIR=`echo "$HeaderRDIR" | sed "s+./+../../+g" | sed "s+$FULLPWD/+../../+g"`
+						PLATFORMHEADERS="$PLATFORMHEADERS $RealHeaderRDIR"
+					done
+				else
+					if (echo "$userinput_fn" | grep -q ".cpp") || (echo "$userinput_fn" | grep -q ".cxx") || (echo "$userinput_fn" | grep -q ".cc") || (echo "$userinput_fn" | grep -q ".C") || (echo "$userinput_fn" | grep -q ".c"); then
+						echo "$userinput_fn is a source file"
+						NEWFN=`echo "$userinput_fn" | sed "s+./+../../+g" | sed "s+$FULLPWD/+../../+g"`
+						PLATFORMSOURCES="$PLATFORMSOURCES $NEWFN"
+					else
+						echo "$userinput_fn is a header file"
+						NEWFN=`echo "$userinput_fn" | sed "s+./+../../+g" | sed "s+$FULLPWD/+../../+g"`
+						PLATFORMHEADERS="$PLATFORMHEADERS $NEWFN"
+					fi
+				fi
+			else
+				echo "[ERROR] $userinput_fn does not exist, please create it first"
+				echo "Aborted"
+			fi
+		fi
+	elif test "$userchoice_tmp" = "2" || test "$userchoice_tmp" = "3"; then
+		printf "Which file? (enter the file number specified in the brackets before the filename) "
+		read userchoice_fileid
+		if test "$userchoice_fileid" = "" || test "$userchoice_fileid" = "0"; then
+			echo "Aborted"
+		else
+			FCOUNT=0
+			NEWHEADERS=""
+			NEWSOURCES=""
+			NEEDEDFN=""
+			for HeaderRMF in $PLATFORMHEADERS; do
+				FCOUNT=$(( $FCOUNT + 1 ))
+				if test "$FCOUNT" != "$userchoice_fileid"; then
+					NEWHEADERS="$NEWHEADERS $HeaderRMF"
+				else
+					NEEDEDFN="$HeaderRMF"
+				fi
+			done
+			for SourceRMF in $PLATFORMSOURCES; do
+				FCOUNT=$(( $FCOUNT + 1 ))
+				if test "$FCOUNT" != "$userchoice_fileid"; then
+					NEWSOURCES="$NEWSOURCES $SourceRMF"
+				else
+					NEEDEDFN="$SourceRMF"
+				fi
+			done
+			if test "$userchoice_tmp" = "2"; then
+				PLATFORMSOURCES="$NEWSOURCES"
+				PLATFORMHEADERS="$NEWHEADERS"
+				echo "The file was removed from the platform successfully. However, IT WAS NOT REMOVED FROM THE DISK."
+			else
+				if test "$NEEDEDFN" = ""; then
+					echo "Aborted"
+				else
+					NEEDEDFN="$FULLPWD/src/platformsupport/$PLATFORMNAME/$NEEDEDFN"
+					openinpreferrededitor "$NEEDEDFN"
+				fi
+			fi
+		fi
 	else
 		echo "Aborted"
 		return 4
 	fi
+	changesourcecode
 }
 
 changecflags() {
@@ -283,6 +348,8 @@ PLATFORMCFLAGS=
 PLATFORMLDFLAGS=
 PLATFORMSOURCES=
 PLATFORMHEADERS=
+FULLPWD=`dirname "$0"`
+FULLPWD=`sh -c "cd \"$FULLPWD\" && pwd"`
 
 echo "Welcome to libMule Porting Assistant $TOOLVERSION! What would you like to do?"
 echo "[1] Create a new platform from scratch"
