@@ -415,7 +415,7 @@ int MuleToolClass::compileFiles() {
 		// create a proper object filename
 		std::vector<std::string> veconame = split(outobjectname, ".");
 		outobjectname = veconame[0];
-		for (int i = 1; i < (stringLength(veconame) - 1); i++)
+		for (int i = 1; i < (veconame.size() - 1); i++)
 			outobjectname = outobjectname + "." + veconame[i];
 		outobjectname = outobjectname + ".o";
 		outobjectname = replaceSubstring(outobjectname, "{U}", "..");
