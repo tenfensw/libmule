@@ -70,8 +70,6 @@ bool MuleDevice::setPullUpDown(MULE_OTHER_HWPINTYPE val) {
     return convertedMcpInstance->setPullUpDown(pinNum, val);
 }
 
-#ifdef MULE_FEATURES_ADDITIONALDEVICES
-
 int MuleDevice::dvprobepin() {
 	// TODO implement dvprobepin()
 	return Other;
@@ -85,17 +83,3 @@ bool MuleDevice::setPinType(int type) {
 		setMode(MULE_INPUT);
 }
 
-#else
-
-int MuleDevice::dvprobepin() {
-	return Other;
-}
-
-bool MuleDevice::setPinType(int type) {
-	if (type != Other)
-		return false;
-	else
-		return true;
-}
-
-#endif

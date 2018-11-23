@@ -115,3 +115,46 @@ bool MulePigpioPlatform::stopAllSounds() {
 }
 #endif
 
+#ifdef MULE_FEATURES_PWMDEVICES
+bool MulePigpioPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {
+	if (gpioPWM(pin, dutycycle) == 0)
+		return true;
+	return false;
+}
+
+MULE_OTHER_HWPINTYPE MulePigpioPlatform::getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {
+	int result = gpioGetPWMdutycycle(pin);
+	if (result != PI_BAD_USER_GPIO && result != PI_NOT_PWM_GPIO)
+		return result;
+	return -1;
+}
+
+MULE_OTHER_HWPINTYPE MulePigpioPlatform::getPWMRange(MULE_OTHER_HWPINTYPE pin) {
+	int range = gpioGetPWMrange(pin);
+	if (range != PI_BAD_USER_GPIO)
+		return range;
+	return -1;
+}
+
+bool MulePigpioPlatform::setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {
+	int result = gpioSetPWMrange(pin, range);
+	if (result != PI_BAD_USER_GPIO && result != PI_BAD_DUTYRANGE)
+		return true;
+	return false;
+}
+
+MULE_OTHER_HWPINTYPE MulePigpioPlatform::getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {
+	int result = gpioGetPWMfrequency(pin);
+	if (result != PI_BAD_USER_GPIO)
+		return result;
+	return -1;
+}
+
+bool MulePigpioPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {
+	int result = gpioSetPWMfrequency(pin, freq);
+	if (result != PI_BAD_USER_GPIO)
+		return true;
+	return false;
+}
+#endif
+

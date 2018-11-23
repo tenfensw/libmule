@@ -8,13 +8,11 @@ class MuleDevice
 {
 public:
     const int Other = 0;
-#ifdef MULE_FEATURES_ADDITIONALDEVICES
-    const int Motor = 1;
+    const int PWM = 1;
     const int Lamp = 2;
     const int Button = 3;
     const int Screen = 4;
     const int TemperatureSensor = 5;
-#endif
 
     MuleDevice(MULE_OTHER_HWPINTYPE pin);
     ~MuleDevice();
@@ -41,7 +39,7 @@ public:
     bool setPinType(int type);
     bool setPullUpDown(MULE_OTHER_HWPINTYPE val);
 
-private:
+protected:
     bool dvinit(MULE_OTHER_HWPINTYPE pin);
     int dvprobepin();
 

@@ -116,3 +116,30 @@ bool MuleDummyPlatform::stopAllSounds() {
 }
 #endif
 
+#ifdef MULE_FEATURES_PWMDEVICES
+bool MuleDummyPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {
+	return false;
+}
+
+MULE_OTHER_HWPINTYPE MuleDummyPlatform::getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {
+	return -1;
+}
+
+MULE_OTHER_HWPINTYPE MuleDummyPlatform::getPWMRange(MULE_OTHER_HWPINTYPE pin) {
+	return -1;
+}
+
+bool MuleDummyPlatform::setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {
+	return false;
+}
+
+MULE_OTHER_HWPINTYPE MuleDummyPlatform::getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {
+	return -1;
+}
+
+bool MuleDummyPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {
+	return false;
+}
+#endif
+
+

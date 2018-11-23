@@ -35,7 +35,13 @@ public:
     virtual MULE_OTHER_STRINGTYPE getSoundBackend() {}
     virtual bool stopAllSounds() {}
 #endif
-#ifdef MULE_FEATURES_ADDITIONALDEVICES
+#ifdef MULE_FEATURES_PWMDEVICES
+    virtual bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {}
+    virtual MULE_OTHER_HWPINTYPE getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {}
+    virtual MULE_OTHER_HWPINTYPE getPWMRange(MULE_OTHER_HWPINTYPE pin) {}
+    virtual bool setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {}
+    virtual MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {}
+    virtual bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {}
 #endif
 
 

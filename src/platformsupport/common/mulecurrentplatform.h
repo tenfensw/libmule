@@ -82,6 +82,31 @@ public:
 	return platformClass->stopAllSounds();
     }
 #endif
+#ifdef MULE_FEATURES_PWMDEVICES
+    bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {
+	return platformClass->startPWM(pin, dutycycle);
+    }
+    
+    MULE_OTHER_HWPINTYPE getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {
+        return platformClass->getPWMDutyCycle(pin);
+    }
+    
+    MULE_OTHER_HWPINTYPE getPWMRange(MULE_OTHER_HWPINTYPE pin) {
+        return platformClass->getPWMRange(pin);
+    }
+    
+    MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {
+	return platformClass->getPWMFrequency(pin);
+    }
+    
+    bool setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {
+	return platformClass->setPWMRange(pin, range);
+    }
+    
+    bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {
+	return platformClass->setPWMFrequency(pin, freq);
+    }
+#endif
 
 private:
     MULE_INTERNAL_CURRENTPLATFORMCLASS* platformClass;

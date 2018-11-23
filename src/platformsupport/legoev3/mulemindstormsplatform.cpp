@@ -38,38 +38,39 @@ bool MuleMindstormsPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWP
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::readFromPin(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
-    if (pin == 1)
-	return readSensor(IN_1);
-    else if (pin == 2)
-	return readSensor(IN_2);
-    else if (pin == 3)
-	return readSensor(IN_3);
-    else if (pin == 4)
-	return readSensor(IN_4);
-    else if (pin == 5)
-	return (MotorPower(OUT_ALL) - '0');
-    else {
-	platformInitializationException(3, "No such port on the EV3: " + muleinttostr(pin));
-	return -1;
-    }
+    //if (pin == 1)
+    //	return readSensor(IN_1);
+    //else if (pin == 2)
+    //	return readSensor(IN_2);
+    //else if (pin == 3)
+    //	return readSensor(IN_3);
+    //else if (pin == 4)
+    //	return readSensor(IN_4);
+    //else if (pin == 5)
+    //	return (MotorPower(OUT_ALL) - '0');
+    //else {
+    //	platformInitializationException(3, "No such port on the EV3: " + muleinttostr(pin));
+    //	return -1;
+    //}
+    return 0;
 }
 
 bool MuleMindstormsPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("ct = " + muleinttostr((int)(ct)));
-    if (pin == 5) {
-	int motrot = ct;
-	if (motrot == MULE_MINDSTORMS_MOTOROFF)
-		Off(OUT_ALL);
-	else if (motrot < 0) {
-		motrot = abs(motrot);
-		OnRevReg(OUT_ALL, motrot);
-	}
-	else
-		OnFwdReg(OUT_ALL, motrot);
-	return true;
-    }
-    else
+    //if (pin == 5) {
+    //	int motrot = ct;
+    //	if (motrot == MULE_MINDSTORMS_MOTOROFF)
+    //		Off(OUT_ALL);
+    //	else if (motrot < 0) {
+    //		motrot = abs(motrot);
+    //		OnRevReg(OUT_ALL, motrot);
+    //	}
+    //	else
+    //		OnFwdReg(OUT_ALL, motrot);
+    //	return true;
+    //}
+    //else
     	return false;
 }
 
@@ -123,6 +124,43 @@ bool MuleMindstormsPlatform::playWaveFile(MULE_OTHER_STRINGTYPE filename) {
 }
 
 bool MuleMindstormsPlatform::stopAllSounds() {
+	return false;
+}
+#endif
+
+#ifdef MULE_FEATURES_PWMDEVICES
+bool MuleMindstormsPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {
+	if (pin == MULE_MINDSTORMS_MOTORPIN) {
+		if (dutycycle == 0) {
+			Off(OUT_ALL);
+			return true;
+		}
+		else {
+			int motorangle = (int)(round((((dutycycle / 5) - 1) * 180) / 598));
+			RotateMotor(OUT_ALL, MULE_MINDSTORMS_MOTORSPEED, motorangle);
+		}
+	}
+	else
+		return false;
+}
+
+MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {
+	return MULE_MINDSTORMS_PWMMAXRANGE;
+}
+
+MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPWMRange(MULE_OTHER_HWPINTYPE pin) {
+	return MULE_MINDSTORMS_PWMMAXRANGE;
+}
+
+bool MuleMindstormsPlatform::setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {
+	return false;
+}
+
+MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {
+	return MULE_MINDSTORMS_PWMFREQUENCY;
+}
+
+bool MuleMindstormsPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {
 	return false;
 }
 #endif

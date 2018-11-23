@@ -2,6 +2,13 @@
 #define MULEMINDSTORMSPLATFORM_H
 
 #define MULE_MINDSTORMS_MOTOROFF -798
+#define MULE_MINDSTORMS_MOTORPIN 5
+// I had to implement a fake fifth pin so that you could access the Mindstorms motors the motors somehow
+#define MULE_MINDSTORMS_MOTORSPEED 40
+#define MULE_MINDSTORMS_PWMFREQUENCY 10000
+// MULE_MINDSTORMS_PWMFREQUENCY value taken from http://icube-avr.unistra.fr/en/index.php/Hacking_the_Lego_EV3
+#define MULE_MINDSTORMS_PWMMAXRANGE 2500
+// taken from https://github.com/joan2937/pigpio/blob/master/pigpio.h for Raspberry Pi compatibility
 #include "platformsupport/common/mulecommonplatform.h"
 #include "core/muleconfig.h"
 #include <fstream>
@@ -15,6 +22,8 @@
 #define MULE_TEMPDIRECTORY "/tmp"
 #define MULE_INPUT 0
 #define MULE_OUTPUT 1
+
+
 
 class MuleMindstormsPlatform : public MuleCommonPlatform
 {
@@ -47,6 +56,14 @@ public:
 	return "lego";
     }
     bool stopAllSounds();
+#endif
+#ifdef MULE_FEATURES_PWMDEVICES
+    bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle);
+    MULE_OTHER_HWPINTYPE getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin);
+    MULE_OTHER_HWPINTYPE getPWMRange(MULE_OTHER_HWPINTYPE pin);
+    bool setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range);
+    MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin);
+    bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq);
 #endif
 
 private:

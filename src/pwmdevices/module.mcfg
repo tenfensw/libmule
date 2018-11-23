@@ -1,0 +1,6 @@
+Name:pwmdevices
+Subdir:pwmdevices
+Sources:mulepwmdevice.cpp
+Headers:mulepwmdevice.h
+ModuleID:MULE_FEATURES_PWMDEVICES
+Requires:core

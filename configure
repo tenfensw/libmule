@@ -400,7 +400,7 @@ fi
 
 # deal with modules
 if test "$MODULES" = "all" || test "$MODULES" = "everything"; then
-	MODULES="core,fileio,sound,additionaldevices"
+	MODULES="core,fileio,sound,pwmdevices"
 elif test "$MODULES" = "minimal"; then
 	MODULES="core"
 fi
