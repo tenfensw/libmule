@@ -6,7 +6,7 @@ MuleServoDevice::MuleServoDevice(int devpin) : MulePWMDevice(devpin) {
 
 bool MuleServoDevice::rotate(int angle) {
 	int dcycle = (((angle / 180) + 1) * 5);
-	return this->startPWM(dcycle);
+	return this->start(dcycle);
 }
 
 bool MuleServoDevice::goBackAndForth(int startangle, int endangle, int times, double delay) {
