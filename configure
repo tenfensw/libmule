@@ -570,7 +570,7 @@ echo "cp MuleToolBootstrapFiles/muletool \"\$(PREFIX)/bin/muletool\" && cp MuleT
 printf "\t\t" >> "$CDIR/Makefile"
 echo "PREFIX=\"\$(PREFIX)\" SOURCEDIR=\"\$(SOURCEDIR)\" ./installheaders.sh && cp src/core/muleconfig.h \"\$(PREFIX)/include/libmule/core/muleconfig.h\""  >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
-echo "cp libMule.a \"\$(PREFIX)/libMule.a\"" >> "$CDIR/Makefile"
+echo "cp libMule.a \"\$(PREFIX)/lib/libMule.a\"" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "done!"
 printf "Creating $CDIR/installheaders.sh... "
