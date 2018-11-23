@@ -65,9 +65,15 @@ public:
     MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin);
     bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq);
 #endif
+#ifdef MULE_FEATURES_SENSORS
+    bool photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
+    bool buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin);
+#endif
 
 private:
     std::vector<MuleDevice*> devlist;
+    
+    void legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE type);
 };
 
 #endif // MULEDUMMYPLATFORM_H

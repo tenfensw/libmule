@@ -8,12 +8,26 @@ MuleMindstormsPlatform::MuleMindstormsPlatform()
 
 bool MuleMindstormsPlatform::initialize() {
 	InitEV3();
+	SetLedPattern(LED_ORANGE);
 	return true;
 }
 
 MuleMindstormsPlatform::~MuleMindstormsPlatform() {
 	FreeEV3();
 	return;
+}
+
+void MuleMindstormsPlatform::legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE type) {
+	if (pin == 1)
+		setAllSensorMode(type, NO_SEN, NO_SEN, NO_SEN);
+	else if (pin == 2)
+		setAllSensorMode(NO_SEN, type, NO_SEN, NO_SEN);
+	else if (pin == 3)
+		setAllSensorMode(NO_SEN, NO_SEN, type, NO_SEN);
+	else if (pin == 4)
+		setAllSensorMode(NO_SEN, NO_SEN, NO_SEN, type);
+	else
+		return;
 }
 
 #ifdef MULE_FEATURES_CORE
@@ -26,7 +40,9 @@ std::vector<MuleDevice*> MuleMindstormsPlatform::getDevices() {
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
-    return MULE_OUTPUT;
+    if (pin == 5)
+	return MULE_OUTPUT;
+    return MULE_INPUT;
 }
 
 bool MuleMindstormsPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {
@@ -164,3 +180,21 @@ bool MuleMindstormsPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHE
 	return false;
 }
 #endif
+
+#ifdef MULE_FEATURES_SENSORS
+bool MuleMindstormsPlatform::photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
+	if (pin < 1 || pin > 4)
+		return false;
+	legoSetPinType(pin, COL_COLOR);
+	int prevval = readSensor(pin - 1);
+	int numberofrechecks = 0;
+	while (readSensor(pin - 1) == prevval)
+		numberofrechecks = numberofrechecks + 1;
+	return true;
+}
+
+bool MuleMindstormsPlatform::buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin) {
+        return false;
+}
+#endif
+

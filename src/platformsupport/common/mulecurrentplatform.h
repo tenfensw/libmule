@@ -107,6 +107,15 @@ public:
 	return platformClass->setPWMFrequency(pin, freq);
     }
 #endif
+#ifdef MULE_FEATURES_SENSORS
+    bool photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
+	return platformClass->photoresistorWaitUntilTriggered(pin);
+    }
+    
+    bool buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin) {
+	return platformClass->buttonWaitUntilPressed(pin);
+    }
+#endif
 
 private:
     MULE_INTERNAL_CURRENTPLATFORMCLASS* platformClass;
