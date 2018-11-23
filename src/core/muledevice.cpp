@@ -21,7 +21,7 @@ bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
     	mcpInstance = (void*)(maInstance->getPlatformClass());
     	MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
     	convertedMcpInstance->getPinMode(pin);
-	this->setPinType(dvprobepin());
+	this->setPinType(Generic);
     }
     else
 	muledebug("maInstance->areNecessaryPartsReady != true");
@@ -70,16 +70,13 @@ bool MuleDevice::setPullUpDown(MULE_OTHER_HWPINTYPE val) {
     return convertedMcpInstance->setPullUpDown(pinNum, val);
 }
 
-int MuleDevice::dvprobepin() {
-	// TODO implement dvprobepin()
-	return Other;
-}
 
 bool MuleDevice::setPinType(int type) {
-	if (type < 0)
+	if (type < 0 || type > 2)
 		return false;
 	pType = type;
-	if (type == Button)
+	if (type == Sensor)
 		setMode(MULE_INPUT);
+	return true;
 }
 

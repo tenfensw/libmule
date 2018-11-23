@@ -7,12 +7,9 @@
 class MuleDevice
 {
 public:
-    const int Other = 0;
-    const int PWM = 1;
-    const int Lamp = 2;
-    const int Button = 3;
-    const int Screen = 4;
-    const int TemperatureSensor = 5;
+    const static int Generic = 0;
+    const static int PWM = 1;
+    const static int Sensor = 2;
 
     MuleDevice(MULE_OTHER_HWPINTYPE pin);
     ~MuleDevice();
@@ -41,7 +38,6 @@ public:
 
 protected:
     bool dvinit(MULE_OTHER_HWPINTYPE pin);
-    int dvprobepin();
 
     void* mcpInstance;
     int pinNum;
