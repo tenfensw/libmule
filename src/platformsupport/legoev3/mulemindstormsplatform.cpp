@@ -16,7 +16,7 @@ MuleMindstormsPlatform::~MuleMindstormsPlatform() {
 	return;
 }
 
-#ifdef MULE_FEATURES_SENSORS
+#ifdef MULE_FEATURES_CORE
 std::vector<MuleDevice*> MuleMindstormsPlatform::getDevices() {
     devlist.clear();
     for (int i = 0; i < 5; i++)

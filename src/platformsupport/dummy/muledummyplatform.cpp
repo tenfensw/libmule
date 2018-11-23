@@ -14,7 +14,7 @@ bool MuleDummyPlatform::initialize() {
     return true;
 }
 
-#ifdef MULE_FEATURES_SENSORS
+#ifdef MULE_FEATURES_CORE
 std::vector<MuleDevice*> MuleDummyPlatform::getDevices() {
     return devlist;
 }

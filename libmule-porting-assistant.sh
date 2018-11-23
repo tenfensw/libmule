@@ -512,7 +512,7 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	echo "    public:" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      $tmp_deviceclassname();" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      MULE_OTHER_STRINGTYPE getPlatformName() { return "$PLATFORMNAME"; }" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
-	echo "# ifdef MULE_FEATURES_SENSORS" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "# ifdef MULE_FEATURES_CORE" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      std::vector<MuleDevice*> getDevices();" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h

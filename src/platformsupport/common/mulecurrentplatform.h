@@ -30,7 +30,7 @@ class MuleCurrentPlatform
 {
 public:
     MuleCurrentPlatform();
-#ifdef MULE_FEATURES_SENSORS
+#ifdef MULE_FEATURES_CORE
     std::vector<MuleDevice*> getDevices() {
         return platformClass->getDevices();
     }

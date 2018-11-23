@@ -15,7 +15,7 @@ public:
     MuleCommonPlatform() {}
 
     virtual bool initialize() {}
-#ifdef MULE_FEATURES_SENSORS
+#ifdef MULE_FEATURES_CORE
     virtual std::vector<MuleDevice*> getDevices() {}
     virtual MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin) {}
     virtual bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {}
