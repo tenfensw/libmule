@@ -1,1 +1,42 @@
-This is a special libMule branch where libMule devs desperately try to add PWM support to the library.
+libMule - Microcontroller-universal Library (that is Extendable)
+
+libMule (or just Mule for short) is a C++ library that allows you to 
+create applications that will work on any microcontroller (LEGO 
+Mindstorms EV3 or Raspberry Pi, for example). It is similar to Qt in 
+some ways... except Qt is for cross-platform GUI apps and Mule is 
+for embedded microcontroller apps.
+
+====== Supported platforms ======
+Currently, only three platforms are supported:
+- Raspberry Pi
+- LEGO EV3 (Mindstorms)
+- Dummy platform (for testing purposes only)
+
+Support for more platforms will be added in future releases.
+
+See also src/platformsupport/SUPPORTED_TOOLCHAINS to get more info about 
+tested and officially supported toolchains
+
+====== Building Mule ======
+WARNING!!! Mule does not work on Windows unless you use Cygwin.
+
+To build Mule for your device, you'll need:
+- GNU bash and GNU make
+- A toolchain for your target device with a C++ cross-compiler and ar 
+utility
+
+After that, navigate to the source code directory of libMule. Then, run 
+./configure:
+
+# ./configure -prefix=<path to the directory where libMule will be installed> -platform=<your platform name*> \
+	      -platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> \
+	      -platformar=<path to the ar utility that produces static libraries for the TARGET device>
+
+After configure generates a Makefile, run make:
+# make
+# su -c "make install"
+
+That's it!
+
+* Platform names for each supported device: "legoev3" for LEGO EV3, 
+"pigpio_rpi" for Raspberry Pi, "dummy" for the dummy platform
