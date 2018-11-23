@@ -8,6 +8,7 @@
 class MulePWMDevice : public MuleDevice {
 	public:
 	  MulePWMDevice(int devpin);
+	  ~MulePWMDevice();
 	  bool start(MULE_OTHER_HWPINTYPE dutycycle);
 	  bool on() { return this->start(getRange()); }
 	  bool stop() { return this->start(0); }

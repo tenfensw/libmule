@@ -8,6 +8,7 @@
 class MuleLightSensor : public MuleDevice {
 	public:
 	  MuleLightSensor(int devpin);
+	  ~MuleLightSensor();
 	  bool waitUntilTriggered();
 
 };

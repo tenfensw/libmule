@@ -4,6 +4,9 @@ MuleServoDevice::MuleServoDevice(int devpin) : MulePWMDevice(devpin) {
 	this->setFrequency(50);
 }
 
+MuleServoDevice::~MuleServoDevice() {
+}
+
 bool MuleServoDevice::rotate(int angle) {
 	int dcycle = (((angle / 180) + 1) * 5);
 	return this->start(dcycle);

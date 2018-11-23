@@ -5,6 +5,9 @@ MulePWMDevice::MulePWMDevice(int devpin) : MuleDevice(devpin) {
 	deviceIsTurnedOn = false;
 }
 
+MulePWMDevice::~MulePWMDevice() {
+}
+
 bool MulePWMDevice::start(MULE_OTHER_HWPINTYPE dutycycle) {
 	MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
 	bool result = convertedMcpInstance->startPWM(pinNum, dutycycle);

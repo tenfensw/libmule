@@ -4,7 +4,7 @@
 
 int main() {
 	MuleApplication mApp;
-	muleprintf("MuleLightSensor test on %s", mApp.getPlatformName());
+	muleprintf("MuleLightSensor test on %s", mApp.getPlatformName().c_str());
 	muleprintf("Step 1. Create a new instance of MuleLightSensor");
 	MuleLightSensor lsensor(SENSORPIN);
 	muleprintf("success");
