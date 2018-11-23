@@ -12,8 +12,6 @@
 #include "platformsupport/dummy/muledummyplatform.h"
 #elif defined(MULE_PLATFORM_LEGOEV3)
 #include "platformsupport/legoev3/mulemindstormsplatform.h"
-#elif defined(MULE_PLATFORM_RPI)
-#include "platformsupport/rpi/muleraspberrypiplatform.h"
 #elif defined(MULE_PLATFORM_PIGPIO)
 #include "platformsupport/pigpio_rpi/mulepigpioplatform.h"
 #endif
@@ -23,4 +21,8 @@
 #endif
 #ifdef MULE_FEATURES_SOUND
 #include "sound/mulesoundplayer.h"
+#endif
+#ifdef MULE_FEATURES_PWMDEVICES
+#include "pwmdevices/mulepwmdevice.h"
+#include "pwmdevices/muleservodevice.h"
 #endif

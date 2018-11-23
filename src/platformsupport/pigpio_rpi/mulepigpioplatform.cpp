@@ -5,6 +5,10 @@ MulePigpioPlatform::MulePigpioPlatform() {
         platformInitializationException(1, "MulePigpioPlatform::initialize() returned false, not true");
 }
 
+MulePigpioPlatform::~MulePigpioPlatform() {
+    gpioTerminate();
+}
+
 bool MulePigpioPlatform::initialize() {
 	if (gpioInitialise() < 0)
 		return false;
