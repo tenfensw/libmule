@@ -20,7 +20,7 @@ dummyplatform_and_tests:
     - sh -c "if test -e \"./popcorn.txt\"; then rm -r -f popcorn.txt; fi"
     - ./tests/run-test02
     - /usr/bin/g++ -g -Os tests/test03-mulesound-beeping.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test03
-    - /usr/bin/g++ -g -Os tests/test04-mulelightsensor-trigger.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test04
+    - /usr/bin/g++ -g -Os tests/test04-mulesensor-trigger.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test04
     - ./tests/run-test04
     - rm -r -f ./tests/run-test0* ./dummyplatform-gcc-builddir/
 
@@ -33,7 +33,7 @@ dummyplatform_and_tests_llvmalternativetoolchain:
     - /usr/bin/clang++ -g -Os tests/test02-mulefile-currentdirectory.cpp dummyplatform-clang-builddir/libMule.a -Isrc -Idummyplatform-clang-builddir/src -o tests/run-test02
     - ./tests/run-test02
     - /usr/bin/clang++ -g -Os tests/test03-mulesound-beeping.cpp dummyplatform-clang-builddir/libMule.a -Isrc -Idummyplatform-clang-builddir/src -o tests/run-test03
-    - /usr/bin/clang++ -g -Os tests/test04-mulelightsensor-trigger.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-clang-builddir/src -o tests/run-test04
+    - /usr/bin/clang++ -g -Os tests/test04-mulesensor-trigger.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-clang-builddir/src -o tests/run-test04
     - ./tests/run-test04
     - sh -c "cd dummyplatform-clang-builddir && make clean"
     - rm -r -f ./dummyplatform-clang-builddir ./tests/run-test0*

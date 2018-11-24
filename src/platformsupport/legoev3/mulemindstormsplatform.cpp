@@ -182,19 +182,8 @@ bool MuleMindstormsPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHE
 #endif
 
 #ifdef MULE_FEATURES_SENSORS
-bool MuleMindstormsPlatform::photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
-	if (pin < 1 || pin > 4)
-		return false;
-	legoSetPinType(pin, COL_COLOR);
-	int prevval = readSensor(pin - 1);
-	int numberofrechecks = 0;
-	while (readSensor(pin - 1) == prevval)
-		numberofrechecks = numberofrechecks + 1;
-	return true;
-}
-
-bool MuleMindstormsPlatform::buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin) {
-        return false;
+bool MuleMindstormsPlatform::sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
+	return false;
 }
 #endif
 

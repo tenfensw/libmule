@@ -163,23 +163,16 @@ bool MulePigpioPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HW
 #endif
 
 #ifdef MULE_FEATURES_SENSORS
-bool MulePigpioPlatform::photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
-	if ((this->setPinMode(pin, MULE_OUTPUT) == false) || (this->writeToPin(pin, 0) == false))
+bool MulePigpioPlatform::sensorWaitForTriggered(MULE_OTHER_HWPINTYPE pin) {
+	if (this->setPullUpDown(pin, MULE_PUD_DOWN) == false)
 		return false;
 	mulesleep(0.1);
-	// turn it back into an input pin
-	if (this->setPinMode(pin, MULE_INPUT) == false)
-		return false;
 	
 	int numberofchecks = 0;
-	while (this->readFromPin(pin) == 0)
+	while (this->readFromPin(pin) == MULE_LOW)
 		numberofchecks = numberofchecks + 1;
 	
 	return true;
-}
-
-bool MulePigpioPlatform::buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin) {
-        return false;
 }
 #endif
 

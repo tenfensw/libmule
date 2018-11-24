@@ -27,5 +27,5 @@
 #include "pwmdevices/muleservodevice.h"
 #endif
 #ifdef MULE_FEATURES_SENSORS
-#include "sensors/mulelightsensor.h"
+#include "sensors/mulesensor.h"
 #endif

@@ -4,9 +4,9 @@
 
 int main() {
 	MuleApplication mApp;
-	muleprintf("MuleLightSensor test on %s", mApp.getPlatformName().c_str());
-	muleprintf("Step 1. Create a new instance of MuleLightSensor... ");
-	MuleLightSensor lsensor(SENSORPIN);
+	muleprintf("MuleSensor test on %s", mApp.getPlatformName().c_str());
+	muleprintf("Step 1. Create a new instance of MuleSensor... ");
+	MuleSensor lsensor(SENSORPIN);
 	muleprintf("success\n");
 	muleprintf("Step 2. Wait till triggered... ");
 	if (lsensor.waitUntilTriggered() == false) {

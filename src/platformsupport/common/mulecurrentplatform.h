@@ -108,12 +108,8 @@ public:
     }
 #endif
 #ifdef MULE_FEATURES_SENSORS
-    bool photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
-	return platformClass->photoresistorWaitUntilTriggered(pin);
-    }
-    
-    bool buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin) {
-	return platformClass->buttonWaitUntilPressed(pin);
+    bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
+	return platformClass->sensorWaitUntilTriggered(pin);
     }
 #endif
 

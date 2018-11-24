@@ -22,6 +22,11 @@
 #define MULE_TEMPDIRECTORY "/tmp"
 #define MULE_INPUT	0
 #define MULE_OUTPUT	1
+#define MULE_LOW	0
+#define MULE_HIGH	1
+#define MULE_PUD_OFF	0
+#define MULE_PUD_DOWN	1
+#define MULE_PUD_UP	2
 
 class MulePigpioPlatform : public MuleCommonPlatform
 {
@@ -64,8 +69,7 @@ public:
     bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq);
 #endif
 #ifdef MULE_FEATURES_SENSORS
-    bool photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
-    bool buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin);
+    bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
 #endif
 
 private:

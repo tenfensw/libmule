@@ -73,6 +73,9 @@ bool MuleDevice::setPullUpDown(MULE_OTHER_HWPINTYPE val) {
     return convertedMcpInstance->setPullUpDown(pinNum, val);
 }
 
+bool MuleDevice::noPullUpDown() {
+    this->setPullUpDown(MULE_PUD_OFF);
+}
 
 bool MuleDevice::setPinType(int type) {
 	if (type < 0 || type > 2)

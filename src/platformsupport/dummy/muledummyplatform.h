@@ -60,8 +60,7 @@ public:
     bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq);
 #endif
 #ifdef MULE_FEATURES_SENSORS
-    bool photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
-    bool buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin);
+    bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
 #endif
 
 private:

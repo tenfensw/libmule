@@ -44,8 +44,7 @@ public:
     virtual bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {}
 #endif
 #ifdef MULE_FEATURES_SENSORS
-    virtual bool photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {}
-    virtual bool buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin) {}
+    virtual bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {}
 #endif
 
 

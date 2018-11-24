@@ -138,11 +138,7 @@ bool MuleDummyPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWP
 #endif
 
 #ifdef MULE_FEATURES_SENSORS
-bool MuleDummyPlatform::photoresistorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
+bool MuleDummyPlatform::sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
 	return false;
-}
-
-bool MuleDummyPlatform::buttonWaitUntilPressed(MULE_OTHER_HWPINTYPE pin) {
-        return false;
 }
 #endif

@@ -1,6 +1,6 @@
 Name:sensors
 Subdir:sensors
-Sources:mulelightsensor.cpp
-Headers:mulelightsensor.h
+Sources:mulesensor.cpp
+Headers:mulesensor.h
 ModuleID:MULE_FEATURES_SENSORS
 Requires:core pwmdevices
