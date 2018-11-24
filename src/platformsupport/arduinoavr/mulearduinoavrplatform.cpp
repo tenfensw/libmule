@@ -1,7 +1,12 @@
 #include "platformsupport/arduinoavr/mulearduinoavrplatform.h"
 
 MuleArduinoAVRPlatform::MuleArduinoAVRPlatform() {
-      
+      init();
+      initVariant();
+      delay(1);
+#if defined(USBCON)
+      USBDevice.attach();
+#endif
 }
 
 bool MuleArduinoAVRPlatform::arduinoIsDigitalPin(MULE_OTHER_HWPINTYPE pin) {
