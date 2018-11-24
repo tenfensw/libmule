@@ -21,34 +21,29 @@ std::vector<MuleDevice*> MuleDummyPlatform::getDevices() {
 
 MULE_OTHER_HWPINTYPE MuleDummyPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
-    platformInitializationException(2, "Unimplemented");
     return 0;
 }
 
 bool MuleDummyPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("mode = " + muleinttostr((int)(mode)));
-    platformInitializationException(2, "Unimplemented");
     return false;
 }
 
 MULE_OTHER_HWPINTYPE MuleDummyPlatform::readFromPin(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
-    platformInitializationException(2, "Unimplemented");
     return 0;
 }
 
 bool MuleDummyPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("ct = " + muleinttostr((int)(ct)));
-    platformInitializationException(2, "Unimplemented");
     return false;
 }
 
 bool MuleDummyPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("val = " + muleinttostr((int)(val)));
-    platformInitializationException(2, "Unimplemented");
     return false;
 }
 #endif
