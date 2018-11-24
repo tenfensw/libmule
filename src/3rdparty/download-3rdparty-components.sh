@@ -1,3 +1,4 @@
+
 #!/bin/bash
 # This will download third-party components
 
@@ -20,7 +21,7 @@ else
 	exit 1
 fi
 
-COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio"
+COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio ArduinoSTL=https://github.com/mike-matera/ArduinoSTL"
 if test -e "./.stamp"; then
 	echo "[INFO] Everything was already downloaded"
 	exit 0

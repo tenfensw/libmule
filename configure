@@ -185,7 +185,9 @@ for Argument in $*; do
 	elif test "$FIRSTHALF" = "-debug"; then
 		THINGSTODEFINE="MULE_FEATURES_DEBUG $THINGSTODEFINE"
 	elif test "$FIRSTHALF" = "-modules"; then
-		MODULES="$SECONDHALF"
+		if test "$MODULES" != "arduino"; then
+			MODULES="$SECONDHALF"
+		fi
 	else
 		showwarning "Unknown option: $FIRSTHALF"
 	fi
@@ -197,6 +199,9 @@ echo "This script is running on $HOSTOS"
 if test "$TARGETNAME" = "rpi"; then
 	TARGETNAME=pigpio_rpi
 	showwarning "tiny_gpio-based \"rpi\" platform was deprecated and removed from libMule. Please use \"pigpio_rpi\" platform instead."
+elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test "$TARGETNAME" = "avr"; then
+	TARGETNAME=arduinoavr
+	MODULES=arduino
 fi
 
 if test "$HOSTCC" = "" && test "$HOSTCXX" = ""; then
@@ -405,6 +410,8 @@ if test "$MODULES" = "all" || test "$MODULES" = "everything"; then
 	MODULES="core,fileio,sound,pwmdevices,sensors"
 elif test "$MODULES" = "minimal"; then
 	MODULES="core"
+elif test "$MODULES" = "arduino"; then
+	MODULES="core,pwmdevices,sensors"
 fi
 MODULES=`echo "$MODULES" | sed 's/,/ /g'`
 MODULES=" $MODULES" # workaround for a further discovered bug in this script that never could detect "core" as an available module
