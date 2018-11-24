@@ -3,7 +3,7 @@ before_script:
   - apt-get update -qq && apt-get install -y -qq gcc g++ wget bsdtar > /dev/null 2>&1
   - mkdir -v toolchains
   - wget https://downloads.arduino.cc/arduino-nightly-linux64.tar.xz
-  - sh -c "cd toolchains && tar -xJf ../arduino-nightly-linux64.tar.xz && mv -v arduino-nightly/ arduino/"
+  - sh -c "cd toolchains && tar -xJf ../arduino-nightly-linux64.tar.xz"
   - rm -r -f arduino-nightly-linux64.tar.xz
 
 arduinoplatform_and_tests:
