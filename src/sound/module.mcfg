@@ -4,9 +4,3 @@ Sources:mulesoundplayer.cpp
 Headers:mulesoundplayer.h
 Requires:fileio
 ModuleID:MULE_FEATURES_SOUND
- 
- 
- 
- 
- 
- 
