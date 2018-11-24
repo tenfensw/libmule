@@ -182,6 +182,8 @@ for Argument in $*; do
 		PREFIX="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-qmake"; then
 		HOSTQMAKE="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-debug"; then
+		THINGSTODEFINE="MULE_FEATURES_DEBUG $THINGSTODEFINE"
 	elif test "$FIRSTHALF" = "-modules"; then
 		MODULES="$SECONDHALF"
 	else

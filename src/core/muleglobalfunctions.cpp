@@ -37,7 +37,7 @@ MULE_OTHER_STRINGTYPE muleinttostr(int in) {
 
 void muledebug(MULE_OTHER_STRINGTYPE debugout) {
 #ifdef MULE_FEATURES_DEBUG
-    muleprintf("[DEBUG] " + debugout);
+    muleprintf("[DEBUG] " + debugout + "\n");
 #endif
     return;
 }
