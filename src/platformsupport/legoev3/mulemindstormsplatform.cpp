@@ -40,7 +40,7 @@ std::vector<MuleDevice*> MuleMindstormsPlatform::getDevices() {
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
-    if (pin == 5)
+    if (pin == MULE_MINDSTORMS_MOTORPIN)
 	return MULE_OUTPUT;
     return MULE_INPUT;
 }
@@ -48,8 +48,9 @@ MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin
 bool MuleMindstormsPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("mode = " + muleinttostr((int)(mode)));
-    muledebug("make the user happy, return true");
-    return true;
+    if ((pin == MULE_MINDSTORMS_MOTORPIN && mode == MULE_OUTPUT) || ((pin > 0) && (pin < MULE_MINDSTORMS_MOTORPIN) && (mode == MULE_INPUT)))
+	return true;
+    return false;
 }
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::readFromPin(MULE_OTHER_HWPINTYPE pin) {
@@ -74,27 +75,16 @@ MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::readFromPin(MULE_OTHER_HWPINTYPE pi
 bool MuleMindstormsPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("ct = " + muleinttostr((int)(ct)));
-    //if (pin == 5) {
-    //	int motrot = ct;
-    //	if (motrot == MULE_MINDSTORMS_MOTOROFF)
-    //		Off(OUT_ALL);
-    //	else if (motrot < 0) {
-    //		motrot = abs(motrot);
-    //		OnRevReg(OUT_ALL, motrot);
-    //	}
-    //	else
-    //		OnFwdReg(OUT_ALL, motrot);
-    //	return true;
-    //}
-    //else
-    	return false;
+    return false;
 }
 
 bool MuleMindstormsPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("val = " + muleinttostr((int)(val)));
     muledebug("make the user happy, return true");
-    return true;
+    if (val == MULE_PUD_OFF)
+	return true;
+    return false;
 }
 #endif
 
@@ -149,15 +139,14 @@ bool MuleMindstormsPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPIN
 	if (pin == MULE_MINDSTORMS_MOTORPIN) {
 		if (dutycycle == 0) {
 			Off(OUT_ALL);
-			return true;
 		}
 		else {
 			int motorangle = (int)(round((((dutycycle / 5) - 1) * 180) / 598));
 			RotateMotor(OUT_ALL, MULE_MINDSTORMS_MOTORSPEED, motorangle);
 		}
+		return true;
 	}
-	else
-		return false;
+	return false;
 }
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {
