@@ -655,6 +655,52 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "#endif" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "#ifdef MULE_FEATURES_PWMDEVICES" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "bool $tmp_deviceclassname::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // it sends PWM pulses to the specified pin" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    return false;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "MULE_OTHER_HWPINTYPE $tmp_deviceclassname::getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // it returns the duty cycle setting on the specified pin" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    return -1;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "MULE_OTHER_HWPINTYPE $tmp_deviceclassname::getPWMRange(MULE_OTHER_HWPINTYPE pin) {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // it returns the configured PWM range on the specified pin" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    return -1;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "MULE_OTHER_HWPINTYPE $tmp_deviceclassname::getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // it returns the PWM frequency on the specified pin" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    return -1;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "bool $tmp_deviceclassname::setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // it sets the maximum PWM range on the specified pin" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    return false;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "bool $tmp_deviceclassname::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // it sets the PWM frequency of the specified pin" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    return false;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "#endif" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "#ifdef MULE_FEATURES_SENSORS" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "bool $tmp_deviceclassname::sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    // it just waits until the specified pin goes from low to high and returns true" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "    return false;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "#endif" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "Sources:$tmp_deviceclassname.cpp" >> ./src/platformsupport/$PLATFORMNAME/vars.mcfg
 	echo "Headers:$tmp_deviceclassname.h" >> ./src/platformsupport/$PLATFORMNAME/vars.mcfg
 	mv ./src/platformsupport/common/mulecurrentplatform.h ./src/platformsupport/common/mulecurrentplatform.h.old
