@@ -1,79 +1,105 @@
 #include "platformsupport/arduinoavr/mulearduinoavrplatform.h"
 
 MuleArduinoAVRPlatform::MuleArduinoAVRPlatform() {
-      // TODO: implement device initialization code here
+      
+}
+
+bool MuleArduinoAVRPlatform::arduinoIsDigitalPin(MULE_OTHER_HWPINTYPE pin) {
+	if (pin < (MULE_ARDUINO_LASTDIGITALPIN + 1))
+		return true;
+	return false;
 }
 
 std::vector<MuleDevice*> MuleArduinoAVRPlatform::getDevices() {
      std::vector<MuleDevice*> list_of_connected_devices;
      list_of_connected_devices.clear();
-     int maxpincount = 54; // replace this with the total amount of GPIO/device pins available on your device
+     int maxpincount = MULE_ARDUINO_DIGITALPINCOUNT + MULE_ARDUINO_ANALOGPINCOUNT; 
      for (int i = 0; i < maxpincount; i++)
           list_of_connected_devices.push_back(new MuleDevice(i));
      return list_of_connected_devices;
 }
 
+MULE_OTHER_HWPINTYPE MuleArduinoAVRPlatform::arduinoMulePinToNativeAnalog(MULE_OTHER_HWPINTYPE pin) {
+	if (arduinoIsDigitalPin(pin) == true)
+		return -1;
+	return (pin - MULE_ARDUINO_LASTDIGITALPIN - 1);
+}
+
 MULE_OTHER_HWPINTYPE MuleArduinoAVRPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
-     // TODO: implement this function.
-     // the only thing it does is checking if the specified pin is an input or an output pin and returning either MULE_INPUT or MULE_OUTPUT
+	if (arduinoIsDigitalPin(pin) == false)
+		return MULE_INPUT;
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t prt = digitalPinToPort(pin);
+	volatile uint8_t *pinregister = portModeRegister(prt);
+	
+	if (*pinregister & bit)
+		return MULE_OUTPUT;
+	else
+		return MULE_INPUT;
+		
+	return -1;
 }
 
 bool MuleArduinoAVRPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {
-     // TODO: implement this function.
-     // the only thing it does is initializing the specified pin either as an input or an output pin (if everything is okay, then true is returned, if not, then false is returned)
-     return false;
+	if (arduinoIsDigitalPin(pin) == false)
+		return false;
+	pinMode(pin, mode);
+	return true;
 }
 
 MULE_OTHER_HWPINTYPE MuleArduinoAVRPlatform::readFromPin(MULE_OTHER_HWPINTYPE pin) {
-    // TODO: implement this function.
-    // it gets a value from the sensor connected to the specified pin and returns that value
+    if (arduinoIsDigitalPin(pin) == true)
+	return digitalRead(pin);
+    else {
+	int arduinoanalog = arduinoMulePinToNativeAnalog(pin);
+	if (pin > -1)
+		return analogRead(arduinoanalog);
+    }
     return -1;
 }
 
 bool MuleArduinoAVRPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {
-    // TODO: implement this function.
-    // it tries to write "ct" to the specified pin
-    return false;
+    if (arduinoIsDigitalPin(pin) == true)
+	digitalWrite(pin, ct);
+    else
+	return false;
+    return true;
 }
 
 bool MuleArduinoAVRPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
-    // TODO: implement this function IF your target device actually supports pull-up-down resistors.
+    if (val != MULE_PUD_OFF && val != MULE_PUD_DOWN && val != MULE_PUD_UP)
+	return false;
+    return setPinMode(pin, val);
 }
 
 #ifdef MULE_FEATURES_PWMDEVICES
 bool MuleArduinoAVRPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {
-    // TODO: implement this function
-    // it sends PWM pulses to the specified pin
-    return false;
+    if (dutycycle > MULE_ARDUINO_MAXDUTYCYCLE || dutycycle < MULE_ARDUINO_MINDUTYCYCLE)
+	return false;
+    int analogpin = pin;
+    if (arduinoIsDigitalPin(pin) == false)
+	analogpin = arduinoMulePinToNativeAnalog(pin);
+    analogWrite(analogpin, dutycycle);
+    return true;
 }
 
 MULE_OTHER_HWPINTYPE MuleArduinoAVRPlatform::getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {
-    // TODO: implement this function
-    // it returns the duty cycle setting on the specified pin
-    return -1;
+    return MULE_ARDUINO_MAXDUTYCYCLE;
 }
 
 MULE_OTHER_HWPINTYPE MuleArduinoAVRPlatform::getPWMRange(MULE_OTHER_HWPINTYPE pin) {
-    // TODO: implement this function
-    // it returns the configured PWM range on the specified pin
-    return -1;
+    return getPWMDutyCycle(pin);
 }
 
 MULE_OTHER_HWPINTYPE MuleArduinoAVRPlatform::getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {
-    // TODO: implement this function
-    // it returns the PWM frequency on the specified pin
-    return -1;
+    return MULE_ARDUINO_CONSTPWMFREQUENCY;
 }
 
 bool MuleArduinoAVRPlatform::setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {
-    // TODO: implement this function
-    // it sets the maximum PWM range on the specified pin
     return false;
 }
 
 bool MuleArduinoAVRPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {
-    // TODO: implement this function
-    // it sets the PWM frequency of the specified pin
     return false;
 }
 

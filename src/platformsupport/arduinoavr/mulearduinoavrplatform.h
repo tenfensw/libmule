@@ -16,6 +16,12 @@
 #define MULE_PUD_DOWN 0x3
 #define MULE_PUD_UP 0x2
 
+#define MULE_ARDUINO_DIGITALPINCOUNT 14
+#define MULE_ARDUINO_ANALOGPINCOUNT 6
+#define MULE_ARDUINO_LASTDIGITALPIN 13
+#define MULE_ARDUINO_MINDUTYCYCLE 0
+#define MULE_ARDUINO_MAXDUTYCYCLE 255
+#define MULE_ARDUINO_CONSTPWMFREQUENCY 490
 
 class MuleArduinoAVRPlatform : public MuleCommonPlatform {
     public:
@@ -40,6 +46,10 @@ class MuleArduinoAVRPlatform : public MuleCommonPlatform {
 # ifdef MULE_FEATURES_SENSORS
       bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
 # endif
+
+    private:
+      bool arduinoIsDigitalPin(MULE_OTHER_HWPINTYPE pin);
+      MULE_OTHER_HWPINTYPE arduinoMulePinToNativeAnalog(MULE_OTHER_HWPINTYPE pin);
 };
 
 #endif
