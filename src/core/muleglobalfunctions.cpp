@@ -43,9 +43,13 @@ void muledebug(MULE_OTHER_STRINGTYPE debugout) {
 }
 
 MULE_OTHER_STRINGTYPE mulegetcwd() {
+#ifdef MULE_FEATURES_FILEIO
     char wtw[1600];
     getcwd(wtw, 1600);
     return MULE_OTHER_STRINGTYPE(wtw);
+#else
+    return MULE_OTHER_STRINGTYPE("/");
+#endif
 }
 
 
