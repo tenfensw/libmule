@@ -506,6 +506,11 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	echo "#define MULE_TEMPDIRECTORY \"/tmp\"" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "#define MULE_INPUT 0" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "#define MULE_OUTPUT 1" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "#define MULE_LOW 0" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "#define MULE_HIGH 1" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "#define MULE_PUD_OFF 0" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "#define MULE_PUD_DOWN 1" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "#define MULE_PUD_UP 2" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "class $tmp_deviceclassname : public MuleCommonPlatform {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
@@ -531,6 +536,17 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	echo "      bool playWaveFile(MULE_OTHER_STRINGTYPE filename);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      MULE_OTHER_STRINGTYPE getSoundBackend() { return \"dynamic\"; }" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      bool stopAllSounds();" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "# endif" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "# ifdef MULE_FEATURES_PWMDEVICES" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "      bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "      MULE_OTHER_HWPINTYPE getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "      MULE_OTHER_HWPINTYPE getPWMRange(MULE_OTHER_HWPINTYPE pin);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "      bool setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "      MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "      bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "# endif" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "# ifdef MULE_FEATURES_SENSORS" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "      bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "# endif" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "};" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
