@@ -35,6 +35,9 @@ class MuleCurrentPlatform
 public:
     MuleCurrentPlatform();
 #ifdef MULE_FEATURES_CORE
+    MULE_OTHER_STRINGTYPE getPlatformName() {
+        return platformClass->getPlatformName();
+    }
     std::vector<MuleDevice*> getDevices() {
         return platformClass->getDevices();
     }
@@ -64,9 +67,6 @@ public:
     }
     bool fileExists(MULE_OTHER_STRINGTYPE file) {
         return platformClass->fileExists(file);
-    }
-    MULE_OTHER_STRINGTYPE getPlatformName() {
-        return platformClass->getPlatformName();
     }
     bool deleteFile(MULE_OTHER_STRINGTYPE file) {
 	return platformClass->deleteFile(file);
