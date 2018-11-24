@@ -15,7 +15,7 @@
 #elif defined(MULE_PLATFORM_PIGPIO)
 #include "platformsupport/pigpio_rpi/mulepigpioplatform.h"
 #elif defined(MULE_PLATFORM_ARDUINOAVR)
-#include "platformsupport/arduinoavr/MuleArduinoAVRPlatform.h"
+#include "platformsupport/arduinoavr/mulearduinoavrplatform.h"
 #endif
 #ifdef MULE_FEATURES_FILEIO
 #include "fileio/mulefile.h"

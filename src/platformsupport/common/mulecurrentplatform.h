@@ -11,7 +11,7 @@
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleDummyPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("dummy")
 #elif defined(MULE_PLATFORM_ARDUINOAVR)
-#include "platformsupport/arduinoavr/MuleArduinoAVRPlatform.h"
+#include "platformsupport/arduinoavr/mulearduinoavrplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleArduinoAVRPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("arduinoavr")
 #elif defined(MULE_PLATFORM_LEGOEV3)
