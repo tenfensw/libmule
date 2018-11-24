@@ -9,6 +9,9 @@ MuleDevice::MuleDevice(MULE_OTHER_HWPINTYPE pin)
         muleexception(8, "MuleDevice(" + muleinttostr(pin) + ") could not be initialized", true);
 }
 
+MuleDevice::~MuleDevice() {
+}
+
 bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
     pinNum = pin;
     if (!(MuleApplicationWideData::appWideFirstInstance))
