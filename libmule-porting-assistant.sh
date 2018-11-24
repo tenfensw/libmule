@@ -353,7 +353,7 @@ editormainmenu() {
 	editormainmenu
 }
 
-TOOLVERSION=0.4.0
+TOOLVERSION=0.4.0-arduinogit
 PLATFORMNAME=
 PLATFORMDEFINE=
 PLATFORMOS=
