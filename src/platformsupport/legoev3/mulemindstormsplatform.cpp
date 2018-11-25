@@ -18,13 +18,13 @@ MuleMindstormsPlatform::~MuleMindstormsPlatform() {
 }
 
 void MuleMindstormsPlatform::legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE type) {
-	if (pin == 1)
+	if (pin == 0)
 		setAllSensorMode(type, NO_SEN, NO_SEN, NO_SEN);
-	else if (pin == 2)
+	else if (pin == 1)
 		setAllSensorMode(NO_SEN, type, NO_SEN, NO_SEN);
-	else if (pin == 3)
+	else if (pin == 2)
 		setAllSensorMode(NO_SEN, NO_SEN, type, NO_SEN);
-	else if (pin == 4)
+	else if (pin == 3)
 		setAllSensorMode(NO_SEN, NO_SEN, NO_SEN, type);
 	else
 		return;
@@ -34,7 +34,7 @@ void MuleMindstormsPlatform::legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER
 std::vector<MuleDevice*> MuleMindstormsPlatform::getDevices() {
     devlist.clear();
     for (int i = 0; i < 5; i++)
-	devlist.push_back(new MuleDevice(i + 1));
+	devlist.push_back(new MuleDevice(i));
     return devlist;
 }
 
@@ -55,36 +55,26 @@ bool MuleMindstormsPlatform::setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWP
 
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::readFromPin(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
-    //if (pin == 1)
-    //	return readSensor(IN_1);
-    //else if (pin == 2)
-    //	return readSensor(IN_2);
-    //else if (pin == 3)
-    //	return readSensor(IN_3);
-    //else if (pin == 4)
-    //	return readSensor(IN_4);
-    //else if (pin == 5)
-    //	return (MotorPower(OUT_ALL) - '0');
-    //else {
-    //	platformInitializationException(3, "No such port on the EV3: " + muleinttostr(pin));
-    //	return -1;
-    //}
+    int rpin = pin + 1;
+    if (rpin > (MULE_MINDSTORMS_MOTORPIN + 1) || rpin < 1)
+	return -1;
+    if (readSensor(rpin) > 0)
+	return 1;
     return 0;
 }
 
 bool MuleMindstormsPlatform::writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("ct = " + muleinttostr((int)(ct)));
-    return false;
+    muledebug("make the user happy, return true");
+    return true;
 }
 
 bool MuleMindstormsPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     muledebug("val = " + muleinttostr((int)(val)));
     muledebug("make the user happy, return true");
-    if (val == MULE_PUD_OFF)
-	return true;
-    return false;
+    return true;
 }
 #endif
 
@@ -130,18 +120,22 @@ bool MuleMindstormsPlatform::playWaveFile(MULE_OTHER_STRINGTYPE filename) {
 }
 
 bool MuleMindstormsPlatform::stopAllSounds() {
-	return false;
+	StopSound();
+	return true;
 }
 #endif
 
 #ifdef MULE_FEATURES_PWMDEVICES
 bool MuleMindstormsPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {
 	if (pin == MULE_MINDSTORMS_MOTORPIN) {
-		if (dutycycle == 0) {
+		if (dutycycle == 0)
 			Off(OUT_ALL);
-		}
 		else {
-			int motorangle = (int)(round((((dutycycle / 5) - 1) * 180) / 598));
+			//int motorangle = (int)(round((((dutycycle / 5) - 1) * 180))) ;
+			if (dutycycle > MULE_MINDSTORMS_PWMMAXRANGE)
+				dutycycle = MULE_MINDSTORMS_PWMMAXRANGE;
+			int motorangle = (int)(ceil(dutycycle * 1.41));
+
 			RotateMotor(OUT_ALL, MULE_MINDSTORMS_MOTORSPEED, motorangle);
 		}
 		return true;

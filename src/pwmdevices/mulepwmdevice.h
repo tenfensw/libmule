@@ -15,8 +15,6 @@ class MulePWMDevice : public MuleDevice {
 	  bool off() { return this->stop(); }
 	  int getRange();
 	  int range() { return this->getRange(); }
-	  int getDutyCycle();
-	  int dutyCycle() { return this->getDutyCycle(); }
 	  int getFrequency();
 	  int frequency() { return this->getFrequency(); }
 	  bool isOn();

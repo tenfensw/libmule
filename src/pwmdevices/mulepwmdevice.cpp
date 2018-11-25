@@ -23,11 +23,6 @@ int MulePWMDevice::getRange() {
 	return convertedMcpInstance->getPWMRange(pinNum);
 }
 
-int MulePWMDevice::getDutyCycle() {
-	MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
-	return convertedMcpInstance->getPWMDutyCycle(pinNum);
-}
-
 int MulePWMDevice::getFrequency() {
 	MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
 	return convertedMcpInstance->getPWMFrequency(pinNum);

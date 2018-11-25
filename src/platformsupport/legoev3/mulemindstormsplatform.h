@@ -2,12 +2,12 @@
 #define MULEMINDSTORMSPLATFORM_H
 
 #define MULE_MINDSTORMS_MOTOROFF -798
-#define MULE_MINDSTORMS_MOTORPIN 5
+#define MULE_MINDSTORMS_MOTORPIN 4
 // I had to implement a fake fifth pin so that you could access the Mindstorms motors the motors somehow
 #define MULE_MINDSTORMS_MOTORSPEED 40
 #define MULE_MINDSTORMS_PWMFREQUENCY 10000
 // MULE_MINDSTORMS_PWMFREQUENCY value taken from http://icube-avr.unistra.fr/en/index.php/Hacking_the_Lego_EV3
-#define MULE_MINDSTORMS_PWMMAXRANGE 2500
+#define MULE_MINDSTORMS_PWMMAXRANGE 255
 // taken from https://github.com/joan2937/pigpio/blob/master/pigpio.h for Raspberry Pi compatibility
 #include "platformsupport/common/mulecommonplatform.h"
 #include "core/muleconfig.h"
