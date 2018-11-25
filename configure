@@ -490,7 +490,7 @@ if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 fi
 
 if test "$TARGETNAME" = "arduinoavr" && test -e "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"; then
-	mv "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+	mv "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
 	ARDUINOSERIALDEVICE=""
 	if test "$ARDUINOTARGETDEVICE" = "mega"; then
 		ARDUINOSERIALDEVICE=Serial2
@@ -499,13 +499,13 @@ if test "$TARGETNAME" = "arduinoavr" && test -e "$SOURCEDIR/src/3rdparty/Arduino
 	else
 		ARDUINOSERIALDEVICE=NULL
 	fi
-	cat "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old" | sed "s+#define ARDUINOSTL_DEFAULT_SERIAL Serial+#define ARDUINOSTL_DEFAULT_SERIAL $ARDUINOSERIALDEVICE+g" > "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
+	cat "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old" | sed "s+#define ARDUINOSTL_DEFAULT_SERIAL Serial+#define ARDUINOSTL_DEFAULT_SERIAL $ARDUINOSERIALDEVICE+g" > "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
 	if test "$ARDUINOSERIALDEVICE" = "NULL"; then
-		rm -r -f "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
-		mv "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
-		cat "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old" | sed "s+#define ARDUINOSTL_DEFAULT_CIN_COUT+// define ARDUINOSTL_DEFAULT_CIN_COUT for cin/cout implementation+g" > "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
+		rm -r -f "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+		mv "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+		cat "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old" | sed "s+#define ARDUINOSTL_DEFAULT_CIN_COUT+// define ARDUINOSTL_DEFAULT_CIN_COUT for cin/cout implementation+g" > "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
 	fi
-	rm -r -f "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+	rm -r -f "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
 fi
 
 # deal with modules
