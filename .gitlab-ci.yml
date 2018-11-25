@@ -59,7 +59,7 @@ raspberrypiplatform_and_tests:
 arduinoplatform_and_tests:
   script:
     - mkdir arduinoplatform-gcc-builddir
-    - sh -c "cd arduinoplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=avr -prefix=$PWD/bin -modules=arduino -platformcc=$PWD/toolchains/arduino-nightly/hardware/tools/avr/bin/avr-gcc -platformcxx=$PWD/toolchains/arduino-nightly/hardware/tools/avr/bin/avr-g++ -platformld=$PWD/toolchains/arduino-nightly/hardware/tools/avr/bin/avr-g++ -platformar=$PWD/toolchains/arduino-nightly/hardware/tools/avr/bin/avr-ar -platformcflags=\"-I$PWD/toolchains/arduino-nightly/hardware/arduino/avr/cores/arduino\" -platformcflags=\"-I$PWD/toolchains/arduino-nightly/hardware/arduino/avr/variants/standard\""
+    - sh -c "cd arduinoplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=avr -prefix=$PWD/bin -modules=arduino -arduino-device=uno -arduino-idedir=$PWD/toolchains/arduino-nightly"
     - mv -v src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp ./ArduinoSTL.cpp.beforepatch
     - sh -c "cat ./ArduinoSTL.cpp.beforepatch | sed 's+#define ARDUINOSTL_DEFAULT_CIN_COUT+//no cin cout+g' | sed 's/#define ARDUINOSTL_DEFAULT_SERIAL Serial/#define ARDUINOSTL_DEFAULT_SERIAL NULL/g' > ./src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
     - sh -c "cd arduinoplatform-gcc-builddir && make && make install"

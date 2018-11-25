@@ -66,6 +66,16 @@ Usage: $0 [arguments]
 						is installed on your device. Use this option
 						if you use an unofficial firmware.
 						
+	-arduino-header=[full path to Arduino.h] Required only when cross-compiling for Arduino.
+	                                         Specify the full path to the Arduino.h file.
+						 
+	-arduino-idedir=[Arduino IDE install    Required only when cross-compiling for Arduino.
+	prefix]                                 Specify the directory where Arduino IDE is installed.
+						 
+	-arduino-device=[uno/mega/leonardo]     Required only when cross-compiling for Arduino.
+	                                        Specify the target Arduino board - Uno, Mega 2560
+						or Leonardo.
+
 All bugs should be reported to mailto:timprogrammer@rambler.ru.
 libMule configure script version $TOOLVERSION running on $HOSTOS
 EOF
@@ -126,6 +136,9 @@ HOSTOS=""
 HOSTCPU=""
 ADDITIONALINCLUDES=""
 ADDITIONALLIBS=""
+ARDUINOHEADERLOCATION=""
+ARDUINOINCLUDEFLAGS=""
+ARDUINOTARGETDEVICE=""
 
 # display a beautiful header
 niceheader
@@ -213,9 +226,30 @@ for Argument in $*; do
 	elif test "$FIRSTHALF" = "-debug"; then
 		THINGSTODEFINE="MULE_FEATURES_DEBUG $THINGSTODEFINE"
 	elif test "$FIRSTHALF" = "-modules"; then
-		if test "$MODULES" != "arduino"; then
-			MODULES="$SECONDHALF"
+		MODULES="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-arduino-header"; then
+		if test -e "$SECONDHALF"; then
+			ARDUINOHEADERLOCATION="$SECONDHALF"
+		else
+			showerror 19 "\"$SECONDHALF\" doesn't appear to be a valid Arduino.h header. Please specify the path to the Arduino.h header. For example, -arduino-header=/home/tim/Software/arduino-nightly/hardware/arduino/avr/cores/arduino/Arduino.h"
 		fi
+	elif test "$FIRSTHALF" = "-arduino-idedir"; then
+		if test -e "$SECONDHALF"; then
+			ARDUINOHEADERLOCATION="$SECONDHALF/hardware/arduino/avr/cores/arduino/Arduino.h"
+			if test ! -e "$ARDUINOHEADERLOCATION"; then
+				showerror 22 "\"$SECONDHALF\" doesn't appear to be a valid Arduino IDE install prefix."
+			fi
+			if test -e "$SECONDHALF/hardware/tools/avr/bin/avr-g++"; then
+				TARGETCC="$SECONDHALF/hardware/tools/avr/bin/avr-gcc"
+				TARGETCXX="$SECONDHALF/hardware/tools/avr/bin/avr-g++"
+				TARGETLD="$TARGETCXX"
+				TARGETAR="$SECONDHALF/hardware/tools/avr/bin/avr-ar"
+			fi
+		else
+			showerror 22 "\"$SECONDHALF\" doesn't appear to be a valid Arduino IDE install prefix."
+		fi
+	elif test "$FIRSTHALF" = "-arduino-device" || test "$FIRSTHALF" = "-arduino-model"; then
+		ARDUINOTARGETDEVICE="$SECONDHALF"
 	else
 		showwarning "Unknown option: $FIRSTHALF"
 	fi
@@ -230,6 +264,28 @@ if test "$TARGETNAME" = "rpi"; then
 elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test "$TARGETNAME" = "avr"; then
 	TARGETNAME=arduinoavr
 	MODULES=arduino
+	if test "$ARDUINOHEADERLOCATION" = "" || test "$ARDUINOTARGETDEVICE" = ""; then
+		echo "It appears you have forgotten to specify these options:"
+		echo " - path to Arduino.h file. Specify it using the \"-arduino-header=[path]\" flag. Alternatively, specify the full path to the directory where Arduino IDE is installed using the \"-arduino-idedir=[path]\" flag."
+		echo " - the target Arduino board. Currently only Arduino Uno, Mega 2560 and Leonardo are supported. Specify the model name using the \"-arduino-device=[model name]\" flag."
+		showerror 20 "Not all options were specified. See the message above for more info."
+	fi
+	if test "$ARDUINOTARGETDEVICE" != "uno" && test "$ARDUINOTARGETDEVICE" = "mega" && test "$ARDUINOTARGETDEVICE" != "leonardo"; then
+		showerror 21 "Invalid Arduino model name: $ARDUINOTARGETDEVICE."
+	fi
+	TMP_ARDUINOHEADERDIR=`dirname "$ARDUINOHEADERLOCATION"`
+	ARDUINOINCLUDEFLAGS="-I$TMP_ARDUINOHEADERDIR"
+	if test "$ARDUINOTARGETDEVICE" = "uno"; then
+		ARDUINOINCLUDEFLAGS="$ARDUINOINCLUDEFLAGS -I$TMP_ARDUINOHEADERDIR/../../variants/standard"
+	elif test "$ARDUINOTARGETDEVICE" = "mega"; then
+		ARDUINOINCLUDEFLAGS="$ARDUINOINCLUDEFLAGS -I$TMP_ARDUINOHEADERDIR/../../variants/mega"
+	elif test "$ARDUINOTARGETDEVICE" = "leonardo"; then
+		ARDUINOINCLUDEFLAGS="$ARDUINOINCLUDEFLAGS -I$TMP_ARDUINOHEADERDIR/../../variants/leonardo"
+	else
+		ARDUINOINCLUDEFLAGS="$ARDUINOINCLUDEFLAGS -I$TMP_ARDUINOHEADERDIR/../../variants/standard"
+	fi
+	TARGETCXXFLAGS="$ARDUINOINCLUDEFLAGS $TARGETCXXFLAGS"
+	TARGETCFLAGS="$ARDUINOINCLUDEFLAGS $TARGETCFLAGS"
 fi
 
 if test "$HOSTCC" = "" && test "$HOSTCXX" = ""; then
