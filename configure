@@ -489,7 +489,7 @@ if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 	fi
 fi
 
-if test "$TARGETNAME" = "arduinoavr" && test -e "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"; then
+if test "$TARGETNAME" = "arduinoavr" && test -e "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"; then
 	mv "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
 	ARDUINOSERIALDEVICE=""
 	if test "$ARDUINOTARGETDEVICE" = "mega"; then
