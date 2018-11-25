@@ -270,7 +270,7 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 		echo " - the target Arduino board. Currently only Arduino Uno, Mega 2560 and Leonardo are supported. Specify the model name using the \"-arduino-device=[model name]\" flag."
 		showerror 20 "Not all options were specified. See the message above for more info."
 	fi
-	if test "$ARDUINOTARGETDEVICE" != "uno" && test "$ARDUINOTARGETDEVICE" = "mega" && test "$ARDUINOTARGETDEVICE" != "leonardo"; then
+	if test "$ARDUINOTARGETDEVICE" != "uno" && test "$ARDUINOTARGETDEVICE" != "mega" && test "$ARDUINOTARGETDEVICE" != "leonardo"; then
 		showerror 21 "Invalid Arduino model name: $ARDUINOTARGETDEVICE."
 	fi
 	TMP_ARDUINOHEADERDIR=`dirname "$ARDUINOHEADERLOCATION"`
