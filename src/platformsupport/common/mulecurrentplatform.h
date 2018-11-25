@@ -10,6 +10,10 @@
 #include "platformsupport/dummy/muledummyplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleDummyPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("dummy")
+#elif defined(MULE_PLATFORM_ARDUINOAVR)
+#include "platformsupport/arduinoavr/mulearduinoavrplatform.h"
+#define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleArduinoAVRPlatform
+#define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("arduinoavr")
 #elif defined(MULE_PLATFORM_LEGOEV3)
 #include "platformsupport/legoev3/mulemindstormsplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleMindstormsPlatform
@@ -31,6 +35,9 @@ class MuleCurrentPlatform
 public:
     MuleCurrentPlatform();
 #ifdef MULE_FEATURES_CORE
+    MULE_OTHER_STRINGTYPE getPlatformName() {
+        return platformClass->getPlatformName();
+    }
     std::vector<MuleDevice*> getDevices() {
         return platformClass->getDevices();
     }
@@ -60,9 +67,6 @@ public:
     }
     bool fileExists(MULE_OTHER_STRINGTYPE file) {
         return platformClass->fileExists(file);
-    }
-    MULE_OTHER_STRINGTYPE getPlatformName() {
-        return platformClass->getPlatformName();
     }
     bool deleteFile(MULE_OTHER_STRINGTYPE file) {
 	return platformClass->deleteFile(file);

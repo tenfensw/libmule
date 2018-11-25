@@ -22,8 +22,8 @@
 #define FILENOTFOUND std::string("nf")
 #define TOOLBUGURL std::string("timprogrammer@rambler.ru")
 #define TOOLVERSION std::string("0.4.0-alpha")
-#define TOOLTARGET std::string("any")
 #ifdef MULETOOL_WORKAROUND_PWDASPREFIX
+#define TOOLTARGET std::string("any")
 #define TOOLPREFIX std::string(".")
 #endif
 

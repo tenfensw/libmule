@@ -1,3 +1,4 @@
+
 #!/bin/bash
 # This will download third-party components
 
@@ -20,7 +21,7 @@ else
 	exit 1
 fi
 
-COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio"
+COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio ArduinoSTL=https://github.com/mike-matera/ArduinoSTL"
 if test -e "./.stamp"; then
 	echo "[INFO] Everything was already downloaded"
 	exit 0
@@ -51,7 +52,7 @@ for Component in $COMPONENTS; do
 			echo "[ERROR] Download failed!"
 			exit 2
 		fi
-		if test `echo "$CNAME" | cut -d '.' -f2` = "zip"; then
+		if echo "$CNAME" | grep -q ".zip"; then
 			if command -v bsdtar > /dev/null 2>&1; then
 				bsdtar -xvf "$CNAME"
 			elif command -v unzip > /dev/null 2>&1; then
