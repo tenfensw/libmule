@@ -489,6 +489,25 @@ if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 	fi
 fi
 
+if test "$TARGETNAME" = "arduinoavr" && test -e "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"; then
+	mv "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+	ARDUINOSERIALDEVICE=""
+	if test "$ARDUINOTARGETDEVICE" = "mega"; then
+		ARDUINOSERIALDEVICE=Serial2
+	elif test "$ARDUINOTARGETDEVICE" = "leonardo"; then
+		ARDUINOSERIALDEVICE=Serial1
+	else
+		ARDUINOSERIALDEVICE=NULL
+	fi
+	cat "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old" | sed "s+#define ARDUINOSTL_DEFAULT_SERIAL Serial+#define ARDUINOSTL_DEFAULT_SERIAL $ARDUINOSERIALDEVICE+g" > "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
+	if test "$ARDUINOSERIALDEVICE" = "NULL"; then
+		rm -r -f "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+		mv "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+		cat "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old" | sed "s+#define ARDUINOSTL_DEFAULT_CIN_COUT+// define ARDUINOSTL_DEFAULT_CIN_COUT for cin/cout implementation+g" > "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
+	fi
+	rm -r -f "$SOURCEDIR/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+fi
+
 # deal with modules
 if test "$MODULES" = "all" || test "$MODULES" = "everything"; then
 	MODULES="core,fileio,sound,pwmdevices,sensors"

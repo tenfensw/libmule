@@ -60,8 +60,6 @@ arduinoplatform_and_tests:
   script:
     - mkdir arduinoplatform-gcc-builddir
     - sh -c "cd arduinoplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=avr -prefix=$PWD/bin -modules=arduino -arduino-device=uno -arduino-idedir=$PWD/toolchains/arduino-nightly"
-    - mv -v src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp ./ArduinoSTL.cpp.beforepatch
-    - sh -c "cat ./ArduinoSTL.cpp.beforepatch | sed 's+#define ARDUINOSTL_DEFAULT_CIN_COUT+//no cin cout+g' | sed 's/#define ARDUINOSTL_DEFAULT_SERIAL Serial/#define ARDUINOSTL_DEFAULT_SERIAL NULL/g' > ./src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
     - sh -c "cd arduinoplatform-gcc-builddir && make && make install"
     - $PWD/bin/bin/muletool -compile tests/test01-muleapplication-test.cpp && $PWD/bin/bin/muletool -link tests/test01-muleapplication-test.o && mv -v a.out run-test01
     - $PWD/bin/bin/muletool -compile tests/test04-mulesensor-trigger.cpp && $PWD/bin/bin/muletool -link tests/test04-mulesensor-trigger.o && mv -v a.out run-test04
