@@ -5,7 +5,7 @@ MuleDevice::MuleDevice(MULE_OTHER_HWPINTYPE pin)
 {
     if (dvinit(pin))
         muledebug("MuleDevice with pin " + muleinttostr(pin) + " successfully initialized");
-    else
+    else if (pin != -1)
         muleexception(8, "MuleDevice(" + muleinttostr(pin) + ") could not be initialized", true);
 }
 
@@ -14,7 +14,7 @@ MuleDevice::~MuleDevice() {
 
 bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
     pinNum = pin;
-    if (!(MuleApplicationWideData::appWideFirstInstance))
+    if (!(MuleApplicationWideData::appWideFirstInstance) || pin == -1)
         return false;
     muledebug("I'm going to access the only running MuleApplication instance to get a pointer to MuleCurrentPlatform class");
     MuleApplication* maInstance = (MuleApplication*)(MuleApplicationWideData::appWideFirstInstance);

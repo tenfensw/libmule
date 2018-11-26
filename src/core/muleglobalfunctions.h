@@ -18,7 +18,7 @@ void muleprintf(MULE_OTHER_STRINGTYPE in, ...);
 MULE_OTHER_STRINGTYPE muleinttostr(int in);
 void muledebug(MULE_OTHER_STRINGTYPE debugout);
 MULE_OTHER_STRINGTYPE mulegetcwd();
-void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch);
+void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch = true);
 void mulesleep(double seconds);
 void mulemicrosecsleep(int microseconds);
 #endif // MULEGLOBALFUNCTIONS_H
