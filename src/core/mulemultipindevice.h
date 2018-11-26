@@ -5,6 +5,7 @@
 
 #include "core/muleglobalfunctions.h"
 #include "core/muleconfig.h"
+#include "core/muledevice.h"
 
 class MuleMultipinDevice {
 	public:
