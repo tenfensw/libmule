@@ -3,6 +3,7 @@
 
 #define MULE_MULTIPIN_LIMIT 8
 
+#include <vector>
 #include "core/muleglobalfunctions.h"
 #include "core/muleconfig.h"
 #include "core/muledevice.h"
@@ -10,11 +11,11 @@
 class MuleMultipinDevice {
 	public:
 	  MuleMultipinDevice(MULE_OTHER_HWPINTYPE pin1, MULE_OTHER_HWPINTYPE pin2 = -1, MULE_OTHER_HWPINTYPE pin3 = -1, MULE_OTHER_HWPINTYPE pin4 = -1, MULE_OTHER_HWPINTYPE pin5 = -1, MULE_OTHER_HWPINTYPE pin6 = -1, MULE_OTHER_HWPINTYPE pin7 = -1, MULE_OTHER_HWPINTYPE pin8 = -1);
-	  MuleMultipinDevice(const MuleDevice& dev1, const MuleDevice& dev2 = MuleDevice(-1), const MuleDevice& dev3 = MuleDevice(-1), const MuleDevice& dev4 = MuleDevice(-1), const MuleDevice& dev5 = MuleDevice(-1), const MuleDevice& dev5 = MuleDevice(-1), const MuleDevice& dev6 = MuleDevice(-1), const MuleDevice& dev7 = MuleDevice(-1), const MuleDevice& dev8 = MuleDevice(-1));
-	  MuleMultipinDevice(const std::vector<MuleDevice>& devs);
-	  MuleMultipinDevice(const std::vector<MuleDevice*>& devs);
+	  MuleMultipinDevice(MuleDevice dev1, MuleDevice dev2 = MuleDevice(-1), MuleDevice dev3 = MuleDevice(-1), MuleDevice dev4 = MuleDevice(-1), MuleDevice dev5 = MuleDevice(-1), MuleDevice dev6 = MuleDevice(-1), MuleDevice dev7 = MuleDevice(-1), MuleDevice dev8 = MuleDevice(-1));
+	  MuleMultipinDevice(std::vector<MuleDevice> devs);
+	  MuleMultipinDevice(std::vector<MuleDevice*> devs);
 	  MuleMultipinDevice(int pins[MULE_MULTIPIN_LIMIT]);
-	  MuleMultipinDevice(const std::vector<MULE_OTHER_HWPINTYPE>& pinsvec);
+	  MuleMultipinDevice(std::vector<MULE_OTHER_HWPINTYPE> pinsvec);
 	  ~MuleMultipinDevice();
 	  
 	  MuleDevice* getPin(int nPin);
@@ -28,7 +29,7 @@ class MuleMultipinDevice {
 	  bool erasePin(int nPin) { return this->removePin(nPin); }
 	  bool eraseIndex(int nIndex) { return this->removeIndex(nIndex); }
 	  bool addPin(MULE_OTHER_HWPINTYPE nPin) { return this->addPin(new MuleDevice(nPin)); }
-	  bool addPin(const MuleDevice& dev) { return this->addPin(&dev); }
+	  bool addPin(MuleDevice dev) { return this->addPin(&dev); }
 	  bool addPin(MuleDevice* dev);
 	  bool writeToAll(MULE_OTHER_HWPINTYPE val);
 	  bool write(MULE_OTHER_HWPINTYPE val) { return this->writeToAll(val); }
