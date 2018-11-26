@@ -139,6 +139,7 @@ ADDITIONALLIBS=""
 ARDUINOHEADERLOCATION=""
 ARDUINOINCLUDEFLAGS=""
 ARDUINOTARGETDEVICE=""
+ISTHISWINDOWS=no
 
 # display a beautiful header
 niceheader
@@ -185,8 +186,13 @@ elif (uname | grep -q "BSD") || test `uname` = "Darwin"; then
 	HOSTOS="4.4BSD"
 elif test `uname` = "SunOS"; then
 	HOSTOS="Sun Solaris"
-elif (uname | grep -q "CYGWIN") || (uname | grep -q "MINGW"); then
+elif (uname | grep -q "CYGWIN") || (uname | grep -q "MINGW") || (uname | grep -q "MSYS"); then
 	HOSTOS="Microsoft Windows"
+	if uname | grep -q "CYGWIN"; then
+		ISTHISWINDOWS=cygwin
+	else
+		ISTHISWINDOWS=msys
+	fi
 else
 	HOSTOS="UNIX-like operating system `uname -m`"
 fi
