@@ -14,6 +14,7 @@ public:
     MuleDevice(MULE_OTHER_HWPINTYPE pin);
     ~MuleDevice();
     MULE_OTHER_HWPINTYPE pin() {
+        muledebug("return " + muleinttostr(pinNum));
         return pinNum;
     }
     MULE_OTHER_HWPINTYPE getPin() {

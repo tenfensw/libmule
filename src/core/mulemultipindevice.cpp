@@ -25,13 +25,55 @@ MuleMultipinDevice::MuleMultipinDevice(int pins[MULE_MULTIPIN_LIMIT]) {
 		muleexception(84, "MuleMultipinDevice could not initialize", false);
 }
 
+MuleMultipinDevice::MuleMultipinDevice(MuleDevice* dev1, MuleDevice* dev2, MuleDevice* dev3, MuleDevice* dev4, MuleDevice* dev5, MuleDevice* dev6, MuleDevice* dev7, MuleDevice* dev8) {
+	if (internalInit(dev1, dev2, dev3, dev4, dev5, dev6, dev7, dev8) != 0)
+		muleexception(84, "MuleMultipinDevice could not initialize", false);
+}
+
 MuleMultipinDevice::MuleMultipinDevice(std::vector<MULE_OTHER_HWPINTYPE> pinsvec) {
 	if (internalInit(pinsvec) != 0)
 		muleexception(84, "MuleMultipinDevice could not initialize", false);
 }
 
 int MuleMultipinDevice::internalInit(MULE_OTHER_HWPINTYPE pin1, MULE_OTHER_HWPINTYPE pin2, MULE_OTHER_HWPINTYPE pin3, MULE_OTHER_HWPINTYPE pin4, MULE_OTHER_HWPINTYPE pin5, MULE_OTHER_HWPINTYPE pin6, MULE_OTHER_HWPINTYPE pin7, MULE_OTHER_HWPINTYPE pin8) {
-	return internalInit(MuleDevice(pin1), MuleDevice(pin2), MuleDevice(pin3), MuleDevice(pin4), MuleDevice(pin5), MuleDevice(pin6), MuleDevice(pin7), MuleDevice(pin8));
+	std::vector<MuleDevice*> devices;
+	devices.push_back(new MuleDevice(pin1));
+	if (pin2 != -1)
+		devices.push_back(new MuleDevice(pin2));
+	if (pin3 != -1)
+		devices.push_back(new MuleDevice(pin3));
+	if (pin4 != -1)
+		devices.push_back(new MuleDevice(pin4));
+	if (pin5 != -1)
+		devices.push_back(new MuleDevice(pin5));
+	if (pin6 != -1)
+		devices.push_back(new MuleDevice(pin6));
+	if (pin7 != -1)
+		devices.push_back(new MuleDevice(pin7));
+	if (pin8 != -1)
+		devices.push_back(new MuleDevice(pin8));
+	mDevices = devices;
+	return 0;
+}
+
+int MuleMultipinDevice::internalInit(MuleDevice* dev1, MuleDevice* dev2, MuleDevice* dev3, MuleDevice* dev4, MuleDevice* dev5, MuleDevice* dev6, MuleDevice* dev7, MuleDevice* dev8) {
+	std::vector<MuleDevice*> devices;
+	devices.push_back(dev1);
+	if (dev2->getPin() != -1)
+		devices.push_back(dev2);
+	if (dev3->getPin() != -1)
+		devices.push_back(dev3);
+	if (dev4->getPin() != -1)
+		devices.push_back(dev4);
+	if (dev5->getPin() != -1)
+		devices.push_back(dev5);
+	if (dev6->getPin() != -1)
+		devices.push_back(dev6);
+	if (dev7->getPin() != -1)
+		devices.push_back(dev7);
+	if (dev8->getPin() != -1)
+		devices.push_back(dev8);
+	return 0;
 }
 
 int MuleMultipinDevice::internalInit(MuleDevice dev1, MuleDevice dev2, MuleDevice dev3, MuleDevice dev4, MuleDevice dev5, MuleDevice dev6, MuleDevice dev7, MuleDevice dev8) {
@@ -102,9 +144,16 @@ MuleMultipinDevice::~MuleMultipinDevice() {
 }
 
 MuleDevice* MuleMultipinDevice::getPin(int nPin) {
+	muledebug("MuleMultipinDevice::getPin(" + muleinttostr(nPin) + ")");
 	for (int i = 0; i < mDevices.size(); i++) {
-		if (mDevices[i]->getPin() == nPin)
+		muledebug("i = " + muleinttostr(i));
+		muledebug("mDevices[i]->getPin() = " + muleinttostr(mDevices[i]->getPin()));
+		if (mDevices[i]->getPin() == nPin) {
+			muledebug("found the correct pin");
 			return mDevices[i];
+		}
+		else
+			muledebug("this isn't the correct pin");
 	}
 	muleexception(-25, "No device with pin " + muleinttostr(nPin) + " found");
 	return new MuleDevice(-1);
