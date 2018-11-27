@@ -12,8 +12,13 @@ These are the libs that are downloaded by the script:
    GPLv2 URL: https://www.gnu.org/licenses/old-licenses/gpl-2.0.ru.html
    BSD URL: https://en.wikipedia.org/wiki/BSD_licenses
 
-2. tiny_gpio.c
+2. pigpio
    License: Public Domain License
-   Descriptions: Needed for rpi platform to work, a stripped-down lightweight
-   version of pigpio licensed under Public Domain License
-   Code URL: http://abyz.me.uk/rpi/pigpio/examples.html
+   Description: Needed for pigpio_rpi platform to work
+   Code URL: http://abyz.me.uk/rpi/pigpio
+
+3. StandardCplusplus
+   License: GNU LGPLv2.1
+   Description: Needed for arduinoavr platform to work, a port of uclibc++
+   to Arduino.
+   Code URL: https://github.com/maniacbug/StandardCplusplus
