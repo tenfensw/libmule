@@ -21,7 +21,7 @@ else
 	exit 1
 fi
 
-COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio ArduinoSTL=https://github.com/mike-matera/ArduinoSTL"
+COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio ArduinoSTLAlternative=https://github.com/andysworkshop/avr-stl"
 if test -e "./.stamp"; then
 	echo "[INFO] Everything was already downloaded"
 	exit 0

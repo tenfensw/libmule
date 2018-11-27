@@ -3,7 +3,7 @@ PlatformID:MULE_PLATFORM_PIGPIO
 HardwarePinType:unsigned
 StringType:stdstring
 MotorStopCode:-789
-Defines:
+Defines:MULE_OTHER_PLATFORMHASEXCEPTIONS
 HasCout:yes
 Requires3rdPartyDownloads:yes
 AdditionalCompilerFlags:-I$(SOURCEDIR)/src/3rdparty/pigpio-master

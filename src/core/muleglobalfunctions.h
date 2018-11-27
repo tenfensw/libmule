@@ -2,7 +2,9 @@
 #define MULEGLOBALFUNCTIONS_H
 #include <iostream>
 #include <sstream>
+#ifdef MULE_OTHER_PLATFORMHASEXCEPTIONS
 #include <exception>
+#endif
 #include <cstdlib>
 #include <cstdarg>
 #include <cmath>

@@ -3,7 +3,7 @@ PlatformID:MULE_PLATFORM_LEGOEV3
 HardwarePinType:unsigned
 StringType:stdstring
 MotorStopCode:-789
-Defines:
+Defines:MULE_OTHER_PLATFORMHASEXCEPTIONS
 HasCout:no
 Requires3rdPartyDownloads:yes
 AdditionalCompilerFlags:-I$(SOURCEDIR)/src/3rdparty/EV3-API-master/API
