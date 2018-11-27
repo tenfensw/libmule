@@ -4,7 +4,7 @@
 #include "platformsupport/common/mulecommonplatform.h"
 #include "core/muleconfig.h"
 #include "Arduino.h"
-#include "ArduinoSTL.h"
+#include "StandardCplusplus.h"
 
 #define MULE_HOMEDIRECTORY ""
 #define MULE_DOCUMENTSDIRECTORY ""
