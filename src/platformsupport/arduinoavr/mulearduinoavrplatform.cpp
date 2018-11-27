@@ -2,7 +2,9 @@
 
 MuleArduinoAVRPlatform::MuleArduinoAVRPlatform() {
       init();
+#ifndef MULE_ARDUINO_OBSOLETESDK
       initVariant();
+#endif
       delay(1);
 #if defined(USBCON)
       USBDevice.attach();

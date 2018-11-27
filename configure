@@ -243,7 +243,13 @@ for Argument in $*; do
 		if test -e "$SECONDHALF"; then
 			ARDUINOHEADERLOCATION="$SECONDHALF/hardware/arduino/avr/cores/arduino/Arduino.h"
 			if test ! -e "$ARDUINOHEADERLOCATION"; then
-				showerror 22 "\"$SECONDHALF\" doesn't appear to be a valid Arduino IDE install prefix."
+				ARDUINOHEADERLOCATION="$SECONDHALF/hardware/arduino/cores/arduino/Arduino.h"
+				if test ! -e "$ARDUINOHEADERLOCATION"; then
+					showerror 22 "\"$SECONDHALF\" doesn't appear to be a valid Arduino IDE install prefix."
+				else
+					THINGSTODEFINE="MULE_ARDUINO_OBSOLETESDK $THINGSTODEFINE"
+					echo "[WARNING] Legacy Arduino IDE 1.0 was detected, libMule might fail to compile with old GCC"
+				fi
 			fi
 			if test -e "$SECONDHALF/hardware/tools/avr/bin/avr-g++"; then
 				TARGETCC="$SECONDHALF/hardware/tools/avr/bin/avr-gcc"
@@ -344,7 +350,7 @@ echo "Host C compiler is $HOSTCC"
 echo "Host C++ compiler is $HOSTCXX"
 echo "Host linker is $HOSTLD"
 if ($HOSTCXX -v 2>&1 | grep -q "clang") || ($HOSTCXX -v 2>&1 | grep -q "gcc"); then
-	HOSTCXXFLAGS="-c -g -Os -Wall -Wextra $HOSTCXXFLAGS -std=gnu++11"
+	HOSTCXXFLAGS="-c -g -Os -Wall -Wextra $HOSTCXXFLAGS -std=gnu++0x"
 	HOSTCFLAGS="-c -g -Os -Wall -Wextra $HOSTCFLAGS"
 	HOSTLDFLAGS="-Os $HOSTLDFLAGS"
 elif $HOSTCXX -V 2>&1 | grep -q "Sun C++"; then
@@ -449,7 +455,7 @@ echo "Target C compiler is $TARGETCC"
 echo "Target C++ compiler is $TARGETCXX"
 echo "Target linker is $TARGETLD"
 if ($TARGETCXX -v 2>&1 | grep -q "clang") || ($TARGETCXX -v 2>&1 | grep -q "gcc"); then
-	TARGETCXXFLAGS="-c -Os -Wall -Wextra $TARGETCXXFLAGS -std=gnu++11"
+	TARGETCXXFLAGS="-c -Os -Wall -Wextra $TARGETCXXFLAGS -std=gnu++0x"
 	TARGETCFLAGS="-c -Os -Wall -Wextra $TARGETCFLAGS"
 	TARGETLDFLAGS="-static-libgcc -static-libstdc++"
 elif $TARGETCXX -V 2>&1 | grep -q "Sun C++"; then
