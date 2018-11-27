@@ -2,9 +2,7 @@
 #define MULEGLOBALFUNCTIONS_H
 #include <iostream>
 #include <sstream>
-#ifdef MULE_OTHER_PLATFORMHASEXCEPTIONS
 #include <exception>
-#endif
 #include <cstdlib>
 #include <cstdarg>
 #include <cmath>
@@ -12,6 +10,8 @@
 #include "core/muleconfig.h"
 #ifdef MULE_PLATFORM_LEGOEV3
 #include <ev3.h>
+#elif defined(MULE_PLATFORM_ARDUINOAVR)
+#include "Arduino.h"
 #endif
 
 void mulestrmodreplace(MULE_OTHER_STRINGTYPE& subject, MULE_OTHER_STRINGTYPE search, MULE_OTHER_STRINGTYPE replace);

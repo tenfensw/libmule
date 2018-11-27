@@ -62,12 +62,8 @@ void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch) {
     muleprintf("Critical: " + muleyesno(cancatch));
     muleprintf("");
     if (cancatch == true) {
-#ifdef MULE_OTHER_PLATFORMHASEXCEPTIONS
         muleprintf("This program will continue to run if the algorithm catches this exception.");
         std::exception();
-#else
-	muleprintf("The program will continue to operate, because this platform, actually, does not support exceptions, but be warned that some weird glitches or bugs might occur.");
-#endif
     }
     else {
         muleprintf("This program will now close because this exception is critical.");
@@ -80,6 +76,8 @@ void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch) {
 void mulesleep(double seconds) {
 #ifdef MULE_PLATFORM_LEGOEV3
 	Wait((int)(seconds * 1000));
+#elif defined(MULE_PLATFORM_ARDUINOAVR)
+	delay((long)(seconds * 1000));
 #elif defined(MULE_OS_UNIX)
 	std::system(MULE_OTHER_STRINGTYPE("sleep " + muleinttostr((int)(ceil(seconds)))).c_str());
 #else
