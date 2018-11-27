@@ -247,8 +247,7 @@ for Argument in $*; do
 				if test ! -e "$ARDUINOHEADERLOCATION"; then
 					showerror 22 "\"$SECONDHALF\" doesn't appear to be a valid Arduino IDE install prefix."
 				else
-					THINGSTODEFINE="MULE_ARDUINO_OBSOLETESDK $THINGSTODEFINE"
-					echo "[WARNING] Legacy Arduino IDE 1.0 was detected, libMule might fail to compile with old GCC"
+					showerror 29 "Arduino IDE installed at \"$SECONDHALF\" is too old to build libMule. At least Arduino IDE 1.6 or newer is required."
 				fi
 			fi
 			if test -e "$SECONDHALF/hardware/tools/avr/bin/avr-g++"; then
