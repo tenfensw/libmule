@@ -13,3 +13,6 @@ These are the tested (and the only officially supported) configurations:
 
 ======= Raspberry Pi =======
 A C++11-compartible compiler for ARMv8-A Big-endian is enough to build libMule. All the tests and binaries are compiled with Linaro 2017.11 (GCC 5.5.0) on Linux.
+
+======= Arduino =======
+You may use ArchLinux AVR GCC builds, however, only Arduino IDE's AVR GCC version is officially supported.
