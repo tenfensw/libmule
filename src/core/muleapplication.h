@@ -26,7 +26,7 @@ public:
     std::vector<MuleDevice*> getDevices();
     std::vector<MuleDevice*> devices() { return this->getDevices(); }
     MULE_OTHER_STRINGTYPE getCurrentDirectory();
-    MULE_OTHER_STRINGTYPE currentDirectory() { return this->getCurrentDirectory() }
+    MULE_OTHER_STRINGTYPE currentDirectory() { return this->getCurrentDirectory(); }
     static MuleApplication* getRunningInstance();
     int exit(int status);
     bool areNecessaryPartsReady;
