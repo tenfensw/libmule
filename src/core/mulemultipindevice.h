@@ -43,6 +43,13 @@ class MuleMultipinDevice {
 	  
 	protected:
 	  std::vector<MuleDevice*> mDevices;
+	  
+	  int internalInit(MULE_OTHER_HWPINTYPE pin1, MULE_OTHER_HWPINTYPE pin2 = -1, MULE_OTHER_HWPINTYPE pin3 = -1, MULE_OTHER_HWPINTYPE pin4 = -1, MULE_OTHER_HWPINTYPE pin5 = -1, MULE_OTHER_HWPINTYPE pin6 = -1, MULE_OTHER_HWPINTYPE pin7 = -1, MULE_OTHER_HWPINTYPE pin8 = -1);
+	  int internalInit(MuleDevice dev1, MuleDevice dev2 = MuleDevice(-1), MuleDevice dev3 = MuleDevice(-1), MuleDevice dev4 = MuleDevice(-1), MuleDevice dev5 = MuleDevice(-1), MuleDevice dev6 = MuleDevice(-1), MuleDevice dev7 = MuleDevice(-1), MuleDevice dev8 = MuleDevice(-1));
+	  int internalInit(std::vector<MuleDevice> devs);
+	  int internalInit(std::vector<MuleDevice*> devs);
+	  int internalInit(int pins[MULE_MULTIPIN_LIMIT]);
+	  int internalInit(std::vector<MULE_OTHER_HWPINTYPE> pinsvec);
 	
 };
 

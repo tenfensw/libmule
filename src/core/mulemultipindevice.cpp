@@ -1,10 +1,40 @@
 #include "core/mulemultipindevice.h"
 
 MuleMultipinDevice::MuleMultipinDevice(MULE_OTHER_HWPINTYPE pin1, MULE_OTHER_HWPINTYPE pin2, MULE_OTHER_HWPINTYPE pin3, MULE_OTHER_HWPINTYPE pin4, MULE_OTHER_HWPINTYPE pin5, MULE_OTHER_HWPINTYPE pin6, MULE_OTHER_HWPINTYPE pin7, MULE_OTHER_HWPINTYPE pin8) {
-	MuleMultipinDevice(MuleDevice(pin1), MuleDevice(pin2), MuleDevice(pin3), MuleDevice(pin4), MuleDevice(pin5), MuleDevice(pin6), MuleDevice(pin7), MuleDevice(pin8));
+	if (internalInit(pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8) != 0)
+		muleexception(84, "MuleMultipinDevice could not initialize", false);
 }
 
 MuleMultipinDevice::MuleMultipinDevice(MuleDevice dev1, MuleDevice dev2, MuleDevice dev3, MuleDevice dev4, MuleDevice dev5, MuleDevice dev6, MuleDevice dev7, MuleDevice dev8) {
+	if (internalInit(dev1, dev2, dev3, dev4, dev5, dev6, dev7, dev8) != 0)
+		muleexception(84, "MuleMultipinDevice could not initialize", false);
+}
+
+MuleMultipinDevice::MuleMultipinDevice(std::vector<MuleDevice> devs) {
+	if (internalInit(devs) != 0)
+		muleexception(84, "MuleMultipinDevice could not initialize", false);
+}
+
+MuleMultipinDevice::MuleMultipinDevice(std::vector<MuleDevice*> devs) {
+	if (internalInit(devs) != 0)
+		muleexception(84, "MuleMultipinDevice could not initialize", false);
+}
+
+MuleMultipinDevice::MuleMultipinDevice(int pins[MULE_MULTIPIN_LIMIT]) {
+	if (internalInit(pins) != 0)
+		muleexception(84, "MuleMultipinDevice could not initialize", false);
+}
+
+MuleMultipinDevice::MuleMultipinDevice(std::vector<MULE_OTHER_HWPINTYPE> pinsvec) {
+	if (internalInit(pinsvec) != 0)
+		muleexception(84, "MuleMultipinDevice could not initialize", false);
+}
+
+int MuleMultipinDevice::internalInit(MULE_OTHER_HWPINTYPE pin1, MULE_OTHER_HWPINTYPE pin2, MULE_OTHER_HWPINTYPE pin3, MULE_OTHER_HWPINTYPE pin4, MULE_OTHER_HWPINTYPE pin5, MULE_OTHER_HWPINTYPE pin6, MULE_OTHER_HWPINTYPE pin7, MULE_OTHER_HWPINTYPE pin8) {
+	return internalInit(MuleDevice(pin1), MuleDevice(pin2), MuleDevice(pin3), MuleDevice(pin4), MuleDevice(pin5), MuleDevice(pin6), MuleDevice(pin7), MuleDevice(pin8));
+}
+
+int MuleMultipinDevice::internalInit(MuleDevice dev1, MuleDevice dev2, MuleDevice dev3, MuleDevice dev4, MuleDevice dev5, MuleDevice dev6, MuleDevice dev7, MuleDevice dev8) {
 	std::vector<MuleDevice*> devices;
 	devices.push_back(&dev1);
 	if (dev2.getPin() != -1)
@@ -22,38 +52,48 @@ MuleMultipinDevice::MuleMultipinDevice(MuleDevice dev1, MuleDevice dev2, MuleDev
 	if (dev8.getPin() != -1)
 		devices.push_back(&dev8);
 	mDevices = devices;
+	return 0;
 }
 
-MuleMultipinDevice::MuleMultipinDevice(std::vector<MuleDevice> devs) {
-	if (devs.size() > MULE_MULTIPIN_LIMIT)
+int MuleMultipinDevice::internalInit(std::vector<MuleDevice> devs) {
+	if (devs.size() > MULE_MULTIPIN_LIMIT) {
 		muleexception(-24, "MuleMultipinDevice can maximum handle " + muleinttostr(MULE_MULTIPIN_LIMIT) + " devices", false);
+		return -1;
+	}
 	std::vector<MuleDevice*> devices;
 	for (int i = 0; i < devs.size(); i++) {
 		if (devs[i].getPin() != -1)
 			devices.push_back(&(devs[i]));
 	}
 	mDevices = devices;
+	return 0;
 }
 
-MuleMultipinDevice::MuleMultipinDevice(std::vector<MuleDevice*> devs) {
-	if (devs.size() > MULE_MULTIPIN_LIMIT)
+int MuleMultipinDevice::internalInit(std::vector<MuleDevice*> devs) {
+	if (devs.size() > MULE_MULTIPIN_LIMIT) {
 		muleexception(-24, "MuleMultipinDevice can maximum handle " + muleinttostr(MULE_MULTIPIN_LIMIT) + " devices", false);
+		return -1;
+	}
 	mDevices = devs;
+	return 0;
 }
 
-MuleMultipinDevice::MuleMultipinDevice(int pins[MULE_MULTIPIN_LIMIT]) {
-	MuleMultipinDevice(pins[0], pins[1], pins[2], pins[3], pins[4], pins[5], pins[6], pins[7]);
+int MuleMultipinDevice::internalInit(int pins[MULE_MULTIPIN_LIMIT]) {
+	return internalInit(pins[0], pins[1], pins[2], pins[3], pins[4], pins[5], pins[6], pins[7]);
 }
 
-MuleMultipinDevice::MuleMultipinDevice(std::vector<MULE_OTHER_HWPINTYPE> pinsvec) {
-	if (pinsvec.size() > MULE_MULTIPIN_LIMIT)
+int MuleMultipinDevice::internalInit(std::vector<MULE_OTHER_HWPINTYPE> pinsvec) {
+	if (pinsvec.size() > MULE_MULTIPIN_LIMIT) {
 		muleexception(-24, "MuleMultipinDevice can maximum handle " + muleinttostr(MULE_MULTIPIN_LIMIT) + " devices", false);
+		return -1;
+	}
 	std::vector<MuleDevice*> devvec;
 	for (int i = 0; i < pinsvec.size(); i++) {
 		if (pinsvec[i] != -1)
 			devvec.push_back(new MuleDevice(pinsvec[i]));
 	}
 	mDevices = devvec;
+	return 0;
 }
 
 MuleMultipinDevice::~MuleMultipinDevice() {

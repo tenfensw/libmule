@@ -54,19 +54,19 @@ MULE_OTHER_STRINGTYPE mulegetcwd() {
 
 
 void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch) {
-    muleprintf("libMule Application Exception");
-    muleprintf("An error occured while running the code of current application.");
-    muleprintf("");
-    muleprintf("Error code: " + muleinttostr(errcode));
-    muleprintf("Message: " + errtext);
-    muleprintf("Critical: " + muleyesno(cancatch));
-    muleprintf("");
+    muleprintf("libMule Application Exception\n");
+    muleprintf("An error occured while running the code of current application.\n");
+    muleprintf("\n");
+    muleprintf("Error code: %d\n", errcode);
+    muleprintf("Message: %s\n", errtext.c_str());
+    muleprintf("Critical: %s\n", muleyesno(cancatch).c_str());
+    muleprintf("\n");
     if (cancatch == true) {
-        muleprintf("This program will continue to run if the algorithm catches this exception.");
+        muleprintf("This program will continue to run if the algorithm catches this exception.\n");
         std::exception();
     }
     else {
-        muleprintf("This program will now close because this exception is critical.");
+        muleprintf("This program will now close because this exception is critical.\n");
         exit(errcode + 500);
     }
     return;
