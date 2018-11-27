@@ -20,11 +20,15 @@ public:
     MuleApplication();
     ~MuleApplication();
     MULE_OTHER_STRINGTYPE getPlatformName();
+    MULE_OTHER_STRINGTYPE platformName() { return this->getPlatformName(); }
     MuleCurrentPlatform* getPlatformClass();
+    MuleCurrentPlatform* platformClass() { return this->getPlatformClass(); }
     std::vector<MuleDevice*> getDevices();
+    std::vector<MuleDevice*> devices() { return this->getDevices(); }
     MULE_OTHER_STRINGTYPE getCurrentDirectory();
+    MULE_OTHER_STRINGTYPE currentDirectory() { return this->getCurrentDirectory() }
     static MuleApplication* getRunningInstance();
-    void exit(int status);
+    int exit(int status);
     bool areNecessaryPartsReady;
 
 private:
