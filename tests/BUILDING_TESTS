@@ -1,9 +1,17 @@
 Building tests is pretty easy.
 
-First build libJam itself:
-# cd <libJam sources directory>
-# jam -sMULETARGET=<target platform> -sCC=<platform C cross-compiler> -sC++=<platform C++ cross-compiler> -q
+First build libMule itself:
+# cd <libMule sources directory>
+# mkdir builddir
+# cd builddir
+# ../configure -platform=<target platform> -platformcc=<C cross-compiler> -platformcxx=<C++ cross-compiler> -platformar=<GNU ar utility>
+# make 
+# make install
 
-Now compile the tests from the command-line and link them with the built libJam.a library. For example, if you want to build 
-test01-muleapplication-test.cpp with GCC cross-compiler, you run:
-# <platform compiler prefix>-g++ -Os -g -Isrc tests/test01-muleapplication-test.cpp -o tests/test01-muleapplication-test libMule.a -lc -lm
+Now compile the tests from the command-line and link them with the built libMule.a library. For example, if you want to build 
+test01-muleapplication-test.cpp with MuleTool, you run:
+# /opt/timkoisoft/mule/bin/muletool -compile ../tests/test01-muleapplication-test.cpp
+# /opt/timkoisoft/mule/bin/muletool -link ../tests/test01-muleapplication-test.cpp
+# mv a.out run-test01
+
+That's it!
