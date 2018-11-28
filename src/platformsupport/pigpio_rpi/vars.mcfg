@@ -11,5 +11,3 @@ AdditionalLinkerFlags:-lrt
 AfterBuildCompilerFlags:-I%P/3rdparty/pigpio-master
 Sources:../../3rdparty/pigpio-master/pigpio.c ../../3rdparty/pigpio-master/command.c mulepigpioplatform.cpp
 Headers:../../3rdparty/pigpio-master/pigpio.h ../../3rdparty/pigpio-master/command.h mulepigpioplatform.h
- 
- 

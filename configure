@@ -62,8 +62,8 @@ Usage: $0 [arguments]
 						your C/C++ cross-compilers with additional
 						options.
 						
-	-platformos=[linux/qnx/bsd/unix/posix]	manually specify the operating system that
-						is installed on your device. Use this option
+	-platformos=[linux/qnx/bsd/unix/posix/	manually specify the operating system that
+	none]					is installed on your device. Use this option
 						if you use an unofficial firmware.
 						
 	-arduino-header=[full path to Arduino.h] Required only when cross-compiling for Arduino.
@@ -385,9 +385,12 @@ while read configfileline; do
 		elif test "$SECONDHALF" = "UNIX" || test "$SECONDHALF" = "unix"; then
 			TARGETOS=unix
 			THINGSTODEFINE="MULE_OS_UNIX $THINGSTODEFINE"
-		else
+		else if test "$SECONDHALF" = "POSIX" || test "$SECONDHALF" = "posix"; then
 			TARGETOS=posix
 			THINGSTODEFINE="MULE_OS_UNIX $THINGSTODEFINE"
+		else
+			TARGETOS=none
+			THINGSTODEFINE="MULE_OS_NOFIRMWARE $THINGSTODEFINE"
 		fi
 	elif test "$FIRSTHALF" = "PlatformID"; then
 		THINGSTODEFINE="$SECONDHALF $THINGSTODEFINE"

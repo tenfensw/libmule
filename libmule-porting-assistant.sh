@@ -48,7 +48,7 @@ changestopcode() {
 }
 
 changeos() {
-	printf "Which OS? (linux, qnx, bsd, unix or posix) {default: $PLATFORMOS} "
+	printf "Which OS? (linux, qnx, bsd, unix, posix or none) {default: $PLATFORMOS} "
 	read userinput_os
 	if test "$userinput_os" = "linux" || test "$userinput_os" = "Linux"; then
 		userinput_os=Linux
@@ -56,8 +56,10 @@ changeos() {
 		userinput_os=QNX
 	elif test "$userinput_os" = "bsd" || test "$userinput_os" = "BSD" || test "$userinput_os" = "unix" || test "$userinput_os" = "UNIX"; then
 		userinput_os=UNIX
-	else
+	elif test "$userinput_os" = "posix" || test "$userinput_os" = "POSIX"; then
 		userinput_os=POSIX
+	else
+		userinput_os=None
 	fi
 	PLATFORMOS=$userinput_os
 }
@@ -428,7 +430,7 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 		echo "done!"
 	else
 		mkdir -p ./src/platformsupport/$PLATFORMNAME
-		printf "Which OS does your target device use (linux, qnx, bsd, unix or posix)? {default: posix} "
+		printf "Which OS does your target device use (linux, qnx, bsd, unix, posix or none)? {default: none} "
 		read tmp_deviceos
 		if test "$tmp_deviceos" = "linux" || test "$tmp_deviceos" = "Linux"; then
 			tmp_deviceos=Linux
@@ -436,8 +438,10 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 			tmp_deviceos=QNX
 		elif test "$tmp_deviceos" = "bsd" || test "$tmp_deviceos" = "unix" || test "$tmp_deviceos" = "BSD" || test "$tmp_deviceos" = "UNIX"; then
 			tmp_deviceos=UNIX
-		else
+		elif test "$tmp_deviceos" = "posix" || test "$tmp_deviceos" = "POSIX"; then
 			tmp_deviceos=POSIX
+		else
+			tmp_deviceos=None
 		fi
 		printf "If your target platform has any GPIO pins or device pins, what is their type in C++? Is it \"unsigned\" or \"int\"? {default: unsigned} "
 		read tmp_devicepin
