@@ -385,7 +385,7 @@ while read configfileline; do
 		elif test "$SECONDHALF" = "UNIX" || test "$SECONDHALF" = "unix"; then
 			TARGETOS=unix
 			THINGSTODEFINE="MULE_OS_UNIX $THINGSTODEFINE"
-		else if test "$SECONDHALF" = "POSIX" || test "$SECONDHALF" = "posix"; then
+		elif test "$SECONDHALF" = "POSIX" || test "$SECONDHALF" = "posix"; then
 			TARGETOS=posix
 			THINGSTODEFINE="MULE_OS_UNIX $THINGSTODEFINE"
 		else
