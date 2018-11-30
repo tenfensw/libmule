@@ -22,3 +22,10 @@ These are the libs that are downloaded by the script:
    Description: Needed for arduinoavr platform to work, a port of uclibc++
    to Arduino.
    Code URL: https://github.com/maniacbug/StandardCplusplus
+
+4. ArduinoCore-avr Slim Edition
+   License: GNU LGPLv2.1
+   Description: Needed for arduinoavr platform to work ONLY IF ARDUINO IDE
+   IS NOT INSTALLED. And yes, this is the Arduino.h library, except all
+   unnecessary stuff was removed.
+   Code URL: https://github.com/arduino/ArduinoCore-avr
