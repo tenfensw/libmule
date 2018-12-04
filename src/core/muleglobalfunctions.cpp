@@ -42,7 +42,7 @@ void muleprintf(MULE_OTHER_STRINGTYPE in, ...) {
     vprintf(in.c_str(), otherargs);
 #endif
 #ifdef MULE_PLATFORM_LEGOEV3
-    LcdPrintf('0', MULE_OTHER_STRINGTYPE(in + "\n").c_str(), otherargs);
+    LcdPrintf('0', in.c_str(), otherargs);
     Wait(1000);
 #endif
     va_end(otherargs);
@@ -68,7 +68,7 @@ MULE_OTHER_STRINGTYPE mulegetcwd() {
     getcwd(wtw, 1600);
     return MULE_OTHER_STRINGTYPE(wtw);
 #else
-    return MULE_OTHER_STRINGTYPE("/");
+    return MULE_OTHER_STRINGTYPE("/undefined");
 #endif
 }
 
@@ -96,8 +96,6 @@ void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch) {
 void mulesleep(double seconds) {
 #ifdef MULE_PLATFORM_LEGOEV3
 	Wait((int)(seconds * 1000));
-#elif defined(MULE_PLATFORM_ARDUINOAVR)
-	delay((long)(seconds * 1000));
 #elif defined(MULE_OS_UNIX)
 	std::system(MULE_OTHER_STRINGTYPE("sleep " + muleinttostr((int)(ceil(seconds)))).c_str());
 #else
