@@ -10,7 +10,6 @@ for embedded microcontroller apps.
 Currently, only three platforms are supported:
 - Raspberry Pi
 - LEGO EV3 (Mindstorms)
-- Arduino Uno/Mega/Leonardo
 - Dummy platform (for testing purposes only)
 
 Support for more platforms will be added in future releases.
