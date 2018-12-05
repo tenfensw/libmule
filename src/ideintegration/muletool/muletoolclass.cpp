@@ -80,6 +80,11 @@ bool MuleToolClass::init(int argc, char** argv) {
 	}
 	else
 		needToDumpConfigFileName = false;
+		
+	if (stringVectorContains(cliArgs, "-internal-nocmdprint") == true)
+		printCommandsOnScreen = false;
+	else
+		printCommandsOnScreen = true;
 	
 	if ((stringVectorContains(cliArgs, "--help") == true) || (stringVectorContains(cliArgs, "-help") == true) || (stringVectorContains(cliArgs, "-h") == true)) {
 		actionToRun = "printhelp";
@@ -449,15 +454,17 @@ int MuleToolClass::compileFiles() {
 		else
 			buildcmd = buildcmd + " \"" + filesToCompile[j] + "\"";
 		if ((fileExists(outobjectname)) && (oneFileNoNeedToIgnoreOutput == false)) {
+			if (printCommandsOnScreen == true)
 #ifdef _WIN32
-			std::cout << "del /q " << outobjectname << std::endl;
+				std::cout << "del /q " << outobjectname << std::endl;
 			std::system(std::string("del /q \"" + outobjectname + "\"").c_str());
 #else
-			std::cout << "rm -r -f " << outobjectname << std::endl;
+				std::cout << "rm -r -f " << outobjectname << std::endl;
 			std::system(std::string("rm -r -f \"" + outobjectname + "\"").c_str());
 #endif
 		}
-		std::cout << buildcmd << std::endl;
+		if (printCommandsOnScreen == true)
+			std::cout << buildcmd << std::endl;
 		if (std::system(buildcmd.c_str()) != 0)
 			criticalError(10, "Failed to compile \"" + filesToCompile[j] + "\"");
 	}
@@ -487,7 +494,8 @@ int MuleToolClass::linkProgram() {
 		buildcmd = buildcmd + " " + filesToCompile[j];
 	if (doNotIncludeLibMule == false)
 		buildcmd = buildcmd + " " + libMuleLib;
-	std::cout << buildcmd << std::endl;
+	if (printCommandsOnScreen == true)
+		std::cout << buildcmd << std::endl;
 	if (std::system(buildcmd.c_str()) != 0)
 		return 12;
 	std::cout << "Everything linked successfully" << std::endl;
@@ -497,10 +505,12 @@ int MuleToolClass::linkProgram() {
 int MuleToolClass::deployProgram() {
 	std::vector<std::string> filesToCompile;
 	verboseInfo("Deploying program \"" + deploy_binName + "\"");
-	std::cout << deploy_copyFile << std::endl;
+	if (printCommandsOnScreen == true)
+		std::cout << deploy_copyFile << std::endl;
 	if (std::system(deploy_copyFile.c_str()) != 0)
 		return 14;
-	std::cout << deploy_runFile << std::endl;
+	if (printCommandsOnScreen == true)
+		std::cout << deploy_runFile << std::endl;
 	if (std::system(deploy_runFile.c_str()) != 0)
 		return 15;
 	std::cout << "Your program was successfully deployed" << std::endl;

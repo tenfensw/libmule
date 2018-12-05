@@ -3,3 +3,5 @@ Subdir:core
 Sources:../platformsupport/common/mulecurrentplatform.cpp muleglobalfunctions.cpp muledevice.cpp muleapplication.cpp mulemultipindevice.cpp
 Headers:../platformsupport/common/mulecommonplatform.h ../platformsupport/common/mulecurrentplatform.h muleglobalfunctions.h muledevice.h muleapplication.h mulemultipindevice.h
 ModuleID:MULE_FEATURES_CORE
+ 
+ 

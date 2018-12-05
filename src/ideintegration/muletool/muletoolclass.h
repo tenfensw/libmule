@@ -87,6 +87,7 @@ class MuleToolClass {
 	  bool needToDumpConfigFileName;
 	  bool doNotIncludeLibMule;
 	  bool useShortObjectFileNames;
+	  bool printCommandsOnScreen;
 	  std::vector<std::string> cliArgs;
 	  std::string actionToRun;
 	  std::vector<std::string> actionArgs;
