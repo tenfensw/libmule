@@ -678,10 +678,11 @@ for LibSourceFileAgain in $LIBSOURCES; do
 	TOWRITESOURCE="$TOWRITESOURCE.libmulebuild.o"
 	FINALTARGETS="$FINALTARGETS $TOWRITESOURCE"
 done
-for LibHeaderFileAgain in $LIBHEADERS; do
-	TOWRITEHEADER=`echo "$LibHeaderFileAgain" | sed "s+$SOURCEDIR/++g"`
-	FINALHEADERS="$FINALHEADERS $TOWRITEHEADER"
-done
+#for LibHeaderFileAgain in $LIBHEADERS; do
+#	TOWRITEHEADER=`echo "$LibHeaderFileAgain" | sed "s+$SOURCEDIR/++g"`
+#	FINALHEADERS="$FINALHEADERS $TOWRITEHEADER"
+#done
+FINALHEADERS=`find "$SOURCEDIR/src" -type f -name "*.h"`
 
 echo "done!"
 

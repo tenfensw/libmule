@@ -208,7 +208,7 @@ std::vector<std::string> MuleToolClass::fillPossibleLocationsVector() {
 	possibleLocations.push_back("/usr/share/timkoisoft/libmule");
 	possibleLocations.push_back("/usr/share/timkoisoft/mule");
 #else
-	possibleLocations.push_back(std::string(userHomeDir + "\\timkoisoft\\libmule");
+	possibleLocations.push_back(std::string(userHomeDir + "\\timkoisoft\\libmule"));
 	possibleLocations.push_back(std::string(std::getenv("APPDATA")) + "\\Timkoisoft\\Mule\\etc");
 	possibleLocations.push_back(std::string(std::getenv("APPDATA")) + "\\Timkoisoft\\Mule");
 	possibleLocations.push_back(std::string(std::getenv("APPDATA")) + "\\Timkoisoft\\libMule\\etc");
@@ -224,15 +224,9 @@ std::vector<std::string> MuleToolClass::fillPossibleLocationsVector() {
 }
 
 std::string MuleToolClass::getCurrentDirectory() {
-#ifndef _WIN32
 	char cwd[1400];
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		return std::string(cwd);
-#else
-	TCHAR cwd[1400];
-	if (GetCurrentDirectory(1400, cwd) != NULL)
-		return std::string(cwd);
-#endif
 	return userHomeDir;
 }
 
