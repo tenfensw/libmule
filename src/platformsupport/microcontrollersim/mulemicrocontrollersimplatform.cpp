@@ -88,7 +88,7 @@ MuleMicrocontrollerSimulatorPin MuleMicrocontrollerSimulatorPlatform::internal_r
 		i = i + 1;
 	}
 	splitvec.push_back(topb);
-	delete rdconv;
+	//delete rdconv;
 	for (int j = 0; j < splitvec.size(); i++) {
 		MULE_OTHER_STRINGTYPE firsthalf = "";
 		MULE_OTHER_STRINGTYPE secondhalf = "";
@@ -108,7 +108,7 @@ MuleMicrocontrollerSimulatorPin MuleMicrocontrollerSimulatorPlatform::internal_r
 			else
 				secondhalf = "";
 		}
-		delete curitem;
+		//delete curitem;
 		if (secondhalf == "U" || secondhalf == "u")
 			secondhalf = "0";
 		if (firsthalf == "type")
