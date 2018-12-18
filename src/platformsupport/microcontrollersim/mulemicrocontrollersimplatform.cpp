@@ -59,11 +59,10 @@ bool MuleMicrocontrollerSimulatorPlatform::internal_flushPin(const MuleMicrocont
 }
 
 bool MuleMicrocontrollerSimulatorPlatform::internal_writeToFile(MULE_OTHER_STRINGTYPE fn, MULE_OTHER_STRINGTYPE ct) {
-	std::ofstream* fileout = new std::ofstream();
-	fileout->open(fn.c_str());
+	std::ofstream fileout;
+	fileout.open(fn.c_str());
 	fileout << fn;
-	fileout->close();
-	delete fileout;
+	fileout.close();
 	return true;
 }
 
