@@ -204,9 +204,6 @@ elif echo "$HOSTCPU" | grep -q "aarch"; then
 	HOSTCPU=arm64
 elif echo "$HOSTCPU" | grep -q "ppc"; then
 	HOSTCPU=ppc32
-	if echo "$HOSTCPU" | grep -q "64"; then
-		HOSTCPU=ppc64
-	fi
 elif test "$HOSTCPU" = "m68k"; then
 	HOSTCPU=m68k
 elif echo "$HOSTCPU" | grep -q "mips"; then
@@ -249,6 +246,13 @@ elif (uname | grep -q "CYGWIN") || (uname | grep -q "MINGW") || (uname | grep -q
 	else
 		ISTHISWINDOWS=msys
 	fi
+elif test `uname` = "Haiku" || test `uname` = "BeOS"; then
+	dbgecho "$0 is running on BeOS"
+	HOSTOS="BeOS"
+	# use built-in GCC
+	HOSTCC=gcc
+	HOSTCXX=g++
+	HOSTAR=ar
 else
 	dbgecho "$0 is running on a UNIX-like operating system"
 	HOSTOS="UNIX-like operating system `uname -m`"
@@ -290,6 +294,11 @@ for Argument in $*; do
 		THINGSTODEFINE="MULE_FEATURES_DEBUG $THINGSTODEFINE"
 	elif test "$FIRSTHALF" = "-modules"; then
 		MODULES="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-mulestl"; then
+		MULESTL="$SECONDHALF"
+		if test "$MULESTL" = ""; then
+			MULESTL=yes
+		fi
 	elif test "$FIRSTHALF" = "-arduino-header"; then
 		if test -e "$SECONDHALF"; then
 			ARDUINOHEADERLOCATION="$SECONDHALF"
