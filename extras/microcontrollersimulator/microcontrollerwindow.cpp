@@ -27,7 +27,7 @@ MicrocontrollerWindow::MicrocontrollerWindow(QWidget *parent) :
 
 void MicrocontrollerWindow::flushPin(const MuleMicrocontrollerSimulatorPin &pin) {
     QString proposedSaveLocation = sockBaseDir + "/PIN" + QString::number(pin.num);
-    QString saveString = "type=^T^,pud=^P^,pwm=^W^,val=^V^,dc=^D^,maxdc=^M^,freq=^F^";
+    QString saveString = "type=^T^,pud=^P^,pwm=^W^,val=^V^,dc=^D^,maxdc=^M^,freq=^F^,inout=^I^";
     if (pin.digital == true)
         saveString.replace("^T^", "d");
     else
@@ -60,6 +60,10 @@ void MicrocontrollerWindow::flushPin(const MuleMicrocontrollerSimulatorPin &pin)
         saveString.replace("^D^", QString::number(pin.currentDutyCycle));
         saveString.replace("^M^", QString::number(pin.maxDutyCycle));
     }
+    if (pin.inputPin == true)
+    	saveString.replace("^I^", "i");
+    else
+	saveString.replace("^I^", "o");
     QFile* file = new QFile(proposedSaveLocation);
     if (file->open(QIODevice::WriteOnly | QIODevice::Text) == false) {
         file->close();
@@ -214,6 +218,12 @@ void MicrocontrollerWindow::reloadDeviceVector() {
                 if (halftwo != "u")
                     toadd.maxDutyCycle = halftwo.toInt();
             }
+	    else if (halfone == "inout") {
+		if (halftwo == "i")
+		    toadd.inputPin = true;
+		else
+		    toadd.inputPin = false;
+	    }
             else if (halfone == "freq")
                 qDebug() << "ignore frequency";
             else
@@ -513,6 +523,16 @@ void MicrocontrollerWindow::on_actionAbout_Qt_framework_triggered()
 }
 
 
+void MicrocontrollerWindow::manualValuePin(int pin) {
+    timerUpdateBlocker = true;
+    int vl = QInputDialog::getInt(this, "Mule Microcontroller Simulator", "Which value (high or low, default: low)?", 0, 0, 1, 1);
+    if (vl < 0 && vl > 1)
+        vl = 0;
+    deviceVector.at(pin).currentDigitalValue = vl;
+    flushPin(deviceVector.at(pin));
+    timerUpdateBlocker = false;
+}
+
 void MicrocontrollerWindow::safeQuit() {
     timerUpdateBlocker = true;
     dcUpdateBlocker = true;
@@ -536,4 +556,14 @@ void MicrocontrollerWindow::on_actionQuit_triggered()
 void MicrocontrollerWindow::on_actionAbout_Mule_Microcontroller_Simulator_triggered()
 {
     QMessageBox::information(this, "Mule Microcontroller Simulator", "Version " + QString::number(TOOLMV) + "." + QString::number(TOOLIV) + "." + QString::number(TOOLUV));
+}
+
+void MicrocontrollerWindow::on_pin0_changedv_clicked()
+{
+    manualValuePin(0);
+}
+
+void MicrocontrollerWindow::on_pin1_changedv_clicked()
+{
+    manualValuePin(1);
 }

@@ -1,0 +1,12 @@
+OS:None
+PlatformID:MULE_PLATFORM_MICROCONTROLLERSIM
+HardwarePinType:int
+StringType:stdstring
+MotorStopCode:-789
+Defines:
+HasCout:no
+Requires3rdPartyDownloads:no
+AdditionalCompilerFlags:
+AdditionalLinkerFlags:
+Sources:mulemicrocontrollersimplatform.cpp
+Headers:mulemicrocontrollersimplatform.h

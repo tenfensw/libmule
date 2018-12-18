@@ -489,6 +489,32 @@
      <string>Nothing is connected</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pin0_changedv">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>240</y>
+      <width>88</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change DV</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pin1_changedv">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>240</y>
+      <width>88</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change DV</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

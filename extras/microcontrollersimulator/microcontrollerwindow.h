@@ -42,6 +42,7 @@ struct MuleMicrocontrollerSimulatorPin {
     int currentDigitalValue;
     int currentDutyCycle;
     int maxDutyCycle;
+    bool inputPin;
 
     void debugdump() {
         qDebug() << "num = " << num;
@@ -72,6 +73,7 @@ public:
     void updateGUI();
     void clearSerial();
     void onOffPWM(int pin, bool val, bool resave = true);
+    void manualValuePin(int pin);
     void onMaxDutyCycleChanged(int pin, int dc);
     void connectDisconnectPin(int pin);
     void safeQuit();
@@ -113,6 +115,10 @@ private slots:
     void on_actionQuit_triggered();
 
     void on_actionAbout_Mule_Microcontroller_Simulator_triggered();
+
+    void on_pin0_changedv_clicked();
+
+    void on_pin1_changedv_clicked();
 
 private:
     Ui::MicrocontrollerWindow *ui;

@@ -42,6 +42,10 @@
 #include "platformsupport/pigpio_rpi/mulepigpioplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MulePigpioPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("pigpio")
+#elif defined(MULE_PLATFORM_MICROCONTROLLERSIM)
+#include "platformsupport/microcontrollersim/mulemicrocontrollersimplatform.h"
+#define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleMicrocontrollerSimulatorPlatform
+#define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("microcontrollersim")
 #else
 #error No supported platforms were detected
 #endif

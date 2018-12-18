@@ -31,6 +31,13 @@ niceheader() {
 	echo "===================================================================="
 }
 
+dbgecho() {
+	if test "$DEBUG" != ""; then
+		echo "[DEBUG] $*"
+	fi
+	echo "[`date +"%d.%m.%Y %H:%M:%S"` at `pwd`] $*" >> ./muleconfigure.log 
+}
+
 showhelp() {
 	cat <<EOF
 Usage: $0 [arguments]
@@ -163,8 +170,14 @@ ISTHISWINDOWS=no
 niceheader
 echo ""
 
+# remove old debug configure thing
+if test -e "$CDIR/muleconfigure.log"; then
+	rm -r -f "$CDIR/muleconfigure.log"
+fi
+
 # detect current host CPU
 HOSTCPU=`uname -m`
+dbgecho "uname -m reports $HOSTCPU"
 if test "$HOSTCPU" = "i386" || test "$HOSTCPU" = "i486" || test "$HOSTCPU" = "i586" || test "$HOSTCPU" = "i686" || test "$HOSTCPU" = "ia32" || test "$HOSTCPU" = "i86pc" || test "$HOSTCPU" = "intel32"; then
 	HOSTCPU=intel32
 elif test "$HOSTCPU" = "x86_64" || test "$HOSTCPU" = "x86-64" || test "$HOSTCPU" = "amd64"; then
@@ -190,28 +203,38 @@ fi
 
 # detect the host operating system first
 if test `uname` = "Linux"; then
+	dbgecho "$0 is running on Linux, checking distro info"
 	HOSTOS="Linux"
 	if test -e "/etc/mandriva-release"; then
+		dbgecho "Mandriva detected"
 		HOSTOS="Mandriva Linux"
 	elif test -e "/etc/redhat-release"; then
+		dbgecho "RedHat detected"
 		HOSTOS="RedHat Linux"
 	elif command -v dpkg > /dev/null 2>&1; then
+		dbgecho "Debian detected"
 		HOSTOS="Debian Linux"
 	elif command -v pacman > /dev/null 2>&1; then
+		dbgecho "Arch detected"
 		HOSTOS="Arch Linux"
 	fi
 elif (uname | grep -q "BSD") || test `uname` = "Darwin"; then
+	dbgecho "$0 is running on a wild unknown BSD-like operating system... or it's just running on a Mac"
 	HOSTOS="4.4BSD"
 elif test `uname` = "SunOS"; then
+	dbgecho "$0 is running on Sun Solaris, better use grep without -q flag"
 	HOSTOS="Sun Solaris"
 elif (uname | grep -q "CYGWIN") || (uname | grep -q "MINGW") || (uname | grep -q "MSYS"); then
+	dbgecho "$0 is running on Windows via MSYS2"
 	HOSTOS="Microsoft Windows"
 	if uname | grep -q "CYGWIN"; then
+		dbgecho "spoiler - this isn't MSYS2, it's Cygwin, gotta use /cygdrive instead of /c"
 		ISTHISWINDOWS=cygwin
 	else
 		ISTHISWINDOWS=msys
 	fi
 else
+	dbgecho "$0 is running on a UNIX-like operating system"
 	HOSTOS="UNIX-like operating system `uname -m`"
 fi
 
@@ -287,6 +310,7 @@ done
 
 echo "This script is running on $HOSTOS $HOSTCPU"
 
+dbgecho "Target is $TARGETNAME"
 if test "$TARGETNAME" = "rpi"; then
 	TARGETNAME=pigpio_rpi
 	showwarning "tiny_gpio-based \"rpi\" platform was deprecated and removed from libMule. Please use \"pigpio_rpi\" platform instead."
@@ -328,6 +352,8 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 	TARGETCXXFLAGS="-x c++ -fpermissive $ARDUINOINCLUDEFLAGS $TARGETCXXFLAGS"
 	TARGETCFLAGS="-fpermissive $ARDUINOINCLUDEFLAGS $TARGETCFLAGS"
 	TARGETLDFLAGS="-mrelax $TARGETLDFLAGS"
+elif test "$TARGETNAME" = "microcontrollersim"; then
+	MODULES=arduino
 fi
 
 if test "$HOSTCC" = "" && test "$HOSTCXX" = ""; then
@@ -457,7 +483,7 @@ while read configfileline; do
 done < "$SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg"
 
 echo "Platform configuration file $SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg was imported successfully, can continue"
-if test "$TARGETNAME" = "dummy"; then
+if test "$TARGETNAME" = "dummy" || test "$TARGETNAME" = "microcontrollersim"; then
 	TARGETCC=$HOSTCC
 	TARGETCXX=$HOSTCXX
 	TARGETLD=$HOSTLD
@@ -565,6 +591,7 @@ MODULES=`echo "$MODULES" | sed 's/,/ /g'`
 MODULES=" $MODULES" # workaround for a further discovered bug in this script that never could detect "core" as an available module
 echo "$MODULES"
 
+dbgecho "looking for various modules"
 for ModuleName in $MODULES; do
 	POSSIBLEMODULESFILELIST=`find "$SOURCEDIR/src" -type f -name "module.mcfg"`
 	ModuleGatheredSources=""
@@ -572,9 +599,11 @@ for ModuleName in $MODULES; do
 	ModuleGatheredPrefix=""
 	FoundProperModule=no
 	printf "Preparing module $ModuleName... "
+	dbgecho "Module $ModuleName"
 	for ModuleFileDescription in $POSSIBLEMODULESFILELIST; do
 		if cat "$ModuleFileDescription" | grep -q "Name:$ModuleName"; then
 			FoundProperModule=yes
+			dbgecho "found one in $ModuleFileDescription"
 			echo " " >> "$ModuleFileDescription" # a workaround so that the whole file would be read and parsed by configure and not just a tiny part of it
 			while read moduleline; do
 				FIRSTHALF=`echo "$moduleline" | cut -d ':' -f1`
@@ -582,7 +611,7 @@ for ModuleName in $MODULES; do
 				if test "$FIRSTHALF" = "Subdir"; then
 					ModuleGatheredPrefix="$SOURCEDIR/src/$SECONDHALF"
 				elif test "$FIRSTHALF" = "Sources"; then
-					echo "$SECONDHALF"
+					dbgecho "$SECONDHALF"
 					for ModuleSourceFile in $SECONDHALF; do
 						ModuleGatheredSources="$ModuleGatheredPrefix/$ModuleSourceFile $ModuleGatheredSources"
 					done
@@ -682,8 +711,8 @@ done
 #	TOWRITEHEADER=`echo "$LibHeaderFileAgain" | sed "s+$SOURCEDIR/++g"`
 #	FINALHEADERS="$FINALHEADERS $TOWRITEHEADER"
 #done
-FINALHEADERS=`find "$SOURCEDIR/src" -type f -name "*.h"`
-
+FINALHEADERS=`sh -c "find \"$SOURCEDIR\" -type f -name \"*.h\""`
+dbgecho "$FINALHEADERS"
 echo "done!"
 
 printf "Creating $CDIR/Makefile... "
@@ -738,12 +767,6 @@ echo '#!/bin/sh' > "$CDIR/installheaders.sh"
 echo "# Automatically generated by libMule configure script on $CURRENTDATE" >> "$CDIR/installheaders.sh"
 echo "if test -e \"\$PREFIX/include/libmule\"; then rm -r -f \"\$PREFIX/include/libmule\"; fi" >> "$CDIR/installheaders.sh"
 echo "ALLFILES=\"$FINALHEADERS\"" >> "$CDIR/installheaders.sh"
-echo "NEWFILES=\"\"" >> "$CDIR/installheaders.sh"
-echo "for ReadAllFiles in \$ALLFILES; do" >> "$CDIR/installheaders.sh"
-echo "   FINALADDITIONAL=\"\$SOURCEDIR/\$ReadAllFiles\"" >> "$CDIR/installheaders.sh"
-echo "   NEWFILES=\"\$FINALADDITIONAL \$NEWFILES\"" >> "$CDIR/installheaders.sh"
-echo "done" >> "$CDIR/installheaders.sh"
-echo "ALLFILES=\"\$NEWFILES\"" >> "$CDIR/installheaders.sh"
 echo "for File in \$ALLFILES; do" >> "$CDIR/installheaders.sh" >> "$CDIR/installheaders.sh"
 echo "   RealFile=\`echo \"\$File\" | sed \"s+\$SOURCEDIR/src/++g\"\`" >> "$CDIR/installheaders.sh"
 echo "   RealBaseDir=\`dirname \"\$RealFile\"\`" >> "$CDIR/installheaders.sh"
