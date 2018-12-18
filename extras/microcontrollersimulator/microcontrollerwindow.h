@@ -25,6 +25,7 @@
 #include <QFile>
 #include <QInputDialog>
 #include <QDateTime>
+#include <QScrollBar>
 #include <QCloseEvent>
 #include <cmath>
 #include <cstdlib>

@@ -20,7 +20,7 @@
 
 #include <mule.h>
 
-#define SENSORPIN 2
+#define SENSORPIN 0
 
 int main() {
 	MuleApplication mApp;

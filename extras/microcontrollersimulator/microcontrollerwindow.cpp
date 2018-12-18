@@ -265,6 +265,7 @@ void MicrocontrollerWindow::updateSerial() {
     delete reader;
     qDebug() << "cool, got the data, now display it on the screen";
     this->ui->serialEdit->setText(serialOut);
+    this->ui->serialEdit->verticalScrollBar()->setValue(this->ui->serialEdit->verticalScrollBar()->maximum());
 }
 
 void MicrocontrollerWindow::updateGUI() {
