@@ -53,10 +53,16 @@ elif uname | grep "BSD" > /dev/null 2>&1; then
 	CURRENTOS=4.4bsd
 elif test `uname` | grep "CYGWIN" > /dev/null 2>&1; then
 	CURRENTOS=msys
+	PREFIX=/cygdrive/timkoisoft/libmule-sdk
 elif test `uname` | grep "MSYS" > /dev/null 2>&1; then
 	CURRENTOS=msys
+	PREFIX=/c/timkoisoft/libmule-sdk
 elif test `uname` | grep "MINGW" > /dev/null 2>&1; then
 	CURRENTOS=msys
+	PREFIX=/c/timkoisoft/libmule-sdk
+elif test `uname` = "BeOS" || test `uname` = "Haiku"; then
+	CURRENTOS=beos
+	PREFIX=/boot/home/timkoisoft/libmule-sdk
 else
 	CURRENTOS=undefined
 fi
@@ -87,7 +93,7 @@ else
 	REPO="$PWD/packages/$CURRENTOS/$CURRENTARCH"
 fi
 
-if test `whoami` != "root" && test "$CURRENTOS" != "msys"; then
+if test `whoami` != "root" && test "$CURRENTOS" != "msys" && test "$CURRENTOS" != "beos"; then
 	FULLPATH=`dirname "$0"`
 	FULLPATH=`sh -c "cd \"$FULLPATH\" && pwd"`
 	FULLPATH=`printf "$FULLPATH/" && basename "$0"` 
