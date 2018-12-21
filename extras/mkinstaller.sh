@@ -159,7 +159,7 @@ for Argument in $*; do
 		USEPXMESSAGE=yes
 	elif test "$HALFONE" = "-clean" || test "$HALFONE" = "clean"; then
 		printf "Cleaning up, please wait... "
-		rm -r -f "$PWD/packages" "$PWD/qtsdk" "$PWD/qtsrc" "$PWD/tmppkgdir" "$PWD/xmessage" "$PWD/xmessage-src" "$PWD/mulesrc" "$PWD/mulestudiosrc" "$PWD/linarogccunpacked" "$PWD/makeselfsrc"
+		rm -r -f "$PWD/packages" "$PWD/qtsdk" "$PWD/qtsrc" "$PWD/tmppkgdir" "$PWD/xmessage" "$PWD/xmessage-src" "$PWD/mulesrc" "$PWD/mulestudiosrc" "$PWD/linarogccunpacked" "$PWD/makeselfsrc" "$PWD/licenseinfo"
 		if test "$?" = "0"; then
 			echo "done!"
 		else
@@ -247,7 +247,7 @@ else
 	QTFLAGS="$QTFLAGS $QT4PLFLAGS"
 fi
 
-for DirToRemove in qtsrc xmessage-src mulesrc mulestudiosrc packages linarogccunpacked makeselfsrc; do
+for DirToRemove in qtsrc xmessage-src mulesrc mulestudiosrc packages linarogccunpacked makeselfsrc licenseinfo; do
 	if test -e "$PWD/$DirToRemove"; then
 		rm -r -f "$PWD/$DirToRemove"
 		echo "removed directory \"$PWD/$DirToRemove\""
@@ -506,6 +506,8 @@ else
 fi
 
 safecopy "$PWD/mulesrc/extras/mulesetup.sh" ./setup.sh
+mkdir "$PWD/licenseinfo"
+safecopy "$PWD/mulesrc/LICENSE" "$PWD/licenseinfo/lgpl.txt"
 for CleanDir in mulestudiosrc mulesrc qtsrc xmessage-src linarogccunpacked qtsdk; do
 	rm -r -f "$PWD/$CleanDir"
 	echo "removed directory \"$PWD/$CleanDir\""
