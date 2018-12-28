@@ -33,6 +33,9 @@
 #include <stdarg.h>
 #include <signal.h>
 #include <math.h>
+#ifdef MULESTL_FEATURES_DOCXX11
+#include <initializer_list>
+#endif
 
 #ifdef DEBUG
 #define MULESTL_FEATURES_DEBUG
@@ -124,8 +127,17 @@ namespace std {
 		return ofirst;
 	}
 	
+	class MuleSTLNonCopyable {
+		public:
+		  MuleSTLNonCopyable() {}
+
+		private:
+		  MuleSTLNonCopyable(const MuleSTLNonCopyable& cp);
+		  MuleSTLNonCopyable& operator=(const MuleSTLNonCopyable& cp);
+	};
+	
 	template <class T>
-	class MuleSTLNonPOSIXAllocator {
+	class MuleSTLNonPOSIXAllocator : private MuleSTLNonCopyable {
 		public:
 		  MuleSTLNonPOSIXAllocator() {}
 		  ~MuleSTLNonPOSIXAllocator() {}
@@ -171,23 +183,6 @@ namespace std {
 			//notthefirsttime = true;
 		  }
 		  
-		  vector(somekindofclass* orig, int origlen) : 
-			contents(nullptr), 
-			contents_size(MULESTL_VECTOR_MINIMALISTICVECTORSTART),
-			contents_els(0) {
-			
-			mulestldebug("this converts a pointer array to a vector");
-			contents = nullptr;
-			//notthefirsttime = false;
-			contents_size = origlen;
-			if (this->reserve(contents_size) == false)
-				mulestldebug("line %d, planning to crash the whole program", __LINE__);
-			copy(orig, (orig + (origlen - 1)), this->begin());
-			contents_els = contents_size;
-			mulestldebug("line %d, contents_size = %d, contents_els = %d", __LINE__, contents_size, contents_els);
-			//notthefirsttime = true;
-		  }
-		  
 		  vector(const somekindofclass* orig, int origlen) : 
 			contents(nullptr), 
 			contents_size(MULESTL_VECTOR_MINIMALISTICVECTORSTART),
@@ -205,6 +200,23 @@ namespace std {
 			//notthefirsttime = true;
 		  }
 		  
+#ifdef MULESTL_FEATURES_DOCXX11
+		  vector(const std::initializer_list<somekindofclass>& inlist) : 
+			contents(nullptr), 
+			contents_size(MULESTL_VECTOR_MINIMALISTICVECTORSTART),
+			contents_els(0) {
+
+			mulestldebug("this allows importing std::initializer_list");
+			contents = nullptr;
+			contents_size = inlist.size();
+			if (this->reserve(contents_size) == false)
+				mulestldebug("line %d, planning to crash the whole program", __LINE__);
+			copy(inlist.begin(), inlist.end(), this->begin());
+			contents_els = contents_size;
+			mulestldebug("line %d, contents_size = %d, contents_els = %d", __LINE__, contents_size, contents_els);
+		  }
+#endif
+		  
 		  ~vector() { 
 			clear();
 			contents = NULL;
@@ -220,6 +232,7 @@ namespace std {
 				else
 					mulestldebug("contents is not allocated, what is even going on?");
 			}
+			contents = nullptr;
 			this->reserve(contents_size);
 			contents_els = 0;
 		  }
@@ -235,8 +248,10 @@ namespace std {
 		  }
 		  
 		  bool reserve(int elc) {
-			if (notthefirsttime == true && contents_els > 0) 
-				allocat.deallocate(contents);
+			if (contents != nullptr) {
+				if (contents_els > 0) 
+					allocat.deallocate(contents);
+			}
 			//contents = (somekindofclass*)(mulestlcalloc(elc, sizeof(somekindofclass)));
 			contents = allocat.allocate(elc);
 			if (contents == NULL)
@@ -500,6 +515,73 @@ namespace std {
 		
 	};
 #endif
+
+#ifdef MULESTL_FEATURES_STREAMS	
+	class istream {
+		public:
+		  istream(const char* nm) {
+			muleIStreamInternalInit();
+		  }
+		  istream(const istream& in) {}
+		  ~istream() {}
+		  istream& operator>>(const char& in) { return *(this); }
+		  istream& operator>>(const int& in) { return *(this); }
+		  
+		protected:
+		  void muleIStreamInternalInit() {}
+	};
+	
+	class ostream {
+		public:
+		  ostream(const char* nm) {
+			iscout = (mulestl_streq(nm, MULESTL_STREAMS_COUTSTR) || mulestl_streq(nm, MULESTL_STREAMS_CERRSTR));
+			muleOStreamInternalInit();
+		  }
+		  ostream(const ostream& in) {
+			iscout = in.iscout;
+		  }
+		  ~ostream() {}
+		  ostream& muleOStreamOutputOperator(const int& in) {
+			if (iscout == true)
+				printf("%d", in);
+			return *(this);
+		  }
+		  ostream& muleOStreamOutputOperator(const string& in) {
+			if (iscout == true)
+				printf("%s", in.c_str());
+			return *(this);
+		  }
+		  ostream& muleOStreamOutputOperator(const char& in) {
+			if (iscout == true)
+				printf("%c", in);
+			return *(this);
+		  }
+		  ostream& muleOStreamOutputOperator(const char* in) {
+			if (iscout == true)
+				printf("%s", in);
+			return *(this);
+		  }
+		  ostream& operator<<(const char* in) { return this->muleOStreamOutputOperator(in); }
+		  ostream& operator<<(const int& in) { return this->muleOStreamOutputOperator(in); }
+		  ostream& operator<<(const std::string& in) { return this->muleOStreamOutputOperator(in); }
+		  ostream& operator<<(const char& in) { return this->muleOStreamOutputOperator(in); }
+		  
+		  
+		  
+		protected:
+		  bool iscout;
+		  void muleOStreamInternalInit() {
+			if (iscout == false)
+				return;
+		  }
+		
+	};
+
+	extern istream cin;
+	extern ostream cout;
+	
+#endif
+
 	
 	string operator+(const char* left, const string& right) { return string(string(left) + right); }
 	

@@ -61,7 +61,7 @@ bool MuleMicrocontrollerSimulatorPlatform::internal_flushPin(const MuleMicrocont
 bool MuleMicrocontrollerSimulatorPlatform::internal_writeToFile(MULE_OTHER_STRINGTYPE fn, MULE_OTHER_STRINGTYPE ct) {
 	std::ofstream fileout;
 	fileout.open(fn.c_str());
-	fileout << fn;
+	fileout << ct;
 	fileout.close();
 	return true;
 }
@@ -72,42 +72,43 @@ MuleMicrocontrollerSimulatorPin MuleMicrocontrollerSimulatorPlatform::internal_r
 	MULE_OTHER_STRINGTYPE possiblePinPath = MULE_OTHER_STRINGTYPE(MULE_SIMDIRECTORY) + "/PIN" + internal_muleIntToStr(pn);
 	toret.path = possiblePinPath;
 	MULE_OTHER_STRINGTYPE rd = internal_readToString(possiblePinPath);
-	const char* rdconv = rd.c_str();
+	MULE_OTHER_STRINGTYPE rdconv = rd;
 	std::vector<MULE_OTHER_STRINGTYPE> splitvec;
-	int i = 0;
 	MULE_OTHER_STRINGTYPE topb = "";
-	while (rdconv[i] != '\0') {
-		if (rdconv[i] != ',' && rdconv[i] != '\0')
-			topb = topb + rdconv[i];
-		else {
+	muledebug("loop through pbconv begin");
+	for (int i = 0; i < rdconv.size(); i++) {
+		muledebug("i = " + muleinttostr(i));
+		if (rdconv[i] == ',') {
 			splitvec.push_back(topb);
 			topb = "";
-			if (rdconv[i] == '\0')
-				break;
 		}
-		i = i + 1;
+		else
+			topb = topb + rdconv[i];
 	}
 	splitvec.push_back(topb);
+	muledebug("loop through pbconv end");
+	
 	//delete rdconv;
-	for (int j = 0; j < splitvec.size(); i++) {
+	for (int j = 0; j < splitvec.size(); j++) {
 		MULE_OTHER_STRINGTYPE firsthalf = "";
 		MULE_OTHER_STRINGTYPE secondhalf = "";
-		const char* curitem = splitvec.at(j).c_str();
-		i = 0;
-		while (curitem[i] != '=') {
-			if (curitem[i] != '=')
-				firsthalf = firsthalf + curitem[i];
-			i = i + 1;
+		MULE_OTHER_STRINGTYPE curitem = splitvec.at(j);
+		int end = curitem.size();
+		int stopgap = curitem.find('=', 0);
+		if (stopgap == MULE_OTHER_STRINGTYPE::npos)
+			stopgap = end;
+		muledebug("stopgap = " + muleinttostr(stopgap));
+		int lastpos = 0;
+		for (int k = 0; k < stopgap; k++) {
+			firsthalf = firsthalf + curitem[k];
+			lastpos = k;
+			muledebug("k = " + muleinttostr(k));
 		}
-		i = i + 1;
-		while (curitem[i] != '\0') {
-			if (curitem[i] != '\0') {
-				secondhalf = secondhalf + curitem[i];
-				i = i + 1;
-			}
-			else
-				secondhalf = "";
-		}
+		lastpos = lastpos + 2;
+		if (lastpos > end)
+			lastpos = (int)(end / 2);
+		for (int l = lastpos; l < end; l++)
+			secondhalf = secondhalf + curitem[l];
 		//delete curitem;
 		if (secondhalf == "U" || secondhalf == "u")
 			secondhalf = "0";

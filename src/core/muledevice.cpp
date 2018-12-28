@@ -72,6 +72,29 @@ bool MuleDevice::setMode(MULE_OTHER_HWPINTYPE mode) {
     return convertedMcpInstance->setPinMode(pinNum, mode);
 }
 
+bool MuleDevice::continuousWrite(int times, double delay) {
+    muledebug("times = " + muleinttostr(times));
+    muledebug("(int)(delay) = " + muleinttostr((int)(delay)));
+    int startval = this->read();
+    if (startval == MULE_LOW)
+	startval = MULE_HIGH;
+    else
+	startval = MULE_LOW;
+    muledebug("startval = " + muleinttostr(startval));
+    for (int i = 0; i < times; i++) {
+	    muledebug("lap " + muleinttostr(i));
+	    mulesleep(delay);
+	    if (this->write(startval))
+		    return false;
+	    if (startval == MULE_LOW)
+		startval = MULE_HIGH;
+	    else
+		startval = MULE_LOW;
+	    muledebug("startval = " + muleinttostr(startval));
+    }
+    return true;
+}
+
 bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE level) {
     muledebug("Software implementation of GPIO trigger is active");
     try {

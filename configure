@@ -156,6 +156,7 @@ SOURCEDIR=`sh -c "cd \"$SOURCEDIR\" && pwd"`
 CDIR=`pwd`
 THINGSTODEFINE="MULE_VERSION_MAJOR=$MULEVERSIONMAJOR MULE_VERSION_MINOR=$MULEVERSIONMINOR MULE_VERSION_UPDATE=$MULEVERSIONUPDATE"
 RUNDOWNLOADERSCRIPT=no
+DOADDMINUSGTOCOMPILERFLAGS=no
 CURRENTDATE=`date +"%d.%m.%Y %H:%M:%S"`
 DEPLOYCMD=""
 RUNCMD=""
@@ -298,6 +299,7 @@ for Argument in $*; do
 		HOSTQMAKE="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-debug"; then
 		THINGSTODEFINE="MULE_FEATURES_DEBUG $THINGSTODEFINE"
+		DOADDMINUSGTOCOMPILERFLAGS=yes
 	elif test "$FIRSTHALF" = "-modules"; then
 		MODULES="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-mulestl"; then
@@ -553,6 +555,11 @@ else
 	showerror 5 "Unsupported C++ cross-compiler $TARGETCXX. Please try to find either a GCC or a Clang toolchain for your target platform."
 fi
 
+if test "$DOADDMINUSGTOCOMPILERFLAGS" = "yes"; then
+	TARGETCXXFLAGS="$TARGETCXXFLAGS -g"
+	TARGETCXXFLAGS="$TARGETCFLAGS -g"
+fi
+
 if test -e "$CDIR/MuleToolBootstrapFiles"; then
 	rm -r -f "$CDIR/MuleToolBootstrapFiles"
 fi
@@ -741,6 +748,7 @@ if test "$MULESTL" = "yes"; then
 	elif test "$TARGETOS" = "linux"; then
 		echo "#define MULESTL_LINUXSTANDARDS" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	fi
+	echo "#define MULESTL_FEATURES_DOCXX11" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	echo "#define MULESTL_POSIXSTANDARDS" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	echo "#define MULESTL_VECTOR_MAXELEMENTCOUNT 100" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	echo "#define MULESTL_VECTOR_REQUIREDELEMENTCOUNT 1" >> "$CDIR/extras/mulestl/mulestlconfig.h"

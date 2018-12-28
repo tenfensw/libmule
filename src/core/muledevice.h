@@ -55,6 +55,7 @@ public:
 	return pinType();
     }
     bool setPullUpDown(MULE_OTHER_HWPINTYPE val);
+    bool continuousWrite(int times = 2, double delay = 0.5);
 
 protected:
     bool dvinit(MULE_OTHER_HWPINTYPE pin);
