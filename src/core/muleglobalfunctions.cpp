@@ -110,6 +110,8 @@ void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch) {
 void mulesleep(double seconds) {
 #ifdef MULE_PLATFORM_LEGOEV3
 	Wait((int)(seconds * 1000));
+#elif defined(MULE_PLATFORM_MICROCONTROLLERSIM)
+	usleep((int)(1000 * 1000 * seconds));
 #elif defined(MULE_OS_UNIX)
 	std::system(MULE_OTHER_STRINGTYPE("sleep " + muleinttostr((int)(ceil(seconds)))).c_str());
 #else
