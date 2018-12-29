@@ -298,6 +298,7 @@ void MicrocontrollerWindow::updateGUI() {
         if (deviceConnected.at(j) == "U")
             qDebug() << "skip " << j;
         else {
+#ifndef MULEMICROSIM_ENABLEPICTURES
             QString toSet = "Internal error";
             if (deviceConnected.at(j) == "led") {
                 if (deviceVector.at(j).currentDigitalValue == 0)
@@ -329,6 +330,33 @@ void MicrocontrollerWindow::updateGUI() {
                 this->ui->pin3_cdevstatus->setText(toSet);
             else if (j == 3)
                 this->ui->pin4_cdevstatus->setText(toSet);
+#else
+            QString resToSet = "";
+            if (deviceConnected.at(j) == "led") {
+                if (deviceVector.at(j).currentDigitalValue == 0)
+                    resToSet = ":/visualresources/resources/lightoff.png";
+                else
+                    resToSet = ":/visualresources/resources/lighton.png";
+            }
+            else if (deviceConnected.at(j) == "servo") {
+                int ranpic = qrand() % 4;
+                if (ranpic < 1)
+                    ranpic = 1;
+                resToSet = ":/visualresources/resources/servoon" + QString::number(ranpic) + ".png";
+                if (deviceVector.at(j).currentDutyCycle == 0)
+                    resToSet = ":/visualresources/resources/servooff.png";
+            }
+            else if (deviceConnected.at(j) == "photoresistor")
+                resToSet = ":/visualresources/resources/photoresistor.png";
+            if (j == 0)
+                this->ui->pin0_cdevstatus->setPixmap(QPixmap(resToSet).scaled(this->ui->pin0_cdevstatus->size().width(), this->ui->pin0_cdevstatus->size().height(), Qt::KeepAspectRatio));
+            else if (j == 1)
+                this->ui->pin1_cdevstatus->setPixmap(QPixmap(resToSet).scaled(this->ui->pin1_cdevstatus->size().width(), this->ui->pin1_cdevstatus->size().height(), Qt::KeepAspectRatio));
+            else if (j == 2)
+                this->ui->pin3_cdevstatus->setPixmap(QPixmap(resToSet).scaled(this->ui->pin3_cdevstatus->size().width(), this->ui->pin3_cdevstatus->size().height(), Qt::KeepAspectRatio));
+            else if (j == 3)
+                this->ui->pin4_cdevstatus->setPixmap(QPixmap(resToSet).scaled(this->ui->pin4_cdevstatus->size().width(), this->ui->pin4_cdevstatus->size().height(), Qt::KeepAspectRatio));
+#endif
         }
     }
 }

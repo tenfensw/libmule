@@ -17,11 +17,12 @@
 QT       += core gui
 TOOLMAJORVERSION = 0
 TOOLMINORVERSION = 4
-TOOLUPDATEVERSION = 0
+TOOLUPDATEVERSION = 1
 
 DEFINES += TOOLMV=$$TOOLMAJORVERSION
 DEFINES += TOOLIV=$$TOOLMINORVERSION
 DEFINES += TOOLUV=$$TOOLUPDATEVERSION
+DEFINES += MULEMICROSIM_ENABLEPICTURES
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -55,3 +56,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

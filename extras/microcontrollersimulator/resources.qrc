@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/visualresources">
+        <file>resources/lightoff.png</file>
+        <file>resources/lighton.png</file>
+        <file>resources/servooff.png</file>
+        <file>resources/servoon1.png</file>
+        <file>resources/servoon2.png</file>
+        <file>resources/servoon3.png</file>
+        <file>resources/servoon4.png</file>
+        <file>resources/photoresistor.png</file>
+    </qresource>
+</RCC>
