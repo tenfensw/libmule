@@ -176,6 +176,10 @@ MULESTL=no
 MULESTLSTREAMS=no
 MULESTLSTRINGS=yes
 BUGGYFEDORALINUXGCC=no
+BUILDQTSTUFF=no
+if test "$NOMICROCONTROLLERSIM" = ""; then
+	NOMICROCONTROLLERSIM=no
+fi
 
 # display a beautiful header
 niceheader
@@ -275,6 +279,8 @@ for Argument in $*; do
 	SECONDHALF=`echo "$Argument" | cut -d '=' -f2`
 	if test "$FIRSTHALF" = "-target" || test "$FIRSTHALF" = "-platform"; then
 		TARGETNAME="$SECONDHALF"
+	elif test "$FIRSTHALF" = "NOMICROCONTROLLERSIM"; then
+		NOMICROCONTROLLERSIM="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-targetcc" || test "$FIRSTHALF" = "-platformcc"; then
 		TARGETCC="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-targetcxx" || test "$FIRSTHALF" = "-platformcxx"; then
@@ -347,6 +353,8 @@ dbgecho "Target is $TARGETNAME"
 if test "$TARGETNAME" = "rpi"; then
 	TARGETNAME=pigpio_rpi
 	showwarning "tiny_gpio-based \"rpi\" platform was deprecated and removed from libMule. Please use \"pigpio_rpi\" platform instead."
+elif test "$TARGETNAME" = "microsim" || test "$TARGETNAME" = "mulemicrocontrollersimulator" || test "$TARGETNAME" = "microcontrollersimulator" || test "$TARGETNAME" = "ms"; then
+	TARGETNAME=microcontrollersim
 elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test "$TARGETNAME" = "avr"; then
 	TARGETNAME=arduinoavr
 	MODULES=arduino
@@ -447,6 +455,27 @@ fi
 if test "$TARGETNAME" = ""; then
 	showerror 3 "Please specify the target platform by re-running $0 with \"-platform=<platform name here>\" flag."
 fi
+
+if test "$HOSTQMAKE" = ""; then
+	if command -v qmake > /dev/null 2>&1; then
+		HOSTQMAKE=`command -v qmake`
+	elif command -v qmake-qt5 > /dev/null 2>&1; then
+		HOSTQMAKE=`command -v qmake-qt5`
+	elif command -v qmake-qt4 > /dev/null 2>&1; then
+		HOSTQMAKE=`command -v qmake-qt4`
+	fi
+fi
+
+if test "$HOSTQMAKE" != ""; then
+	echo "Host Qt qmake is $HOSTQMAKE"
+	BUILDQTSTUFF=yes
+else
+	echo "Could not detect Qt qmake, please specify \"-qmake=[path to qmake]\" if you want to build libMule components that are written in Qt"
+	if test "$TARGETNAME" = "microcontrollersim" && test "$NOMICROCONTROLLERSIM" != "yes"; then
+		showerror 45 "Qt qmake is required to build Mule Microcontroller Simulator."
+	fi
+fi
+
 
 if test ! -e "$SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg"; then
 	showerror 2 "The platform you've specified ($TARGETNAME) is not supported by libMule"
@@ -817,7 +846,13 @@ echo "AR ?= $TARGETAR" >> "$CDIR/Makefile"
 echo "TARGETS = $FINALTARGETS" >> "$CDIR/Makefile"
 echo "PREFIX = \$(RPMBUILDROOT)/$PREFIX" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
-echo "all lib: build-static-libmule" >> "$CDIR/Makefile"
+if test "$BUILDQTSTUFF" != "yes"; then
+	echo "all lib: build-static-libmule" >> "$CDIR/Makefile"
+else
+	echo "all: lib qtmicrocontrollersim" >> "$CDIR/Makefile"
+	echo "" >> "$CDIR/Makefile"
+	echo "lib: build-static-libmule" >> "$CDIR/Makefile"
+fi
 echo "" >> "$CDIR/Makefile"
 echo "build-static-libmule:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
@@ -856,8 +891,16 @@ if test "$MULESTL" = "yes"; then
 	printf "\t\t" >> "$CDIR/Makefile"
 	echo "cp \"\$(SOURCEDIR)/extras/mulestl/mulestl.h\" \"\$(PREFIX)/include/libmule/extras/mulestl/mulestl.h\"" >> "$CDIR/Makefile"
 fi
+if test "$BUILDQTSTUFF" = "yes"; then
+	printf "\t\t" >> "$CDIR/Makefile"
+	echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/mulemicrosim\" \"\$(PREFIX)/bin/mulemicrosim\"" >> "$CDIR/Makefile"
+fi
 printf "\t\t" >> "$CDIR/Makefile"
 echo "cp \"\$(SOURCEDIR)/src/mule.h\" \"\$(PREFIX)/include/libmule/mule.h\"" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+echo "qtmicrocontrollersim:" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "sh -c \"cd \\\"\$(SOURCEDIR)/extras/microcontrollersimulator\\\" && $HOSTQMAKE -r && \$(MAKE) all\"" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "done!"
 printf "Creating $CDIR/installheaders.sh... "

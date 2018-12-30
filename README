@@ -10,7 +10,7 @@ for embedded microcontroller apps.
 Currently, only three platforms are supported:
 - Raspberry Pi
 - LEGO EV3 (Mindstorms)
-- Dummy platform (for testing purposes only)
+- Mule Microcontroller Simulator
 
 Support for more platforms will be added in future releases.
 
