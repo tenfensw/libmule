@@ -556,6 +556,9 @@ if test "$TARGETNAME" = "dummy" || test "$TARGETNAME" = "microcontrollersim"; th
 	TARGETLD=$HOSTLD
 	DEPLOYCMD="echo %A"
 	RUNCMD="%A"
+	if test "$TARGETNAME" = "microcontrollersim"; then
+		RUNCMD="$PREFIX/bin/mulemicrosim \"%A\""
+	fi
 else
 	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
 		showerror 4 "No C++ compiler for the TARGET PLATFORM was specified. Please re-run $0 with \"-platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> -platformar=<path to the GNU ar (or any other POSIX-compartible ar utility) program>\" flags."
