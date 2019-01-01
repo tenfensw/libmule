@@ -65,7 +65,11 @@ void muleprintf(MULE_OTHER_STRINGTYPE in, ...) {
 
 MULE_OTHER_STRINGTYPE muleinttostr(int in) {
 	char buf[70];
+#ifdef MULE_PLATFORM_ARDUINOAVR
 	itoa(in, buf, 10);
+#else
+	std::itoa(in, buf, 10);
+#endif
 	return MULE_OTHER_STRINGTYPE(buf);
 }
 
