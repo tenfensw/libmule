@@ -1,0 +1,5 @@
+#ifndef MULESTL_CSTDLIB_DUMMYHEADER
+namespace std {
+#include <stdlib.h>
+}
+#endif

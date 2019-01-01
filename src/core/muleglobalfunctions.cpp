@@ -64,9 +64,9 @@ void muleprintf(MULE_OTHER_STRINGTYPE in, ...) {
 }
 
 MULE_OTHER_STRINGTYPE muleinttostr(int in) {
-    std::ostringstream strstream;
-    strstream << in;
-    return strstream.str();
+	char buf[70];
+	itoa(in, buf, 10);
+	return MULE_OTHER_STRINGTYPE(buf);
 }
 
 void muledebug(MULE_OTHER_STRINGTYPE debugout) {
@@ -97,7 +97,11 @@ void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch) {
     muleprintf("\n");
     if (cancatch == true) {
         muleprintf("This program will continue to run if the algorithm catches this exception.\n");
+#ifndef MULE_INTERNAL_NOEXCEPTIONS
         std::exception();
+#else
+	muleprintf("Your microcontroller does not support exceptions, so the app will continue to work, but bugs and glitches might occur.");
+#endif
     }
     else {
         muleprintf("This program will now close because this exception is critical.\n");
@@ -112,6 +116,8 @@ void mulesleep(double seconds) {
 	Wait((int)(seconds * 1000));
 #elif defined(MULE_PLATFORM_MICROCONTROLLERSIM)
 	usleep((int)(1000 * 1000 * seconds));
+#elif defined(MULE_PLATFORM_ARDUINOAVR)
+	delay((long)(seconds * 1000));
 #elif defined(MULE_OS_UNIX)
 	std::system(MULE_OTHER_STRINGTYPE("sleep " + muleinttostr((int)(ceil(seconds)))).c_str());
 #else

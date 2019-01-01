@@ -1,0 +1,5 @@
+#ifndef MULESTL_CSIGNAL_DUMMYHEADER
+namespace std {
+#include <signal.h>
+}
+#endif

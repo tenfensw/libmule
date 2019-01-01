@@ -20,14 +20,16 @@
 
 #ifndef MULEGLOBALFUNCTIONS_H
 #define MULEGLOBALFUNCTIONS_H
+#include "core/muleconfig.h"
 #include <iostream>
-#include <sstream>
-#include <exception>
+#ifdef MULE_PLATFORM_ARDUINOAVR
+#include "Arduino.h"
+#endif
+//#include <exception>
 #include <cstdlib>
 #include <cstdarg>
 #include <cmath>
 #include <unistd.h>
-#include "core/muleconfig.h"
 #ifdef MULE_PLATFORM_LEGOEV3
 #include <ev3.h>
 #endif

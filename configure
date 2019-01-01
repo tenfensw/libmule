@@ -314,22 +314,14 @@ for Argument in $*; do
 			MULESTL=yes
 		fi
 	elif test "$FIRSTHALF" = "-arduino-header"; then
-		if test -e "$SECONDHALF"; then
-			ARDUINOHEADERLOCATION="$SECONDHALF"
-		else
-			showerror 19 "\"$SECONDHALF\" doesn't appear to be a valid Arduino.h header. Please specify the path to the Arduino.h header. For example, -arduino-header=/home/tim/Software/arduino-nightly/hardware/arduino/avr/cores/arduino/Arduino.h"
-		fi
+		#if test -e "$SECONDHALF"; then
+		#	ARDUINOHEADERLOCATION="$SECONDHALF"
+		#else
+		#	showerror 19 "\"$SECONDHALF\" doesn't appear to be a valid Arduino.h header. Please specify the path to the Arduino.h header. For example, -arduino-header=/home/tim/Software/arduino-nightly/hardware/arduino/avr/cores/arduino/Arduino.h"
+		#fi
+		echo "[WARNING] Option \"-arduino-header\" is deprecated."
 	elif test "$FIRSTHALF" = "-arduino-idedir"; then
 		if test -e "$SECONDHALF"; then
-			ARDUINOHEADERLOCATION="$SECONDHALF/hardware/arduino/avr/cores/arduino/Arduino.h"
-			if test ! -e "$ARDUINOHEADERLOCATION"; then
-				ARDUINOHEADERLOCATION="$SECONDHALF/hardware/arduino/cores/arduino/Arduino.h"
-				if test ! -e "$ARDUINOHEADERLOCATION"; then
-					showerror 22 "\"$SECONDHALF\" doesn't appear to be a valid Arduino IDE install prefix."
-				else
-					showerror 29 "Arduino IDE installed at \"$SECONDHALF\" is too old to build libMule. At least Arduino IDE 1.6 or newer is required."
-				fi
-			fi
 			if test -e "$SECONDHALF/hardware/tools/avr/bin/avr-g++"; then
 				TARGETCC="$SECONDHALF/hardware/tools/avr/bin/avr-gcc"
 				TARGETCXX="$SECONDHALF/hardware/tools/avr/bin/avr-g++"
@@ -350,6 +342,7 @@ done
 echo "This script is running on $HOSTOS $HOSTCPU"
 
 dbgecho "Target is $TARGETNAME"
+ARDUINOHEADERLOCATION="$SOURCEDIR/src/3rdparty/ArduinoCore-avr-slim/cores/arduino/Arduino.h"
 if test "$TARGETNAME" = "rpi"; then
 	TARGETNAME=pigpio_rpi
 	showwarning "tiny_gpio-based \"rpi\" platform was deprecated and removed from libMule. Please use \"pigpio_rpi\" platform instead."
@@ -357,10 +350,12 @@ elif test "$TARGETNAME" = "microsim" || test "$TARGETNAME" = "mulemicrocontrolle
 	TARGETNAME=microcontrollersim
 elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test "$TARGETNAME" = "avr"; then
 	TARGETNAME=arduinoavr
+	MULESTL=yes
+	THINGSTODEFINE="MULE_INTERNAL_NOEXCEPTIONS $THINGSTODEFINE"
 	MODULES=arduino
 	if test "$ARDUINOHEADERLOCATION" = "" || test "$ARDUINOTARGETDEVICE" = ""; then
 		echo "It appears you have forgotten to specify these options:"
-		echo " - path to Arduino.h file. Specify it using the \"-arduino-header=[path]\" flag. Alternatively, specify the full path to the directory where Arduino IDE is installed using the \"-arduino-idedir=[path]\" flag."
+		echo " - avr-gcc location. If you have Arduino IDE installed, specify that path using \"-arduino-idedir=[path\" option. Otherwise, specify it using \"-platformcxx=[path to avr-g++]\"."
 		echo " - the target Arduino board. Currently only Arduino Uno, Mega 2560 and Leonardo are supported. Specify the model name using the \"-arduino-device=[model name]\" flag."
 		showerror 20 "Not all options were specified. See the message above for more info."
 	fi
@@ -390,9 +385,10 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 		TARGETCFLAGS="-mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR $TARGETCFLAGS"
 		TARGETLDFLAGS="-mmcu=atmega328p $TARGETLDFLAGS"
 	fi
-	TARGETCXXFLAGS="-x c++ -fpermissive $ARDUINOINCLUDEFLAGS $TARGETCXXFLAGS"
-	TARGETCFLAGS="-fpermissive $ARDUINOINCLUDEFLAGS $TARGETCFLAGS"
-	TARGETLDFLAGS="-mrelax $TARGETLDFLAGS"
+	ARDUINOIDEFLAGS="-w -ffunction-sections -fdata-sections -fno-threadsafe-statics -flto -w -fpermissive"
+	TARGETCXXFLAGS="$ARDUINOIDEFLAGS -x c++ -fpermissive -fexceptions $ARDUINOINCLUDEFLAGS $TARGETCXXFLAGS"
+	TARGETCFLAGS="$ARDUINOIDEFLAGS -fpermissive -fexceptions $ARDUINOINCLUDEFLAGS $TARGETCFLAGS"
+	TARGETLDFLAGS="-mrelax -flto -Wl,--gc-sections -fuse-linker-plugin $TARGETLDFLAGS"
 elif test "$TARGETNAME" = "microcontrollersim"; then
 	MODULES=arduino
 fi
@@ -563,6 +559,11 @@ else
 	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
 		showerror 4 "No C++ compiler for the TARGET PLATFORM was specified. Please re-run $0 with \"-platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> -platformar=<path to the GNU ar (or any other POSIX-compartible ar utility) program>\" flags."
 	fi
+
+
+
+
+
 	if test "$TARGETLD" = ""; then
 		TARGETLD=$TARGETCXX
 	fi
@@ -603,6 +604,11 @@ if $HOSTLD $HOSTLDFLAGS -I$SOURCEDIR/src/ideintegration/muletool -DTOOLPREFIX=\"
 else
 	echo ". failed!"
 	showerror 9 "Failed to link $CDIR/MuleToolBootstrapFiles/muletool"
+fi
+
+if test "$MULESTL" = "yes"; then
+	TARGETCXXFLAGS="-I$PREFIX/include/libmule/extras/mulestl $TARGETCXXFLAGS"
+	TARGETCFLAGS="-I$PREFIX/include/libmule/extras/mulestl $TARGETCFLAGS"
 fi
 
 printf "Creating $CDIR/MuleToolBootstrapFiles/MuleTool.mcfg... "
@@ -760,6 +766,9 @@ echo "#endif" >> "$CDIR/src/core/muleconfig.h"
 echo "done!"
 
 if test "$MULESTL" = "yes"; then
+	for MuleSTLHead in cmath cstdarg cstdlib string vector; do
+		PLATFORMHEADERS="$SOURCEDIR/src/platformsupport/$TARGETNAME/../../../extras/mulestl/$MuleSTLHead $PLATFORMHEADERS"
+	done
 	mkdir -p "$CDIR/extras/mulestl"
 	printf "Creating $CDIR/extras/mulestl/mulestlconfig.h... "
 	echo "// Automatically generated by libMule configure script on $CURRENTDATE" > "$CDIR/extras/mulestl/mulestlconfig.h"
@@ -780,7 +789,9 @@ if test "$MULESTL" = "yes"; then
 	elif test "$TARGETOS" = "linux"; then
 		echo "#define MULESTL_LINUXSTANDARDS" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	fi
-	echo "#define MULESTL_FEATURES_DOCXX11" >> "$CDIR/extras/mulestl/mulestlconfig.h"
+	if test "$TARGETNAME" != "arduinoavr"; then
+		echo "#define MULESTL_FEATURES_DOCXX11" >> "$CDIR/extras/mulestl/mulestlconfig.h"
+	fi
 	echo "#define MULESTL_POSIXSTANDARDS" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	echo "#define MULESTL_VECTOR_MAXELEMENTCOUNT 100" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	echo "#define MULESTL_VECTOR_REQUIREDELEMENTCOUNT 1" >> "$CDIR/extras/mulestl/mulestlconfig.h"
@@ -844,7 +855,7 @@ fi
 echo "# Automatically generated by libMule configuration script on $CURRENTDATE" > "$CDIR/Makefile"
 echo "MULETOOL ?= \"$CDIR/MuleToolBootstrapFiles/muletool\"" >> "$CDIR/Makefile"
 echo "SOURCEDIR ?= $SOURCEDIR" >> "$CDIR/Makefile"
-echo "AR ?= $TARGETAR" >> "$CDIR/Makefile"
+echo "TARGETAR ?= $TARGETAR" >> "$CDIR/Makefile"
 #echo "HEADERS = $FINALHEADERS" >> "$CDIR/Makefile"
 echo "TARGETS = $FINALTARGETS" >> "$CDIR/Makefile"
 echo "PREFIX = \$(RPMBUILDROOT)/$PREFIX" >> "$CDIR/Makefile"
@@ -861,7 +872,7 @@ echo "build-static-libmule:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "\$(MAKE) \$(TARGETS)" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
-echo "ar rcs libMule.a \$(TARGETS)" >> "$CDIR/Makefile"
+echo "\$(TARGETAR) rcs libMule.a \$(TARGETS)" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "\$(TARGETS):" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
@@ -900,6 +911,8 @@ if test "$BUILDQTSTUFF" = "yes"; then
 fi
 printf "\t\t" >> "$CDIR/Makefile"
 echo "cp \"\$(SOURCEDIR)/src/mule.h\" \"\$(PREFIX)/include/libmule/mule.h\"" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "-rm -r -f \"\$(PREFIX)/include/libmule/\$(SOURCEDIR)\"" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "qtmicrocontrollersim:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"

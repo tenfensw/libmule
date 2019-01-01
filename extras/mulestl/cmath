@@ -1,0 +1,5 @@
+#ifndef MULESTL_CMATH_DUMMYHEADER
+namespace std {
+#include <math.h>
+}
+#endif

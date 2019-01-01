@@ -1,0 +1,5 @@
+#ifndef MULESTL_CSTDARG_DUMMYHEADER
+namespace std {
+#include <stdarg.h>
+}
+#endif

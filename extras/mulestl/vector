@@ -1,0 +1,3 @@
+#ifndef MULESTL_VECTOR_DUMMYHEADER
+#include <mulestl.h>
+#endif

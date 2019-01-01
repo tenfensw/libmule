@@ -34,6 +34,10 @@
 #include "platformsupport/legoev3/mulemindstormsplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleMindstormsPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("legoev3")
+#elif defined(MULE_PLATFORM_ARDUINOAVR)
+#include "platformsupport/arduinoavr/mulearduinoavrplatform.h"
+#define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleArduinoAVRPlatform
+#define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("arduinoavr")
 #elif defined(MULE_PLATFORM_RPI)
 #include "platformsupport/rpi/muleraspberrypiplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleRaspberryPiPlatform

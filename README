@@ -11,6 +11,7 @@ Currently, only three platforms are supported:
 - Raspberry Pi
 - LEGO EV3 (Mindstorms)
 - Mule Microcontroller Simulator
+- Arduino Uno, Leonardo and Mega 2580
 
 Support for more platforms will be added in future releases.
 
