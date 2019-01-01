@@ -97,19 +97,13 @@ bool MuleDevice::continuousWrite(int times, double delay) {
 
 bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE level) {
     muledebug("Software implementation of GPIO trigger is active");
-    try {
-    	this->write(level);
-    	mulemicrosecsleep(pulselen);
-    	if (level != 0)
-    		this->write(0);
-    	else
-    		this->write(1);
-    	return true;
-    }
-    catch (...) {
-    	muledebug("ASSERT or SEGFAULT was caused, will return false");
-    }
-    return false;
+    this->write(level);
+    mulemicrosecsleep(pulselen);
+    if (level != 0)
+    	this->write(0);
+    else
+    	this->write(1);
+    return true;
 }
 
 bool MuleDevice::setPullUpDown(MULE_OTHER_HWPINTYPE val) {

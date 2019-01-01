@@ -63,6 +63,7 @@
 
 void* operator new(MULESTL_INTERNAL_SIZETDEFINITION size) { return malloc(size); }
 void operator delete(void* todel) { free(todel); }
+void operator delete(void* todel, unsigned int toint) { free(todel); }
 
 #ifdef MULESTL_ARDUINO_REDEFINEGCCSTUFF
   void* __gxx_personality_sj0;

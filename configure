@@ -904,7 +904,9 @@ if test "$MULESTL" = "yes"; then
 	printf "\t\t" >> "$CDIR/Makefile"
 	echo "cp extras/mulestl/mulestlconfig.h \"\$(PREFIX)/include/libmule/extras/mulestl/mulestlconfig.h\"" >> "$CDIR/Makefile"
 	printf "\t\t" >> "$CDIR/Makefile"
-	echo "cp \"\$(SOURCEDIR)/extras/mulestl/mulestl.h\" \"\$(PREFIX)/include/libmule/extras/mulestl/mulestl.h\"" >> "$CDIR/Makefile"
+	echo "cp \"\$(SOURCEDIR)/extras/mulestl/*\" \"\$(PREFIX)/include/libmule/extras/mulestl/\"" >> "$CDIR/Makefile"
+	printf "\t\t" >> "$CDIR/Makefile"
+	echo "rm -r -f \"\$(PREFIX)/include/libmule/extras/mulestl/*.cpp\"" >> "$CDIR/Makefile"
 fi
 if test "$BUILDQTSTUFF" = "yes"; then
 	printf "\t\t" >> "$CDIR/Makefile"

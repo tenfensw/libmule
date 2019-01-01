@@ -44,14 +44,10 @@ bool MuleApplication::internalInit() {
         isFirstInstance = true;
         muledebug("This MuleApplication instance was self-appointed as the first one");
     }
-    try {
-        mcpClass = new MuleCurrentPlatform();
-	areNecessaryPartsReady = true;
-        muledebug("MuleCurrentPlatform initialized");
-        return true;
-    } catch (...) {
-        return false;
-    }
+    mcpClass = new MuleCurrentPlatform();
+    areNecessaryPartsReady = true;
+    muledebug("MuleCurrentPlatform initialized");
+    return true;
 }
 
 void MuleApplication::internalCleanUp() {
