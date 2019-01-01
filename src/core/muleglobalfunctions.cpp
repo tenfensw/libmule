@@ -64,13 +64,15 @@ void muleprintf(MULE_OTHER_STRINGTYPE in, ...) {
 }
 
 MULE_OTHER_STRINGTYPE muleinttostr(int in) {
-	char buf[70];
-#ifdef MULE_PLATFORM_ARDUINOAVR
-	itoa(in, buf, 10);
+#ifndef MULE_INTERNAL_NOSTRINGSTREAMS
+	std::ostringstream ostr;
+	ostr << in;
+	return ostr.str();
 #else
-	std::itoa(in, buf, 10);
-#endif
+	char buf[70];
+	itoa(in, buf, 10);
 	return MULE_OTHER_STRINGTYPE(buf);
+#endif
 }
 
 void muledebug(MULE_OTHER_STRINGTYPE debugout) {

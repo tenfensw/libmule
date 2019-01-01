@@ -24,8 +24,12 @@
 #include <iostream>
 #ifdef MULE_PLATFORM_ARDUINOAVR
 #include "Arduino.h"
+#else
+#include <sstream>
 #endif
-//#include <exception>
+#ifndef MULE_INTERNAL_NOEXCEPTIONS
+#include <exception>
+#endif
 #include <stdlib.h>
 #include <cstdlib>
 #include <cstdarg>
