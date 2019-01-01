@@ -91,8 +91,7 @@ Usage: $0 [arguments]
 	none]					is installed on your device. Use this option
 						if you use an unofficial firmware.
 						
-	-arduino-header=[full path to Arduino.h] Required only when cross-compiling for Arduino.
-	                                         Specify the full path to the Arduino.h file.
+	-arduino-header=[full path to Arduino.h] Deprecated option.
 						 
 	-arduino-idedir=[Arduino IDE install    Required only when cross-compiling for Arduino.
 	prefix]                                 Specify the directory where Arduino IDE is installed.
@@ -479,7 +478,7 @@ fi
 
 while read configfileline; do
 	FIRSTHALF=`echo "$configfileline" | cut -d ':' -f1`
-	SECONDHALF=`echo "$configfileline" | cut -d ':' -f2`
+	SECONDHALF=`echo "$configfileline" | cut -d ':' -f2 | sed "s/%~/$ARDUINOTARGETDEVICE/g"`
 	if test "$FIRSTHALF" = "OS" && test "$TARGETOS" = "posix"; then
 		if test "$SECONDHALF" = "Linux" || test "$SECONDHALF" = "linux"; then
 			TARGETOS=linux
@@ -791,6 +790,8 @@ if test "$MULESTL" = "yes"; then
 	fi
 	if test "$TARGETNAME" != "arduinoavr"; then
 		echo "#define MULESTL_FEATURES_DOCXX11" >> "$CDIR/extras/mulestl/mulestlconfig.h"
+	else
+		echo "#define MULESTL_ARDUINO_REDEFINEGCCSTUFF" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	fi
 	echo "#define MULESTL_POSIXSTANDARDS" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	echo "#define MULESTL_VECTOR_MAXELEMENTCOUNT 100" >> "$CDIR/extras/mulestl/mulestlconfig.h"

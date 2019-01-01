@@ -61,8 +61,14 @@
 #define MULESTL_FEATURES_STRINGS
 #define MULESTL_INTERNAL_SIZETDEFINITION unsigned int
 
-//void* operator new(MULESTL_INTERNAL_SIZETDEFINITION size) { return malloc(size); }
-//void operator delete(void* todel) { free(todel); }
+void* operator new(MULESTL_INTERNAL_SIZETDEFINITION size) { return malloc(size); }
+void operator delete(void* todel) { free(todel); }
+
+#ifdef MULESTL_ARDUINO_REDEFINEGCCSTUFF
+  void* __gxx_personality_sj0;
+  void* __cxa_begin_catch;
+  void* __cxa_end_catch;
+#endif
 
 namespace std {
 
