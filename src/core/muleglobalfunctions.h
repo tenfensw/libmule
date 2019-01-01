@@ -26,6 +26,7 @@
 #include "Arduino.h"
 #endif
 //#include <exception>
+#include <stdlib.h>
 #include <cstdlib>
 #include <cstdarg>
 #include <cmath>
