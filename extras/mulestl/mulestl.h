@@ -31,8 +31,10 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdarg.h>
-#include <signal.h>
 #include <math.h>
+#ifndef MULE_PLATFORM_ARDUINOAVR
+#include <signal.h>
+#endif
 #ifdef MULESTL_FEATURES_DOCXX11
 #include <initializer_list>
 #endif
@@ -61,9 +63,9 @@
 #define MULESTL_FEATURES_STRINGS
 #define MULESTL_INTERNAL_SIZETDEFINITION unsigned int
 
-void* operator new(MULESTL_INTERNAL_SIZETDEFINITION size) { return malloc(size); }
-void operator delete(void* todel) { free(todel); }
-void operator delete(void* todel, unsigned int toint) { free(todel); }
+inline void* operator new(MULESTL_INTERNAL_SIZETDEFINITION size) { return malloc(size); }
+inline void operator delete(void* todel) { free(todel); }
+inline void operator delete(void* todel, unsigned int toint) { free(todel); }
 
 #ifdef MULESTL_ARDUINO_REDEFINEGCCSTUFF
   static void* __gxx_personality_sj0;
@@ -590,7 +592,7 @@ namespace std {
 #endif
 
 	
-	string operator+(const char* left, const string& right) { return string(string(left) + right); }
+	inline string operator+(const char* left, const string& right) { return string(string(left) + right); }
 	
 };
 #endif
