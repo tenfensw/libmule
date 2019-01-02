@@ -4,3 +4,5 @@ Sources:../platformsupport/common/mulecurrentplatform.cpp muleglobalfunctions.cp
 Headers:../platformsupport/common/mulecommonplatform.h ../platformsupport/common/mulecurrentplatform.h muleglobalfunctions.h muledevice.h muleapplication.h
 ModuleID:MULE_FEATURES_CORE
  
+ 
+ 

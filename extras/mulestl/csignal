@@ -1,5 +1,4 @@
 #ifndef MULESTL_CSIGNAL_DUMMYHEADER
-namespace std {
-#include <signal.h>
-}
+#warning "This header just redirects you to mulestl.h, so do not expect to access signal.h functions using this header."
+#include <mulestl.h>
 #endif
