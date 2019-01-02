@@ -24,7 +24,9 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#ifndef MULE_INTERNAL_NOEXIT
 #include <csignal>
+#endif
 #include "platformsupport/common/mulecurrentplatform.h"
 #include "core/muleglobalfunctions.h"
 #include "core/muleconfig.h"
