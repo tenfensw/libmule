@@ -75,10 +75,10 @@ namespace std {
 
 	const char endl = '\n';
 	
-	void* mulestlcalloc(int arraymembers, int arraysize) { return calloc(arraymembers, arraysize); }
-	void mulestlcfree(void* pointer) { free(pointer); }
+	static void* mulestlcalloc(int arraymembers, int arraysize) { return calloc(arraymembers, arraysize); }
+	static void mulestlcfree(void* pointer) { free(pointer); }
 
-	void mulestldebug(const char* message, ...) {
+	static void mulestldebug(const char* message, ...) {
 		va_list everythingelse;
 		va_start(everythingelse, message);
 #ifdef MULESTL_FEATURES_DEBUG
@@ -98,13 +98,13 @@ namespace std {
 	static void exit(int status) { mulestldebug("status = %d", status); }
 #endif
 	
-	char* mulestl_chartochararray(char in) {
+	static char* mulestl_chartochararray(char in) {
 		char* toreturn = (char*)(mulestlcalloc(1, sizeof(char)));
 		toreturn[0] = in;
 		return toreturn;
 	}
 	
-	int mulestl_strlen(const char* str) {
+	static int mulestl_strlen(const char* str) {
 		int result = 0;
 		while (str[result] != '\0') {
 			if (str[result] != '\0')
@@ -113,7 +113,7 @@ namespace std {
 		return result;
 	}
 	
-	bool mulestl_streq(const char* str1, const char* str2) {
+	static bool mulestl_streq(const char* str1, const char* str2) {
 		int str1_len = mulestl_strlen(str1);
 		int str2_len = mulestl_strlen(str2);
 		if (str1_len != str2_len)
