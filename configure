@@ -350,7 +350,7 @@ elif test "$TARGETNAME" = "microsim" || test "$TARGETNAME" = "mulemicrocontrolle
 elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test "$TARGETNAME" = "avr"; then
 	TARGETNAME=arduinoavr
 	MULESTL=yes
-	THINGSTODEFINE="MULE_INTERNAL_NOEXCEPTIONS MULE_INTERNAL_NOSTRINGSTREAMS $THINGSTODEFINE"
+	THINGSTODEFINE="MULE_INTERNAL_NOEXCEPTIONS MULE_INTERNAL_NOEXIT MULE_INTERNAL_NOSTRINGSTREAMS $THINGSTODEFINE"
 	MODULES=arduino
 	if test "$ARDUINOHEADERLOCATION" = "" || test "$ARDUINOTARGETDEVICE" = ""; then
 		echo "It appears you have forgotten to specify these options:"

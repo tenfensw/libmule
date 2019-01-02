@@ -32,7 +32,7 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <math.h>
-#ifndef MULE_PLATFORM_ARDUINOAVR
+#ifndef MULE_INTERNAL_NOEXIT
 #include <signal.h>
 #endif
 #ifdef MULESTL_FEATURES_DOCXX11
