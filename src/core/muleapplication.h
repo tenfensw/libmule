@@ -21,6 +21,7 @@
 #ifndef MULEAPPLICATION_H
 #define MULEAPPLICATION_H
 
+#include "core/muleconfig.h"
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -29,7 +30,6 @@
 #endif
 #include "platformsupport/common/mulecurrentplatform.h"
 #include "core/muleglobalfunctions.h"
-#include "core/muleconfig.h"
 
 namespace MuleApplicationWideData {
 	extern void* appWideFirstInstance;
