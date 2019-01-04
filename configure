@@ -91,6 +91,11 @@ Usage: $0 [arguments]
 	none]					is installed on your device. Use this option
 						if you use an unofficial firmware.
 						
+	-platformthirdpartytools=[yes/no]       download third-party tools that make develop-
+						ment for your platform easier, but could not
+						be included in standard libMule source distri-
+						bution due to license incompatibilities.
+						
 	-arduino-header=[full path to Arduino.h] Deprecated option.
 						 
 	-arduino-idedir=[Arduino IDE install    Required only when cross-compiling for Arduino.
@@ -155,6 +160,7 @@ SOURCEDIR=`sh -c "cd \"$SOURCEDIR\" && pwd"`
 CDIR=`pwd`
 THINGSTODEFINE="MULE_VERSION_MAJOR=$MULEVERSIONMAJOR MULE_VERSION_MINOR=$MULEVERSIONMINOR MULE_VERSION_UPDATE=$MULEVERSIONUPDATE"
 RUNDOWNLOADERSCRIPT=no
+DOWNLOADERSCRIPTTARGET=crucial
 DOADDMINUSGTOCOMPILERFLAGS=no
 CURRENTDATE=`date +"%d.%m.%Y %H:%M:%S"`
 DEPLOYCMD=""
@@ -307,6 +313,15 @@ for Argument in $*; do
 		DOADDMINUSGTOCOMPILERFLAGS=yes
 	elif test "$FIRSTHALF" = "-modules"; then
 		MODULES="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-platformthirdpartytools"; then
+		if test "$SECONDHALF" = ""; then
+			SECONDHALF=yes
+		fi
+		if test "$SECONDHALF" = "yes"; then
+			DOWNLOADERSCRIPTTARGET=all
+		else
+			DOWNLOADERSCRIPTTARGET=crucial
+		fi
 	elif test "$FIRSTHALF" = "-mulestl"; then
 		MULESTL="$SECONDHALF"
 		if test "$MULESTL" = ""; then
@@ -481,6 +496,8 @@ if test ! -e "$SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg"; then
 	showerror 2 "The platform you've specified ($TARGETNAME) is not supported by libMule"
 fi
 
+MAKEBUILDTOOLS="@echo Do not have to build any additional tools"
+
 while read configfileline; do
 	FIRSTHALF=`echo "$configfileline" | cut -d ':' -f1`
 	SECONDHALF=`echo "$configfileline" | cut -d ':' -f2 | sed "s/%~/$ARDUINOTARGETDEVICE/g"`
@@ -534,10 +551,12 @@ while read configfileline; do
 		TARGETCFLAGS="$TARGETCFLAGS $SECONDHALF"
 	elif test "$FIRSTHALF" = "AfterBuildLinkerFlags"; then
 		TARGETLDFLAGS="$TARGETLDFLAGS $SECONDHALF"
-	elif test "$FIRSTHALF" = "DeployCommand"; then
+	elif test "$FIRSTHALF" = "DeployCommand" && test "$DOWNLOADERSCRIPTTARGET" = "all"; then
 		DEPLOYCMD="$SECONDHALF"
-	elif test "$FIRSTHALF" = "RemoteRunCommand"; then
+	elif test "$FIRSTHALF" = "RemoteRunCommand" && test "$DOWNLOADERSCRIPTTARGET" = "all"; then
 		RUNCMD="$SECONDHALF"
+	elif test "$FIRSTHALF" = "MakeBuildTools" && test "$DOWNLOADERSCRIPTTARGET" = "all"; then
+		MAKEBUILDTOOLS="$SECONDHALF"
 	elif test "$FIRSTHALF" = "Sources"; then
 		for SourceFilePL in $SECONDHALF; do
 			PLATFORMSOURCES="$SOURCEDIR/src/platformsupport/$TARGETNAME/$SourceFilePL $PLATFORMSOURCES"
@@ -639,7 +658,7 @@ echo "done!"
 
 if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 	printf "Downloading required third-party libraries (this might take a while)... "
-	if sh -c "cd \"$SOURCEDIR/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh" > "$CDIR/dl.log" 2>&1; then
+	if sh -c "cd \"$SOURCEDIR/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh $DOWNLOADERSCRIPTTARGET" > "$CDIR/dl.log" 2>&1; then
 		echo "done!"
 		rm -r -f "$CDIR/dl.log"
 	else
@@ -901,6 +920,8 @@ printf "\t\t" >> "$CDIR/Makefile"
 echo "-mkdir -p \"\$(PREFIX)/bin\" \"\$(PREFIX)/etc\" \"\$(PREFIX)/lib\" \"\$(PREFIX)/include/libmule\"" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "cp MuleToolBootstrapFiles/muletool \"\$(PREFIX)/bin/muletool\" && cp MuleToolBootstrapFiles/MuleTool.mcfg \"\$(PREFIX)/etc/MuleTool.mcfg\" && if test -e \"\$(PREFIX)/muletool\"; then unlink \"\$(PREFIX)/muletool\"; fi && ln -s \"\$(PREFIX)/bin/muletool\" \"\$(PREFIX)/muletool\"" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "$MAKEBUILDTOOLS" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "PREFIX=\"\$(PREFIX)\" SOURCEDIR=\"\$(SOURCEDIR)\" ./installheaders.sh && cp src/core/muleconfig.h \"\$(PREFIX)/include/libmule/core/muleconfig.h\""  >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
