@@ -402,7 +402,7 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 	ARDUINOIDEFLAGS="-w -ffunction-sections -fdata-sections -fno-threadsafe-statics -flto -w -fpermissive"
 	TARGETCXXFLAGS="$ARDUINOIDEFLAGS -x c++ -fpermissive -fexceptions $ARDUINOINCLUDEFLAGS $TARGETCXXFLAGS"
 	TARGETCFLAGS="$ARDUINOIDEFLAGS -fpermissive -fexceptions $ARDUINOINCLUDEFLAGS $TARGETCFLAGS"
-	TARGETLDFLAGS="--allow-multiple-definitions -mrelax -flto -Wl,--gc-sections -fuse-linker-plugin $TARGETLDFLAGS"
+	TARGETLDFLAGS="-Wl,--allow-multiple-definitions -mrelax -flto -Wl,--gc-sections -fuse-linker-plugin $TARGETLDFLAGS"
 	if command -v avr-gcc > /dev/null 2>&1 && command -v avr-g++ > /dev/null 2>&1; then
 		TARGETCC=`command -v avr-gcc`
 		TARGETCXX=`command -v avr-g++`
