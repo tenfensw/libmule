@@ -808,6 +808,7 @@ if test "$MULESTL" = "yes"; then
 	fi
 	if test "$TARGETNAME" = "arduinoavr"; then
 		echo "#define MULESTL_ARDUINOSTANDARDS" >> "$CDIR/extras/mulestl/mulestlconfig.h"
+		echo "#define MULESTL_HEADERS_NOSIGNALH" >> "$CDIR/extras/mulestl.h"
 		echo "#define MULESTL_OSTREAM_ARDUINOSERIALPORTBEGINARG 9600" >> "$CDIR/extras/mulestl/mulestlconfig.h"
 	elif test "$TARGETOS" = "bsd"; then
 		echo "#define MULESTL_BSDSTANDARDS" >> "$CDIR/extras/mulestl/mulestlconfig.h"

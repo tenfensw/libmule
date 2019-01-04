@@ -32,7 +32,7 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <math.h>
-#ifndef MULE_INTERNAL_NOEXIT
+#ifndef MULESTL_HEADERS_NOSIGNALH
 #include <signal.h>
 #endif
 #ifdef MULESTL_FEATURES_DOCXX11
