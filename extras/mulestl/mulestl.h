@@ -72,6 +72,9 @@ inline void operator delete(void* todel, unsigned int toint) { free(todel); }
   static void* __cxa_begin_catch;
   static void* __cxa_end_catch;
 #endif
+#ifdef MULESTL_HEADERS_NOSIGNALH
+  static volatile signed char sig_atomic_t;
+#endif
 
 namespace std {
 
