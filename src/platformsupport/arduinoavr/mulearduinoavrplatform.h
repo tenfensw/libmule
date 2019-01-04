@@ -44,9 +44,7 @@
 #define MULE_ARDUINO_MAXDUTYCYCLE 255
 #define MULE_ARDUINO_CONSTPWMFREQUENCY 490
 
-extern "C" {
-	inline volatile signed char sig_atomic_t;
-}
+extern volatile signed char sig_atomic_t;
 
 class MuleArduinoAVRPlatform : public MuleCommonPlatform {
     public:
