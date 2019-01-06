@@ -126,6 +126,14 @@ showwarning() {
 	echo "[WARNING] $1"
 }
 
+arduinoerrormsg() {
+	echo "It appears you have forgotten to specify these options:"
+	echo " - avr-gcc location. If you have Arduino IDE installed, specify that path using \"-arduino-idedir=[path]\" option. Otherwise, specify it using \"-platformcxx=[path to avr-g++]\"."
+	echo " - the target Arduino board. Currently only Arduino Uno, Mega 2560 and Leonardo are supported. Specify the model name using the \"-arduino-device=[model name]\" flag."
+	showerror 20 "Not all options were specified. See the message above for more info."
+
+}
+
 # set all variables first
 MULEVERSIONMAJOR=0
 MULEVERSIONMINOR=4
@@ -173,6 +181,8 @@ HOSTOS=""
 HOSTCPU=""
 ADDITIONALINCLUDES=""
 ADDITIONALLIBS=""
+AVROBJCOPY=""
+AVRDUDEFLAGS=""
 ARDUINOHEADERLOCATION=""
 ARDUINOINCLUDEFLAGS=""
 ARDUINOTARGETDEVICE=""
@@ -367,11 +377,8 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 	MULESTL=yes
 	THINGSTODEFINE="MULE_INTERNAL_NOEXCEPTIONS MULE_INTERNAL_NOEXIT MULE_INTERNAL_NOSTRINGSTREAMS $THINGSTODEFINE"
 	MODULES=arduino
-	if test "$ARDUINOHEADERLOCATION" = "" || test "$ARDUINOTARGETDEVICE" = ""; then
-		echo "It appears you have forgotten to specify these options:"
-		echo " - avr-gcc location. If you have Arduino IDE installed, specify that path using \"-arduino-idedir=[path]\" option. Otherwise, specify it using \"-platformcxx=[path to avr-g++]\"."
-		echo " - the target Arduino board. Currently only Arduino Uno, Mega 2560 and Leonardo are supported. Specify the model name using the \"-arduino-device=[model name]\" flag."
-		showerror 20 "Not all options were specified. See the message above for more info."
+	if test "$ARDUINOTARGETDEVICE" = ""; then
+		arduinoerrormsg
 	fi
 	if test "$ARDUINOTARGETDEVICE" != "uno" && test "$ARDUINOTARGETDEVICE" != "mega" && test "$ARDUINOTARGETDEVICE" != "leonardo"; then
 		showerror 21 "Invalid Arduino model name: $ARDUINOTARGETDEVICE."
@@ -383,31 +390,46 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 		TARGETCXXFLAGS="-mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR $TARGETCXXFLAGS"
 		TARGETCFLAGS="-mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR $TARGETCFLAGS"
 		TARGETLDFLAGS="-mmcu=atmega328p $TARGETLDFLAGS"
+		AVRDUDEFLAGS="-patmega328p -cstk500v2 -Pusb"
 	elif test "$ARDUINOTARGETDEVICE" = "mega"; then
 		ARDUINOINCLUDEFLAGS="$ARDUINOINCLUDEFLAGS -I$TMP_ARDUINOHEADERDIR/../../variants/mega"
 		TARGETCXXFLAGS="-mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR -MMD $TARGETCXXFLAGS"
 		TARGETCFLAGS="-mmcu=atmega2560 -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_MEGA2560 -DARDUINO_ARCH_AVR -MMD $TARGETCFLAGS"
 		TARGETLDFLAGS="-mmcu=atmega2560 $TARGETLDFLAGS"
+		AVRDUDEFLAGS="-patmega2560 -cstk500v2 -Pusb"
 	elif test "$ARDUINOTARGETDEVICE" = "leonardo"; then
 		ARDUINOINCLUDEFLAGS="$ARDUINOINCLUDEFLAGS -I$TMP_ARDUINOHEADERDIR/../../variants/leonardo"
 		TARGETCXXFLAGS="-mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR $TARGETCXXFLAGS"
 		TARGETCFLAGS="-mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_LEONARDO -DARDUINO_ARCH_AVR $TARGETCFLAGS"
 		TARGETLDFLAGS="-mmcu=atmega32u4 $TARGETLDFLAGS"
+		AVRDUDEFLAGS="-patmega32u4 -cstk500v2 -Pusb"
 	else
 		ARDUINOINCLUDEFLAGS="$ARDUINOINCLUDEFLAGS -I$TMP_ARDUINOHEADERDIR/../../variants/standard"
 		TARGETCXXFLAGS="-mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR $TARGETCXXFLAGS"
 		TARGETCFLAGS="-mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=10807 -DARDUINO_AVR_UNO -DARDUINO_ARCH_AVR $TARGETCFLAGS"
 		TARGETLDFLAGS="-mmcu=atmega328p $TARGETLDFLAGS"
+		AVRDUDEFLAGS="-patmega328p -cstk500v2 -Pusb"
 	fi
 	ARDUINOIDEFLAGS="-w -ffunction-sections -fdata-sections -fno-threadsafe-statics -flto -w -fpermissive"
 	TARGETCXXFLAGS="$ARDUINOIDEFLAGS -x c++ -fpermissive -fexceptions $ARDUINOINCLUDEFLAGS $TARGETCXXFLAGS"
 	TARGETCFLAGS="$ARDUINOIDEFLAGS -fpermissive -fexceptions $ARDUINOINCLUDEFLAGS $TARGETCFLAGS"
 	TARGETLDFLAGS="-mrelax -flto -Wl,--gc-sections,--allow-multiple-definition -fuse-linker-plugin $TARGETLDFLAGS"
-	if command -v avr-gcc > /dev/null 2>&1 && command -v avr-g++ > /dev/null 2>&1; then
+	if command -v avr-gcc > /dev/null 2>&1 && command -v avr-g++ > /dev/null 2>&1 && test "$TARGETCC" = "" && test "$TARGETCXX" = "" && test "$TARGETAR" = ""; then
 		TARGETCC=`command -v avr-gcc`
 		TARGETCXX=`command -v avr-g++`
 		TARGETAR=`command -v avr-gcc-ar`
 	fi
+	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
+		arduinoerrormsg
+	fi
+	AVROBJCOPY=`which "$TARGETCC" || echo "$TARGETCC"`
+	AVROBJCOPY=`dirname "$TARGETCC"`
+	if test "$AVROBJCOPY" = "."; then
+		AVROBJCOPY="avr-objcopy"
+	else
+		AVROBJCOPY="$AVROBJCOPY/avr-objcopy"
+	fi
+	dbgecho "Detected objcopy: $AVROBJCOPY"
 elif test "$TARGETNAME" = "microcontrollersim"; then
 	MODULES=arduino
 fi
@@ -501,6 +523,9 @@ MAKEBUILDTOOLS="@echo Do not have to build any additional tools"
 while read configfileline; do
 	FIRSTHALF=`echo "$configfileline" | cut -d ':' -f1`
 	SECONDHALF=`echo "$configfileline" | cut -d ':' -f2 | sed "s/%~/$ARDUINOTARGETDEVICE/g"`
+	SECONDHALF=`echo "$SECONDHALF" | sed "s+%O+$AVROBJCOPY+g"`
+	SECONDHALF=`echo "$SECONDHALF" | sed "s+%F+$AVRDUDEFLAGS+g"`
+	SECONDHALF=`echo "$SECONDHALF" | sed "s/%;/:/g"`
 	if test "$FIRSTHALF" = "OS" && test "$TARGETOS" = "posix"; then
 		if test "$SECONDHALF" = "Linux" || test "$SECONDHALF" = "linux"; then
 			TARGETOS=linux

@@ -307,7 +307,7 @@ void MuleToolClass::viewHelp() {
 	std::cout << "    -config [filename]              Read muletool configuration from " << std::endl;
 	std::cout << "                                    [filename]." << std::endl;
 	std::cout << "" << std::endl;
-`	std::cout << "    -arduinoport [port]              Specify the port where your Arduino board" << std::endl;
+	std::cout << "    -arduinoport [port]              Specify the port where your Arduino board" << std::endl;
 	std::cout << "                                     is connected." << std::endl;
 	std::cout << "" << std::endl;
 	std::cout << "     -quiet                          Be as quiet as possible." << std::endl;
