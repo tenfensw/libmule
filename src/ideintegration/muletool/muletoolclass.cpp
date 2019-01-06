@@ -1,7 +1,7 @@
 //
 // This file is a part of libMule - Microcontroller-Universal 
 // Library (that is extendable)
-// Copyright (C) 2018 Tim K <timprogrammer@rambler.ru>
+// Copyright (C) 2018-2019 Tim K <timprogrammer@rambler.ru>
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -55,6 +55,7 @@ bool MuleToolClass::init(int argc, char** argv) {
 		cliArgs.push_back(std::string(argv[i]));
 	currentProgName = std::string(argv[0]);
 	actionToRun = "nmtd";
+	arduinoPort = "NONE";
 	
 	if ((stringVectorContains(cliArgs, "-quiet") == false) && (stringVectorContains(cliArgs, "-q") == false)) {
 		beQuiet = false;
@@ -153,6 +154,10 @@ bool MuleToolClass::loadConfig(const std::string& cfgname) {
 			}
 			else if (hone == "DEPLOY")
 				deploy_copyFile = htwo;
+			else if (hone == "ARDUINOPORT") {
+				if (arduinoPort == "NONE")
+					arduinoPort = htwo;
+			}
 			else if (hone == "RUN")
 				deploy_runFile = htwo;
 		}
@@ -302,6 +307,9 @@ void MuleToolClass::viewHelp() {
 	std::cout << "    -config [filename]              Read muletool configuration from " << std::endl;
 	std::cout << "                                    [filename]." << std::endl;
 	std::cout << "" << std::endl;
+`	std::cout << "    -arduinoport [port]              Specify the port where your Arduino board" << std::endl;
+	std::cout << "                                     is connected." << std::endl;
+	std::cout << "" << std::endl;
 	std::cout << "     -quiet                          Be as quiet as possible." << std::endl;
 	std::cout << "" << std::endl;
 	std::cout << "     -help                           Print this help message and exit." << std::endl;
@@ -335,6 +343,10 @@ std::string MuleToolClass::replaceContextAlternatives(const std::string& vname, 
 			else if ((i < (stringLength(vval) - 1)) && (vval[i + 1] == 'P')) {
 				i = i + 1;
 				result = result + TOOLPREFIX;
+			}
+			else if ((i < (stringLength(vval) - 1)) && (vval[i + 1] == 'V')) {
+				i = i + 1;
+				result = result + arduinoPort;
 			}
 		}
 	}
@@ -377,6 +389,12 @@ void MuleToolClass::parseArguments() {
 			if ((i + 1) < (cliArgs.size() - 1)) {
 				actionArgs.push_back(cliArgs[i]);
 				actionArgs.push_back(cliArgs[i + 1]);
+				i = i + 1;
+			}
+		}
+		else if ((cliArgs[i] == "-aport") || (cliArgs[i] == "-arduinoport") || (cliArgs[i] == "-port")) {
+			if ((i + 1) < (cliArgs.size() - 1)) {
+				arduinoPort = cliArgs[i + 1];
 				i = i + 1;
 			}
 		}

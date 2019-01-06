@@ -1,2 +1,0 @@
-C++FLAGS += -DTOOLBUGURL=std::string\\(\\\"timprogrammer@rambler.ru\\\"\\) -DTOOLTARGET=std::string\\(\\\"dummy\\\"\\) -DTOOLVERSION=std::string\\(\\\"0.1\\\"\\) -DTOOLPREFIX=std::string\\(\\\"/opt/timkoisoft/mule\\\"\\) -g ;
-Main muletool : muletoolclass.cpp main.cpp ;

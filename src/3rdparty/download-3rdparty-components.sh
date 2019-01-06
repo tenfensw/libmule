@@ -37,7 +37,7 @@ if test "$TARGET" != "crucial" && test "$TARGET" != "all"; then
 	echo "Unknown target: $TARGET. Run \"$0 list\" to get a list of supported targets."
 	exit 1
 fi
-OPTIONALONLY="ev3duder"
+OPTIONALONLY="ev3duder avrdude"
 DOWNLOAD_CMD=wget
 
 if command -v aria2c > /dev/null 2>&1; then
@@ -51,7 +51,7 @@ else
 	exit 1
 fi
 
-COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio ArduinoCoreSlim=https://dl.dropboxusercontent.com/s/xvdtr0vkwsmhtae/ArduinoCore-avr-slim-29112018-release2.tar.gz ev3duder=https://dl.dropboxusercontent.com/s/hzrun77ak51scz2/ev3duder-snapshot-04_01_2019.tar.gz"
+COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio ArduinoCoreSlim=https://dl.dropboxusercontent.com/s/xvdtr0vkwsmhtae/ArduinoCore-avr-slim-29112018-release2.tar.gz ev3duder=https://dl.dropboxusercontent.com/s/hzrun77ak51scz2/ev3duder-snapshot-04_01_2019.tar.gz avrdude=https://dl.dropboxusercontent.com/s/4hqpnpw6h7367g4/avrdude-6.3.1mule.tgz"
 if test -e "./.stamp"; then
 	echo "[INFO] Everything was already downloaded"
 	exit 0
@@ -105,6 +105,8 @@ for Component in $COMPONENTS; do
 				fi
 			elif echo "$CNAME" | grep -q ".tar"; then
 				tar -xvf "$CNAME" || tar -xvjf "$CNAME" || tar -xvzf "$CNAME" || tar -xvJf "$CNAME" || bsdtar -xvf "$CNAME" || exit 5
+			elif echo "$CNAME" | grep -q ".tgz"; then
+				tar -xvzf "$CNAME" || bsdtar -xvzf "$CNAME" || exit 98
 			else
 				echo "[ERROR] Internal script error"
 				exit 4

@@ -369,7 +369,7 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 	MODULES=arduino
 	if test "$ARDUINOHEADERLOCATION" = "" || test "$ARDUINOTARGETDEVICE" = ""; then
 		echo "It appears you have forgotten to specify these options:"
-		echo " - avr-gcc location. If you have Arduino IDE installed, specify that path using \"-arduino-idedir=[path\" option. Otherwise, specify it using \"-platformcxx=[path to avr-g++]\"."
+		echo " - avr-gcc location. If you have Arduino IDE installed, specify that path using \"-arduino-idedir=[path]\" option. Otherwise, specify it using \"-platformcxx=[path to avr-g++]\"."
 		echo " - the target Arduino board. Currently only Arduino Uno, Mega 2560 and Leonardo are supported. Specify the model name using the \"-arduino-device=[model name]\" flag."
 		showerror 20 "Not all options were specified. See the message above for more info."
 	fi
