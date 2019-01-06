@@ -110,6 +110,10 @@ Usage: $0 [arguments]
 						target microcontroller's firmware does not have a
 						built-in C++ library.
 
+        -nocrosscompile=[yes/no]                Set this option if you are compiling libMule right
+                                                on your target device (e.g. you are building libMule
+                                                right on your Raspberry Pi). (default: no)
+
 
 All bugs should be reported to mailto:timprogrammer@rambler.ru.
 libMule configure script version $TOOLVERSION running on $HOSTOS
@@ -186,6 +190,7 @@ AVRDUDEFLAGS=""
 ARDUINOHEADERLOCATION=""
 ARDUINOINCLUDEFLAGS=""
 ARDUINOTARGETDEVICE=""
+NONCROSSBUILD=no
 ISTHISWINDOWS=no
 MULESTL=no
 MULESTLSTREAMS=no
@@ -294,6 +299,11 @@ for Argument in $*; do
 	SECONDHALF=`echo "$Argument" | cut -d '=' -f2`
 	if test "$FIRSTHALF" = "-target" || test "$FIRSTHALF" = "-platform"; then
 		TARGETNAME="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-nocrosscompile"; then
+		NONCROSSBUILD="$SECONDHALF"
+		if test "$NONCROSSBUILD" = ""; then
+			NONCROSSBUILD=yes
+		fi
 	elif test "$FIRSTHALF" = "NOMICROCONTROLLERSIM"; then
 		NOMICROCONTROLLERSIM="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-targetcc" || test "$FIRSTHALF" = "-platformcc"; then
@@ -370,8 +380,11 @@ ARDUINOHEADERLOCATION="$SOURCEDIR/src/3rdparty/ArduinoCore-avr-slim/cores/arduin
 if test "$TARGETNAME" = "rpi"; then
 	TARGETNAME=pigpio_rpi
 	showwarning "tiny_gpio-based \"rpi\" platform was deprecated and removed from libMule. Please use \"pigpio_rpi\" platform instead."
+elif test "$TARGETNAME" = "dummy"; then
+	NONCROSSBUILD=yes
 elif test "$TARGETNAME" = "microsim" || test "$TARGETNAME" = "mulemicrocontrollersimulator" || test "$TARGETNAME" = "microcontrollersimulator" || test "$TARGETNAME" = "ms"; then
 	TARGETNAME=microcontrollersim
+	NONCROSSBUILD=yes
 elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test "$TARGETNAME" = "avr"; then
 	TARGETNAME=arduinoavr
 	MULESTL=yes
@@ -594,7 +607,7 @@ while read configfileline; do
 done < "$SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg"
 
 echo "Platform configuration file $SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg was imported successfully, can continue"
-if test "$TARGETNAME" = "dummy" || test "$TARGETNAME" = "microcontrollersim"; then
+if test "$NONCROSSBUILD" != "no"; then
 	TARGETCC=$HOSTCC
 	TARGETCXX=$HOSTCXX
 	TARGETLD=$HOSTLD
@@ -608,10 +621,6 @@ else
 	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
 		showerror 4 "No C++ compiler for the TARGET PLATFORM was specified. Please re-run $0 with \"-platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> -platformar=<path to the GNU ar (or any other POSIX-compartible ar utility) program>\" flags."
 	fi
-
-
-
-
 
 	if test "$TARGETLD" = ""; then
 		TARGETLD=$TARGETCXX

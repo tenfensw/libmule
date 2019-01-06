@@ -26,10 +26,15 @@ To build Mule for your device, you'll need:
 - A toolchain for your target device with a C++ cross-compiler and ar 
 utility
 
-After that, navigate to the source code directory of libMule. Then, run 
-./configure:
+Navigate to the source code directory of libMule and create a build 
+directory:
 
-# ./configure -prefix=<path to the directory where libMule will be installed> -platform=<your platform name*> \
+# mkdir builddir
+# cd builddir
+
+Then, run ../configure:
+
+# ../configure -prefix=<path to the directory where libMule will be installed> -platform=<your platform name*> \
 	      -platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> \
 	      -platformar=<path to the ar utility that produces static libraries for the TARGET device>
 
@@ -40,4 +45,5 @@ After configure generates a Makefile, run make:
 That's it!
 
 * Platform names for each supported device: "legoev3" for LEGO EV3, 
-"pigpio_rpi" for Raspberry Pi, "dummy" for the dummy platform
+"pigpio_rpi" for Raspberry Pi, "dummy" for the dummy platform, "microcontrollersim"
+for Mule Microcontroller Simulator

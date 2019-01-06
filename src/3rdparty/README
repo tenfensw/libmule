@@ -2,7 +2,6 @@ In this folder third-party components will be downloaded. They are usually
 needed to support various platforms. To download these components, run the
 ./download-3rdparty-components.sh script.
 
-These are the libs that are downloaded by the script:
 
 1. EV3-API
    License: GNU GPLv2/BSD License
@@ -17,15 +16,29 @@ These are the libs that are downloaded by the script:
    Description: Needed for pigpio_rpi platform to work
    Code URL: http://abyz.me.uk/rpi/pigpio
 
-3. StandardCplusplus
-   License: GNU LGPLv2.1
-   Description: Needed for arduinoavr platform to work, a port of uclibc++
-   to Arduino.
-   Code URL: https://github.com/maniacbug/StandardCplusplus
-
-4. ArduinoCore-avr Slim Edition
+3. ArduinoCore-avr Slim Edition
    License: GNU LGPLv2.1
    Description: Needed for arduinoavr platform to work ONLY IF ARDUINO IDE
    IS NOT INSTALLED. And yes, this is the Arduino.h library, except all
    unnecessary stuff was removed.
    Code URL: https://github.com/arduino/ArduinoCore-avr
+
+4. ev3duder
+   License: GNU GPLv3
+   Description: ev3duder program simplifies the process of deploying app-
+   lications to the LEGO EV3. Used only if -platformthirdpartytools=yes
+   flag is passed to configure.
+   Code URL: https://github.com/c4ev3/ev3duder
+
+5. avrdude
+   License: GNU GPLv2
+   Description: avrdude deploys programs to Arduino microcontrollers. Used
+   only if -platformthirdpartytools=yes flag is passed to configure.
+   Code URL: http://svn.savannah.gnu.org/viewvc/avrdude/
+
+6. libusb-1.0
+   License: GNU LGPLv2.0
+   Description: A cross-platform user-space USB library. Needed for avrdude
+   to work properly. Used only if -platformthirdpartytools=yes flag is passed
+   to configure.
+   Code URL: https://sourceforge.net/projects/libusb

@@ -278,7 +278,7 @@ void MuleToolClass::verboseInfo(const std::string& vinfo) {
 
 void MuleToolClass::viewHeaderMessage() {
 	std::cout << "muletool " << TOOLVERSION << " - a libMule application deployment and building utility" << std::endl;
-	std::cout << "Copyright (c) 2018 Tim K <timprogrammer@rambler.ru>. Licensed under GNU LGPLv2.1." << std::endl;
+	std::cout << "Copyright (c) 2018-2019 Tim K <timprogrammer@rambler.ru>. Licensed under GNU LGPLv2.1." << std::endl;
 	std::cout << "Original target platform is " << TOOLTARGET << std::endl;
 	std::cout << "" << std::endl;
 }
