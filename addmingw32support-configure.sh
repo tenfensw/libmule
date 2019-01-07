@@ -1,4 +1,9 @@
 #!/bin/bash
+if test "$1" = "-help" || test "$1" = "--help" || test "$1" = "-h" || test "$1" = "-?" || test "$1" = "/?"; then
+	echo "Just run this script to patch configure so that it would support MinGW32."
+	exit 0
+fi
+
 if command -v patch > /dev/null 2>&1; then
 	echo "patch command is available on your system, can continue"
 else
