@@ -1,13 +1,13 @@
 
 before_script:
   - dpkg --add-architecture i386
-  - apt-get update -qq && apt-get install -y -qq ftjam gdb gcc g++ wget bsdtar clang libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386 qtbase5-dev > /dev/null 2>&1
+  - apt-get update -qq && apt-get install -y -qq ftjam gdb gcc g++ wget bsdtar clang libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386 > /dev/null 2>&1
 
 mulemicrocontrollersimulator_and_tests:
   script:
     - mkdir -v toolchains
     - mkdir dummyplatform-gcc-builddir
-    - sh -c "cd dummyplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=ms -modules=all && make"
+    - sh -c "cd dummyplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=ms -modules=all NOMICROCONTROLLERSIM=yes && make"
     - /usr/bin/g++ -g -Os tests/test01-muleapplication-test.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test01
     - /usr/bin/g++ -g -Os tests/test02-mulefile-currentdirectory.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test02
     - /usr/bin/g++ -g -Os tests/test03-mulesound-beeping.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test03
