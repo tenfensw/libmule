@@ -1,0 +1,110 @@
+--- configure	2019-01-07 14:51:01.081840792 +0300
++++ configure.mingw	2019-01-07 16:31:27.288418839 +0300
+@@ -1,5 +1,6 @@
+ #!/bin/bash
+-# libMule configure script
++# libMule configure script with some patches that allow you to cross-compile
++# a Windows build of libMule SDK from Linux
+ # This file is a part of libMule - Microcontroller-Universal 
+ # Library (that is extendable)
+ # Copyright (C) 2018-2019 Tim K <timprogrammer@rambler.ru>
+@@ -114,6 +115,9 @@
+                                                 on your target device (e.g. you are building libMule
+                                                 right on your Raspberry Pi). (default: no)
+ 
++        -mingwcross=[yes/no]                    Set this option to yes if you are cross-compiling a
++                                                Windows build of libMule from Linux.
++
+ 
+ All bugs should be reported to mailto:timprogrammer@rambler.ru.
+ libMule configure script version $TOOLVERSION running on $HOSTOS
+@@ -143,7 +147,7 @@
+ MULEVERSIONMINOR=4
+ MULEVERSIONUPDATE=0
+ MULEVERSION=$MULEVERSIONMAJOR.$MULEVERSIONMINOR.$MULEVERSIONUPDATE
+-TOOLVERSION=05122018
++TOOLVERSION=07122018-mingw
+ if test "$PREFIX" = ""; then
+ 	PREFIX=/opt/timkoisoft/libmule
+ fi
+@@ -197,6 +201,7 @@
+ MULESTLSTRINGS=yes
+ BUGGYFEDORALINUXGCC=no
+ BUILDQTSTUFF=no
++MINGWLINUX=no
+ if test "$NOMICROCONTROLLERSIM" = ""; then
+ 	NOMICROCONTROLLERSIM=no
+ fi
+@@ -304,6 +309,11 @@
+ 		if test "$NONCROSSBUILD" = ""; then
+ 			NONCROSSBUILD=yes
+ 		fi
++	elif test "$FIRSTHALF" = "-mingwcross"; then
++		if test "$SECONDHALF" = ""; then
++			SECONDHALF=yes
++		fi
++		MINGWLINUX="$SECONDHALF"
+ 	elif test "$FIRSTHALF" = "NOMICROCONTROLLERSIM"; then
+ 		NOMICROCONTROLLERSIM="$SECONDHALF"
+ 	elif test "$FIRSTHALF" = "-targetcc" || test "$FIRSTHALF" = "-platformcc"; then
+@@ -664,6 +674,47 @@
+ 	showerror 9 "Failed to link $CDIR/MuleToolBootstrapFiles/muletool"
+ fi
+ 
++if test "$MINGWLINUX" != "no"; then
++	MINGWCC=""
++	MINGWCXX=""
++	MINGWLD=""
++	if command -v i686-w64-mingw32-g++ > /dev/null 2>&1; then
++		MINGWCC="i686-w64-mingw32-gcc"
++		MINGWCXX="i686-w64-mingw32-g++"
++		MINGWLD="i686-w64-mingw32-g++"
++	elif command -v x86_64-w64-mingw32-g++ > /dev/null 2>&1; then
++		MINGWCC="x86_64-w64-mingw32-gcc"
++		MINGWCXX="x86_64-w64-mingw32-g++"
++		MINGWLD="x86_64-w64-mingw32-g++"
++	elif test "$WINDOWSCC" != "" && test "$WINDOWSCXX" != ""; then
++		MINGWCC="$WINDOWSCC"
++		MINGWCXX="$WINDOWSCXX"
++		if test "$WINDOWSLD" != ""; then
++			MINGWLD="$WINDOWSLD"
++		else
++			MINGWLD="$MINGWCXX"
++		fi
++	else
++		showerror 21 "No MinGW32 cross-toolchains are installed or available in \$PATH. If you have MinGW32 cross-compilers installed in a different prefix, then specify them using \$WINDOWSCC, \$WINDOWSCXX and \$WINDOWSLD variables."
++	fi
++	MINGWCFLAGS="-c -Os -static -fPIC -Wall -Wextra -DMULE_OTHER_MINGWCROSSCOMPILE $WINDOWSCFLAGS"
++	MINGWCXXFLAGS="-c -Os -static -fPIC -Wall -Wextra -DMULE_OTHER_MINGWCROSSCOMPILE -std=gnu++0x $WINDOWSCXXFLAGS"
++	MINGWLDFLAGS="$WINDOWSLDFLAGS"
++	echo "MinGW32 C compiler: $MINGWCC $MINGWCFLAGS"
++	echo "MinGW32 C++ compiler: $MINGWCXX $MINGWCXXFLAGS"
++	echo "MinGW32 linker: $MINGWLD $MINGWLDFLAGS"
++	printf "Creating $CDIR/MuleToolBootstrapFiles/muletool-mingw32.exe.."
++	if $MINGWLD $MINGWLDFLAGS $MINGWCXXFLAGS -I$SOURCEDIR/src/ideintegration/muletool -DTOOLPREFIX=\"$PREFIX\" -DTOOLTARGET=\"$TARGETNAME\" -o "$CDIR/MuleToolBootstrapFiles/muletool-mingw32.exe" "$SOURCEDIR/src/ideintegration/muletool/muletoolclass.cpp" "$SOURCEDIR/src/ideintegration/muletool/main.cpp" ; then
++		echo ". done!"
++		HOSTCC="$MINGWCC"
++		HOSTCXX="$MINGWCXX"
++		HOSTLD="$MINGWLD"
++	else
++		echo ". failed!"
++		showerror 19 "Failed to link $CDIR/MuleToolBootstrapFiles/muletool-mingw32.exe"
++	fi
++fi
++
+ if test "$MULESTL" = "yes"; then
+ 	TARGETCXXFLAGS="-I$PREFIX/include/libmule/extras/mulestl $TARGETCXXFLAGS"
+ 	TARGETCFLAGS="-I$PREFIX/include/libmule/extras/mulestl $TARGETCFLAGS"
+@@ -954,7 +1005,11 @@
+ printf "\t\t" >> "$CDIR/Makefile"
+ echo "-mkdir -p \"\$(PREFIX)/bin\" \"\$(PREFIX)/etc\" \"\$(PREFIX)/lib\" \"\$(PREFIX)/include/libmule\"" >> "$CDIR/Makefile"
+ printf "\t\t" >> "$CDIR/Makefile"
+-echo "cp MuleToolBootstrapFiles/muletool \"\$(PREFIX)/bin/muletool\" && cp MuleToolBootstrapFiles/MuleTool.mcfg \"\$(PREFIX)/etc/MuleTool.mcfg\" && if test -e \"\$(PREFIX)/muletool\"; then unlink \"\$(PREFIX)/muletool\"; fi && ln -s \"\$(PREFIX)/bin/muletool\" \"\$(PREFIX)/muletool\"" >> "$CDIR/Makefile"
++if test "$MINGWLINUX" != "no"; then
++	echo "cp MuleToolBootstrapFiles/muletool-mingw32.exe \"\$(PREFIX)/bin/muletool.exe\" && cp MuleToolBootstrapFiles/MuleTool.mcfg \"\$(PREFIX)/etc/MuleTool.mcfg\"" >> "$CDIR/Makefile"
++else
++	echo "cp MuleToolBootstrapFiles/muletool \"\$(PREFIX)/bin/muletool\" && cp MuleToolBootstrapFiles/MuleTool.mcfg \"\$(PREFIX)/etc/MuleTool.mcfg\" && if test -e \"\$(PREFIX)/muletool\"; then unlink \"\$(PREFIX)/muletool\"; fi && ln -s \"\$(PREFIX)/bin/muletool\" \"\$(PREFIX)/muletool\"" >> "$CDIR/Makefile"
++fi
+ printf "\t\t" >> "$CDIR/Makefile"
+ echo "$MAKEBUILDTOOLS" >> "$CDIR/Makefile"
+ printf "\t\t" >> "$CDIR/Makefile"
