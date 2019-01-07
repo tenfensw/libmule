@@ -1,0 +1,22 @@
+--- configure	2019-01-07 16:41:13.935550657 +0300
++++ configure.patched	2019-01-07 16:40:34.876311254 +0300
+@@ -703,6 +703,8 @@
+ 	echo "MinGW32 C compiler: $MINGWCC $MINGWCFLAGS"
+ 	echo "MinGW32 C++ compiler: $MINGWCXX $MINGWCXXFLAGS"
+ 	echo "MinGW32 linker: $MINGWLD $MINGWLDFLAGS"
++	BEFOREMINGWPREFIX="$PREFIX"
++	PREFIX="/c/$BEFOREMINGWPREFIX"
+ 	printf "Creating $CDIR/MuleToolBootstrapFiles/muletool-mingw32.exe.."
+ 	if $MINGWLD $MINGWLDFLAGS -I$SOURCEDIR/src/ideintegration/muletool -DTOOLPREFIX=\"$PREFIX\" -DTOOLTARGET=\"$TARGETNAME\" -o "$CDIR/MuleToolBootstrapFiles/muletool-mingw32.exe" "$SOURCEDIR/src/ideintegration/muletool/muletoolclass.cpp" "$SOURCEDIR/src/ideintegration/muletool/main.cpp" ; then
+ 		echo ". done!"
+@@ -964,6 +966,10 @@
+ dbgecho "$FINALHEADERS"
+ echo "done!"
+ 
++if test "$MINGWLINUX" != "no"; then
++	PREFIX="$BEFOREMINGWPREFIX"
++fi
++
+ printf "Creating $CDIR/Makefile... "
+ if test -e "$CDIR/Makefile"; then
+ 	rm -r -f "$CDIR/Makefile"
