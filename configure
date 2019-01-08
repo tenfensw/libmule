@@ -200,6 +200,7 @@ BUILDQTSTUFF=no
 if test "$NOMICROCONTROLLERSIM" = ""; then
 	NOMICROCONTROLLERSIM=no
 fi
+# placeholder that will be replaced by mktarball.sh script
 
 # display a beautiful header
 niceheader
@@ -281,9 +282,15 @@ elif test `uname` = "Haiku" || test `uname` = "BeOS"; then
 	dbgecho "$0 is running on BeOS"
 	HOSTOS="BeOS"
 	# use built-in GCC
-	HOSTCC=gcc
-	HOSTCXX=g++
-	HOSTAR=ar
+	if test "$HOSTCC" = "" && test "$HOSTCXX" = "" && test "$HOSTLD" = "" && test "$HOSTAR" = ""; then
+		HOSTCC=gcc
+		HOSTCXX=g++
+		HOSTLD=g++
+		HOSTAR=ar
+	fi
+	if test "$PREFIX" = "/opt/timkoisoft/libmule"; then
+		PREFIX=/boot/home/config/non-packaged/timkoisoft/libmule
+	fi
 else
 	dbgecho "$0 is running on a UNIX-like operating system"
 	HOSTOS="UNIX-like operating system `uname -m`"
@@ -692,7 +699,7 @@ echo "done!"
 
 if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 	printf "Downloading required third-party libraries (this might take a while)... "
-	if sh -c "cd \"$SOURCEDIR/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh $DOWNLOADERSCRIPTTARGET" > "$CDIR/dl.log" 2>&1; then
+	if sh -c "if test \"$DISABLETHIRDPARTYDOWNLOADER\" = \"yes\"; then exit 0; fi && cd \"$SOURCEDIR/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh $DOWNLOADERSCRIPTTARGET" > "$CDIR/dl.log" 2>&1; then
 		echo "done!"
 		rm -r -f "$CDIR/dl.log"
 	else
