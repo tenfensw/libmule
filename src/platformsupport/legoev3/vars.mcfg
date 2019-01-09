@@ -8,9 +8,9 @@ HasCout:no
 Requires3rdPartyDownloads:yes
 AdditionalCompilerFlags:-march=armv5 -mtune=arm9 -I$(SOURCEDIR)/src/3rdparty/EV3-API-master/API
 AdditionalLinkerFlags:-march=armv5 -mtune=arm9
-AfterBuildCompilerFlags:-I%P/3rdparty/EV3-API-master/API
+AfterBuildCompilerFlags:-I%P/include/libmule/3rdparty/EV3-API-master/API
 MakeBuildTools:cd $(SOURCEDIR)/src/3rdparty/ev3duder-snapshot-04_01_2019 && $(MAKE) && cp ev3duder $(PREFIX)/bin/ev3duder
-DeployCommand:echo Please insert a USB stick into your LEGO EV3 && %P/bin/ev3duder up "%A" /media/usb/myapps/`basename "%A"` && %P/bin/ev3duder mkrbf /media/usb/myapps/`basename "%A"` %A.rbfl
-RemoteRunCommand:%P/bin/ev3duder exec %A.rbfl
+DeployCommand:echo Please insert a USB stick into your LEGO EV3 && %P/bin/ev3duder up "%A" /media/usb/myapps/`basename "%A"`
+RemoteRunCommand:%P/bin/ev3duder exec /media/usb/myapps/`basename "%A"`
 Sources:../../3rdparty/EV3-API-master/API/ev3.c ../../3rdparty/EV3-API-master/API/ev3_button.c ../../3rdparty/EV3-API-master/API/ev3_command.c ../../3rdparty/EV3-API-master/API/ev3_lcd.c ../../3rdparty/EV3-API-master/API/ev3_output.c ../../3rdparty/EV3-API-master/API/ev3_sensor.c ../../3rdparty/EV3-API-master/API/ev3_sound.c ../../3rdparty/EV3-API-master/API/ev3_timer.c mulemindstormsplatform.cpp
 Headers:../../3rdparty/EV3-API-master/API/ev3.h ../../3rdparty/EV3-API-master/API/ev3_button.h ../../3rdparty/EV3-API-master/API/ev3_command.h ../../3rdparty/EV3-API-master/API/ev3_lcd.h ../../3rdparty/EV3-API-master/API/ev3_output.h ../../3rdparty/EV3-API-master/API/ev3_sensor.h ../../3rdparty/EV3-API-master/API/ev3_sound.h ../../3rdparty/EV3-API-master/API/ev3_timer.h
