@@ -42,8 +42,7 @@ void muleprintf(MULE_OTHER_STRINGTYPE in, ...) {
     vprintf(in.c_str(), otherargs);
 #endif
 #ifdef MULE_PLATFORM_LEGOEV3
-    LcdPrintf('0', in.c_str(), otherargs);
-    Wait(1000);
+    MuleMindstormsPlatform::printOnLcd(in, otherargs);
 #elif defined(MULE_PLATFORM_MICROCONTROLLERSIM)
     FILE* myf;
 #  ifndef _WIN32

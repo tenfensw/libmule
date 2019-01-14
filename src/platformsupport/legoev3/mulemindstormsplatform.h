@@ -23,7 +23,7 @@
 
 #define MULE_MINDSTORMS_MOTOROFF -798
 #define MULE_MINDSTORMS_MOTORPIN 4
-// I had to implement a fake fifth pin so that you could access the Mindstorms motors the motors somehow
+// I had to implement a fake forth pin so that you could access the Mindstorms motors the motors somehow
 #define MULE_MINDSTORMS_MOTORSPEED 40
 #define MULE_MINDSTORMS_PWMFREQUENCY 10000
 // MULE_MINDSTORMS_PWMFREQUENCY value taken from http://icube-avr.unistra.fr/en/index.php/Hacking_the_Lego_EV3
@@ -48,6 +48,7 @@
 #define MULE_PUD_DOWN 1
 #define MULE_PUD_UP 2
 
+extern int mule_mindstorms_lcdscreenlines;
 
 class MuleMindstormsPlatform : public MuleCommonPlatform
 {
@@ -66,6 +67,7 @@ public:
     MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin);
     bool writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct);
     bool setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val);
+    static void printOnLcd(MULE_OTHER_STRINGTYPE in, ...);
 #endif
 #ifdef MULE_FEATURES_FILEIO
     MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file);
