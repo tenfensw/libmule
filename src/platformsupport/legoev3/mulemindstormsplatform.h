@@ -24,7 +24,7 @@
 #define MULE_MINDSTORMS_MOTOROFF -798
 #define MULE_MINDSTORMS_MOTORPIN 4
 // I had to implement a fake forth pin so that you could access the Mindstorms motors the motors somehow
-#define MULE_MINDSTORMS_MOTORSPEED 40
+#define MULE_MINDSTORMS_MOTORSPEED 20
 #define MULE_MINDSTORMS_PWMFREQUENCY 10000
 // MULE_MINDSTORMS_PWMFREQUENCY value taken from http://icube-avr.unistra.fr/en/index.php/Hacking_the_Lego_EV3
 #define MULE_MINDSTORMS_PWMMAXRANGE 255

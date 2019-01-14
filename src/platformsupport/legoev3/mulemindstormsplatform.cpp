@@ -175,6 +175,8 @@ bool MuleMindstormsPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPIN
 			if (dutycycle > MULE_MINDSTORMS_PWMMAXRANGE)
 				dutycycle = MULE_MINDSTORMS_PWMMAXRANGE;
 			int motorangle = (int)(round((((dutycycle / 5) - 1) * 180))) ;
+			if (motorangle > 180)
+				motorangle = 180;
 			muledebug("motorangle = " + muleinttostr(motorangle));
 
 			RotateMotor(OUT_ALL, MULE_MINDSTORMS_MOTORSPEED, motorangle);
