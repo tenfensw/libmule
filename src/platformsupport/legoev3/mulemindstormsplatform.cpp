@@ -163,14 +163,19 @@ bool MuleMindstormsPlatform::stopAllSounds() {
 
 #ifdef MULE_FEATURES_PWMDEVICES
 bool MuleMindstormsPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {
+	muledebug("This is MuleMindstormsPlatform::startPWM");
+	muledebug("pin = " + muleinttostr(pin) + ", dutycycle = " + muleinttostr(dutycycle));
 	if (pin == MULE_MINDSTORMS_MOTORPIN) {
-		if (dutycycle == 0)
+		muledebug("This is the motor pin");
+		if (dutycycle == 0) {
+			muledebug("Turn off everything");
 			Off(OUT_ALL);
+		}
 		else {
-			//int motorangle = (int)(round((((dutycycle / 5) - 1) * 180))) ;
 			if (dutycycle > MULE_MINDSTORMS_PWMMAXRANGE)
 				dutycycle = MULE_MINDSTORMS_PWMMAXRANGE;
-			int motorangle = (int)(ceil(dutycycle * 1.41));
+			int motorangle = (int)(round((((dutycycle / 5) - 1) * 180))) ;
+			muledebug("motorangle = " + muleinttostr(motorangle));
 
 			RotateMotor(OUT_ALL, MULE_MINDSTORMS_MOTORSPEED, motorangle);
 		}
