@@ -4,6 +4,7 @@ HardwarePinType:unsigned
 StringType:stdstring
 MotorStopCode:-789
 Defines:
+InternalErrorsLCD:no
 HasCout:yes
 Requires3rdPartyDownloads:yes
 AdditionalCompilerFlags:-I$(SOURCEDIR)/src/3rdparty/ArduinoCore-avr-slim/cores/arduino -I$(SOURCEDIR)/src/3rdparty/ArduinoCore-avr-slim/variants/%~

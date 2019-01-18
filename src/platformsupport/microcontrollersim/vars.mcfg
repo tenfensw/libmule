@@ -5,6 +5,7 @@ StringType:stdstring
 MotorStopCode:-789
 Defines:
 HasCout:no
+InternalErrorsLCD:yes
 Requires3rdPartyDownloads:no
 AdditionalCompilerFlags:
 AdditionalLinkerFlags:

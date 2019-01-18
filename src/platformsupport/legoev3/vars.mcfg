@@ -4,6 +4,7 @@ HardwarePinType:unsigned
 StringType:stdstring
 MotorStopCode:-789
 Defines:
+InternalErrorsLCD:no
 HasCout:no
 Requires3rdPartyDownloads:yes
 AdditionalCompilerFlags:-march=armv5 -mtune=arm9 -I$(SOURCEDIR)/src/3rdparty/EV3-API-master/API

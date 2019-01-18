@@ -592,6 +592,10 @@ while read configfileline; do
 		if test "$SECONDHALF" = "yes" || test "$SECONDHALF" = "true"; then
 			THINGSTODEFINE="MULE_FEATURES_SUPPORTSCOUT $THINGSTODEFINE"
 		fi
+	elif test "$FIRSTHALF" = "InternalErrorsLCD"; then
+		if test "$SECONDHALF" = "yes" || test "$SECONDHALF" = "true"; then
+			THINGSTODEFINE="MULE_INTERNAL_PRINTINTERNALERRORSLCD $THINGSTODEFINE"
+		fi
 	elif test "$FIRSTHALF" = "Requires3rdPartyDownloads"; then
 		if test "$SECONDHALF" = "yes" || test "$SECONDHALF" = "true"; then
 			showwarning "The platform you have chosen depends on third-party libraries. By continuing to build libMule, you agree to the terms of licenses used by the downloaded libraries. See $SOURCEDIR/src/3rdparty/README for more info."

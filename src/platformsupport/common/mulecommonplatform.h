@@ -69,12 +69,14 @@ public:
 
 protected:
     void platformInitializationException(int erc, MULE_OTHER_STRINGTYPE message) {
+#ifdef MULE_INTERNAL_PRINTINTERNALERRORSLCD
         muleprintf("libMule " + muleinttostr(MULE_VERSION_MAJOR) + "." + muleinttostr(MULE_VERSION_MINOR) + "." + muleinttostr(MULE_VERSION_UPDATE) + " Platform Initialization Error\n");
         muleprintf( "A critical error occured during the initialization of the device platform.\n");
         muleprintf("\n");
         muleprintf("Error №" + muleinttostr(erc) + ": " + message);
         muleprintf("\n\n");
         muleprintf("The application will now exit now.\n");
+#endif
         int exitcode = 400 + erc;
 	std::exit(exitcode);
     }

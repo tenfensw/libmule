@@ -5,6 +5,7 @@ StringType:stdstring
 MotorStopCode:-789
 Defines:
 HasCout:yes
+InternalErrorsLCD:yes
 Requires3rdPartyDownloads:yes
 AdditionalCompilerFlags:-I$(SOURCEDIR)/src/3rdparty/pigpio-master
 AdditionalLinkerFlags:-lrt
