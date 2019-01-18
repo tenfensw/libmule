@@ -39,6 +39,10 @@ if test "$TARGET" != "crucial" && test "$TARGET" != "all"; then
 fi
 OPTIONALONLY="ev3duder avrdude"
 DOWNLOAD_CMD=wget
+GITCLONEGITHUB=yes
+if test "$2" = "github-nogitclone"; then
+	GITCLONEGITHUB=no
+fi
 
 if command -v curl > /dev/null 2>&1; then
 	DOWNLOAD_CMD="curl -o"
@@ -72,11 +76,16 @@ for Component in $COMPONENTS; do
 		STAMPNAME=`pwd`
 		STAMPNAME="$STAMPNAME/.stamp_$CNAME"
 		echo "[INFO] Downloading component \"$CNAME\" from \"$DLURL\""
+		OLDCNAME="$CNAME"
 		CNAME=`basename "$DLURL"`
 		if echo "$DLURL" | grep -q "github.com"; then
+			CODELOADURL=`echo "$DLURL" | sed 's/github.com/codeload.github.com/g'`
+			CODELOADURL="$CODELOADURL/zip/master"
 			if command -v git > /dev/null 2>&1; then
-				if git clone "$DLURL" && mv -v `basename "$DLURL"` `basename "$DLURL"`-master/; then
+				if test "$GITCLONEGITHUB" = "yes" && git clone "$DLURL" && mv -v `basename "$DLURL"` `basename "$DLURL"`-master/; then
 					echo "[INFO] git clone finished successfully"
+				elif $DOWNLOAD_CMD "$OLDCNAME-codeload.zip" "$CODELOADURL" && unzip "$OLDCNAME-codeload.zip" && rm -r -f "$OLDCNAME-codeload.zip"; then
+					echo "[INFO] GitHub CodeLoad download finished successfully"
 				else
 					echo "[ERROR] Download failed!"
 					exit 2
