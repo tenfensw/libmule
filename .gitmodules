@@ -1,0 +1,3 @@
+[submodule "extras/scite"]
+	path = extras/scite
+	url = https://gitlab.com/timkoi/scite-libmule
