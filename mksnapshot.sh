@@ -42,7 +42,7 @@ mkdir "$PWD/$SNAPSHOTNAME"
 for DirectoryToCopy in extras src LICENSE README configure; do
 	safecp "$DirectoryToCopy" "$PWD/$SNAPSHOTNAME/$DirectoryToCopy"
 done
-if sh -c "cd \"$PWD/$SNAPSHOTNAME/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh all"; then
+if sh -c "cd \"$PWD/$SNAPSHOTNAME/src/3rdparty\" && ./download-3rdparty-components.sh clean && ./download-3rdparty-components.sh all github-nogitclone"; then
 	echo "download-3rdparty-components.sh worked just fine"
 else
 	echo "download-3rdparty-components.sh just crashed"
