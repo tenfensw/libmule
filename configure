@@ -211,13 +211,6 @@ fi
 niceheader
 echo ""
 
-# disallow user to run configure in the source directory
-if test "$CDIR" = "$SOURCEDIR"; then
-	echo "[ERROR 99] Please do not run $0 right in the source directory. Create a build directory somewhere and run it from here. For example:"
-	echo "cd \"$SOURCEDIR\" && mkdir builddir && cd builddir && ../configure $*"
-	exit 99
-fi
-
 # remove old debug configure thing
 if test -e "$CDIR/muleconfigure.log"; then
 	rm -r -f "$CDIR/muleconfigure.log"
@@ -389,6 +382,14 @@ for Argument in $*; do
 	fi
 		
 done
+
+# disallow user to run configure in the source directory
+if test "$CDIR" = "$SOURCEDIR"; then
+	echo "[ERROR 99] Please do not run $0 right in the source directory. Create a build directory somewhere and run it from here. For example:"
+	echo "cd \"$SOURCEDIR\" && mkdir builddir && cd builddir && ../configure $*"
+	exit 99
+fi
+
 
 echo "This script is running on $HOSTOS $HOSTCPU"
 
@@ -595,6 +596,22 @@ while read configfileline; do
 	elif test "$FIRSTHALF" = "InternalErrorsLCD"; then
 		if test "$SECONDHALF" = "yes" || test "$SECONDHALF" = "true"; then
 			THINGSTODEFINE="MULE_INTERNAL_PRINTINTERNALERRORSLCD $THINGSTODEFINE"
+		fi
+	elif test "$FIRSTHALF" = "RequiredCommands" || test "$FIRSTHALF" = "Commands"; then
+		if test "$HOSTOS" != "Microsoft Windows" && test "$HOSTOS" != "4.4BSD"; then
+			echo "Platform $TARGETNAME needs additional build tools to operate properly"
+			MISSINGCOMMANDS=""
+			for CommandToFind in $SECONDHALF; do
+				if command -v $CommandToFind > /dev/null 2>&1 || which $CommandToFind > /dev/null 2>&1 || whereis $CommandToFind > /dev/null 2>&1; then
+					echo "$CommandToFind is installed"
+				else
+					echo "$CommandToFind is not installed"
+					MISSINGCOMMANDS="$CommandToFind $MISSINGCOMMANDS"
+				fi
+			done
+			if test "$MISSINGCOMMANDS" != ""; then
+				showerror 164 "These commands are unavailable and need to be installed: $MISSINGCOMMANDS"
+			fi
 		fi
 	elif test "$FIRSTHALF" = "Requires3rdPartyDownloads"; then
 		if test "$SECONDHALF" = "yes" || test "$SECONDHALF" = "true"; then

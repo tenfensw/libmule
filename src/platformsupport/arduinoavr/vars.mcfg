@@ -11,6 +11,7 @@ AdditionalCompilerFlags:-I$(SOURCEDIR)/src/3rdparty/ArduinoCore-avr-slim/cores/a
 AdditionalLinkerFlags:
 AfterBuildCompilerFlags:-I%P/include/libmule/3rdparty/ArduinoCore-avr-slim/cores/arduino -I%P/include/libmule/3rdparty/ArduinoCore-avr-slim/variants/%~
 MuleSTL:yes
+Commands:yacc autoreconf
 MakeBuildTools:cd $(SOURCEDIR)/src/3rdparty/avrdude-6.3.1mule && PREFIX="$(PREFIX)" ./build-mule-avrdude.sh
 DeployCommand:%O -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 "%A" "%A.erommule" && %O -O ihex -R .eeprom "%A.erommule" "%A.hexmule"
 RemoteRunCommand:%P/bin/avrdude -C%P/etc/avrdude.conf -v %F -Uflash%;w%;%A.hexmule%;i
