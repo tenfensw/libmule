@@ -48,7 +48,7 @@ static void MuleMindstormsPlatform::printOnLcd(MULE_OTHER_STRINGTYPE in, ...) {
 	mule_mindstorms_lcdscreenlines = 0;
 	LcdClean();
     }
-    LcdPrintf('0', in, otherargs);
+    LcdPrintf('0', in.c_str(), otherargs);
     Wait(500);
     va_end(otherargs);
 }
