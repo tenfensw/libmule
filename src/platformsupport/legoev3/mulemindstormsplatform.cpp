@@ -40,19 +40,6 @@ MuleMindstormsPlatform::~MuleMindstormsPlatform() {
 	return;
 }
 
-void MuleMindstormsPlatform::printOnLcd(MULE_OTHER_STRINGTYPE in, ...) {
-    va_list otherargs;
-    va_start(otherargs, in);
-    mule_mindstorms_lcdscreenlines = mule_mindstorms_lcdscreenlines + 1;
-    if (mule_mindstorms_lcdscreenlines > 5) {
-	mule_mindstorms_lcdscreenlines = 0;
-	LcdClean();
-    }
-    LcdPrintf('0', in.c_str(), otherargs);
-    Wait(500);
-    va_end(otherargs);
-}
-
 void MuleMindstormsPlatform::legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE type) {
 	if (pin == 0)
 		setAllSensorMode(type, NO_SEN, NO_SEN, NO_SEN);
