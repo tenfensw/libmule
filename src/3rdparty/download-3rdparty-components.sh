@@ -40,10 +40,10 @@ fi
 OPTIONALONLY="ev3duder avrdude"
 DOWNLOAD_CMD=wget
 
-if command -v aria2c > /dev/null 2>&1; then
-	DOWNLOAD_CMD="aria2c -o"
-elif command -v curl > /dev/null 2>&1; then
+if command -v curl > /dev/null 2>&1; then
 	DOWNLOAD_CMD="curl -o"
+elif command -v aria2c > /dev/null 2>&1; then
+	DOWNLOAD_CMD="aria2c -o"
 elif command -v wget > /dev/null 2>&1; then
 	DOWNLOAD_CMD="wget -O"
 else
