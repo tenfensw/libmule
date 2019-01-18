@@ -40,7 +40,7 @@ MuleMindstormsPlatform::~MuleMindstormsPlatform() {
 	return;
 }
 
-static void MuleMindstormsPlatform::printOnLcd(MULE_OTHER_STRINGTYPE in, ...) {
+void MuleMindstormsPlatform::printOnLcd(MULE_OTHER_STRINGTYPE in, ...) {
     va_list otherargs;
     va_start(otherargs, in);
     mule_mindstorms_lcdscreenlines = mule_mindstorms_lcdscreenlines + 1;
