@@ -1,0 +1,13 @@
+OS:Linux
+PlatformID:MULE_PLATFORM_LINUXGPIO
+HardwarePinType:int
+StringType:stdstring
+MotorStopCode:-789
+Defines:
+HasCout:yes
+InternalErrorsLCD:yes
+Requires3rdPartyDownloads:no
+AdditionalCompilerFlags:
+AdditionalLinkerFlags:
+Sources:mulelinuxgpioplatform.cpp
+Headers:mulelinuxgpioplatform.h

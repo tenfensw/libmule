@@ -50,6 +50,10 @@
 #include "platformsupport/microcontrollersim/mulemicrocontrollersimplatform.h"
 #define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleMicrocontrollerSimulatorPlatform
 #define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("microcontrollersim")
+#elif defined(MULE_PLATFORM_LINUXGPIO)
+#include "platformsupport/linuxgpio/mulelinuxgpioplatform.h"
+#define MULE_INTERNAL_CURRENTPLATFORMCLASS MuleLinuxGPIOPlatform
+#define MULE_INTERNAL_CURRENTPLATFORMNAME MULE_OTHER_STRINGTYPE("linuxgpio")
 #else
 #error No supported platforms were detected
 #endif

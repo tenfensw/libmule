@@ -34,6 +34,8 @@
 #include "platformsupport/arduinoavr/mulearduinoavrplatform.h"
 #elif defined(MULE_PLATFORM_MICROCONTROLLERSIM)
 #include "platformsupport/microcontrollersim/mulemicrocontrollersimplatform.h"
+#elif defined(MULE_PLATFORM_LINUXGPIO)
+#include "platformsupport/linuxgpio/mulelinuxgpioplatform.h"
 #endif
 #ifdef MULE_FEATURES_FILEIO
 #include "fileio/mulefile.h"

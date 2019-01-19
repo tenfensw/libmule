@@ -532,6 +532,17 @@ if test "$HOSTQMAKE" = ""; then
 	elif command -v qmake-qt4 > /dev/null 2>&1; then
 		HOSTQMAKE=`command -v qmake-qt4`
 	fi
+	if test "$MINGWLINUX" != "no"; then
+		if command -v mingw32-qmake-qt5; then
+			HOSTQMAKE=`command -v mingw32-qmake-qt5`
+		elif command -v mingw64-qmake-qt5; then
+			HOSTQMAKE=`command -v mingw64-qmake-qt5`
+		elif command -v mingw32-qmake-qt4; then
+			HOSTQMAKE=`command -v mingw32-qmake-qt4`
+		elif command -v mingw64-qmake-qt4; then
+			HOSTQMAKE=`command -v mingw64-qmake-qt4`
+		fi
+	fi
 fi
 
 if test "$HOSTQMAKE" != ""; then
@@ -654,6 +665,9 @@ if test "$NONCROSSBUILD" != "no"; then
 	RUNCMD="%A"
 	if test "$TARGETNAME" = "microcontrollersim"; then
 		RUNCMD="$PREFIX/bin/mulemicrosim \"%A\""
+		if test "$MINGWLINUX" != "no"; then
+			RUNCMD="/c/$PREFIX/bin/mulemicrosim.exe \"%A\""
+		fi
 	fi
 else
 	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
@@ -706,15 +720,18 @@ if test "$MINGWLINUX" != "no"; then
 	MINGWCC=""
 	MINGWCXX=""
 	MINGWLD=""
+	MINGWAR=""
 	if command -v i686-w64-mingw32-g++ > /dev/null 2>&1; then
 		MINGWCC="i686-w64-mingw32-gcc"
 		MINGWCXX="i686-w64-mingw32-g++"
 		MINGWLD="i686-w64-mingw32-g++"
+		MINGWAR="i686-w64-mingw32-ar"
 	elif command -v x86_64-w64-mingw32-g++ > /dev/null 2>&1; then
 		MINGWCC="x86_64-w64-mingw32-gcc"
 		MINGWCXX="x86_64-w64-mingw32-g++"
 		MINGWLD="x86_64-w64-mingw32-g++"
-	elif test "$WINDOWSCC" != "" && test "$WINDOWSCXX" != ""; then
+		MINGWAR="x86_64-w64-mingw32-ar"
+	elif test "$WINDOWSCC" != "" && test "$WINDOWSCXX" != "" && test "$WINDOWSAR" != ""; then
 		MINGWCC="$WINDOWSCC"
 		MINGWCXX="$WINDOWSCXX"
 		if test "$WINDOWSLD" != ""; then
@@ -722,6 +739,7 @@ if test "$MINGWLINUX" != "no"; then
 		else
 			MINGWLD="$MINGWCXX"
 		fi
+		MINGWAR="$WINDOWSAR"
 	else
 		showerror 21 "No MinGW32 cross-toolchains are installed or available in \$PATH. If you have MinGW32 cross-compilers installed in a different prefix, then specify them using \$WINDOWSCC, \$WINDOWSCXX and \$WINDOWSLD variables."
 	fi
@@ -742,6 +760,15 @@ if test "$MINGWLINUX" != "no"; then
 		HOSTCFLAGS="$MINGWCFLAGS"
 		HOSTCXXFLAGS="$MINGWCXXFLAGS"
 		HOSTLDFLAGS="$MINGWLDFLAGS"
+		if test "$NONCROSSBUILD" != "no"; then
+			TARGETCC="$MINGWCC"
+			TARGETCXX="$MINGWCXX"
+			TARGETLD="$MINGWLD"
+			TARGETAR="$MINGWAR"
+			TARGETCFLAGS="$MINGWCFLAGS"
+			TARGETCXXFLAGS="$MINGWCXXFLAGS"
+			TARGETLDFLAGS="$MINGWLDFLAGS"
+		fi
 	else
 		echo ". failed!"
 		showerror 19 "Failed to link $CDIR/MuleToolBootstrapFiles/muletool-mingw32.exe"
@@ -1065,16 +1092,24 @@ if test "$MULESTL" = "yes"; then
 fi
 if test "$BUILDQTSTUFF" = "yes"; then
 	printf "\t\t" >> "$CDIR/Makefile"
-	echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/mulemicrosim\" \"\$(PREFIX)/bin/mulemicrosim\"" >> "$CDIR/Makefile"
+	if test "$MINGWLINUX" != "no"; then
+		echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/release/mulemicrosim.exe\" \"\$(PREFIX)/bin/mulemicrosim.exe\"" >> "$CDIR/Makefile"
+	else
+		echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/mulemicrosim\" \"\$(PREFIX)/bin/mulemicrosim\"" >> "$CDIR/Makefile"
+	fi
 fi
 printf "\t\t" >> "$CDIR/Makefile"
 echo "cp \"\$(SOURCEDIR)/src/mule.h\" \"\$(PREFIX)/include/libmule/mule.h\"" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "-rm -r -f \"\$(PREFIX)/include/libmule/\$(SOURCEDIR)\"" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
+MAKEFLAGSQT=""
+if test "$MINGWLINUX" != "no"; then
+	MAKEFLAGSQT="-f Makefile.Release"
+fi
 echo "qtmicrocontrollersim:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
-echo "sh -c \"cd \\\"\$(SOURCEDIR)/extras/microcontrollersimulator\\\" && $HOSTQMAKE -r && \$(MAKE) all\"" >> "$CDIR/Makefile"
+echo "sh -c \"cd \\\"\$(SOURCEDIR)/extras/microcontrollersimulator\\\" && $HOSTQMAKE -r && \$(MAKE) $MAKEFLAGSQT all\"" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "done!"
 printf "Creating $CDIR/installheaders.sh... "
