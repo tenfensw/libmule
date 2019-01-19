@@ -58,7 +58,6 @@ bool MuleLinuxGPIOPlatform::internal_writeToFile(MULE_OTHER_STRINGTYPE fn, MULE_
 MuleLinuxGPIOPin MuleLinuxGPIOPlatform::internal_readPin(int pn) {
 	MuleLinuxGPIOPin toret;
 	toret.num = pn;
-	if (
 	MULE_OTHER_STRINGTYPE possiblePinPath = MULE_OTHER_STRINGTYPE("/sys/class/gpio/gpio") + internal_muleIntToStr(pn);
 	toret.path = possiblePinPath;
 	toret.input = (internal_readToString(possiblePinPath + "/direction") == "in");
@@ -78,7 +77,7 @@ MuleLinuxGPIOPin MuleLinuxGPIOPlatform::internal_readPin(int pn) {
 
 
 int MuleLinuxGPIOPlatform::internal_stringToNum(MULE_OTHER_STRINGTYPE in) {
-	return std::atoi(in);
+	return std::atoi(in.c_str());
 }
 
 MULE_OTHER_STRINGTYPE MuleLinuxGPIOPlatform::internal_readToString(MULE_OTHER_STRINGTYPE fn) {
