@@ -2,6 +2,7 @@ OS:None
 PlatformID:MULE_PLATFORM_MICROCONTROLLERSIM
 HardwarePinType:int
 StringType:stdstring
+ARM:no
 MotorStopCode:-789
 Defines:
 HasCout:no

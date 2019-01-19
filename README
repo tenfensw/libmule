@@ -12,6 +12,7 @@ Currently, only three platforms are supported:
 - LEGO EV3 (Mindstorms)
 - Mule Microcontroller Simulator
 - Arduino Uno, Leonardo and Mega 2580
+- Any Linux GPIO-capable microcontroller
 
 Support for more platforms will be added in future releases.
 

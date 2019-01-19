@@ -3,6 +3,7 @@ PlatformID:MULE_PLATFORM_PIGPIO
 HardwarePinType:unsigned
 StringType:stdstring
 MotorStopCode:-789
+ARM:64/cortex-a53
 Defines:
 HasCout:yes
 InternalErrorsLCD:yes

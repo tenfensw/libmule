@@ -3,6 +3,7 @@ PlatformID:MULE_PLATFORM_ARDUINOAVR
 HardwarePinType:unsigned
 StringType:stdstring
 MotorStopCode:-789
+ARM:no
 Defines:
 InternalErrorsLCD:no
 HasCout:yes

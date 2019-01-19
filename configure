@@ -32,6 +32,10 @@ niceheader() {
 	echo "===================================================================="
 }
 
+dummyerror() {
+	return 1
+}
+
 dbgecho() {
 	if test "$DEBUG" != ""; then
 		echo "[DEBUG] $*"
@@ -202,6 +206,7 @@ MULESTLSTRINGS=yes
 BUGGYFEDORALINUXGCC=no
 BUILDQTSTUFF=no
 MINGWLINUX=no
+REQUIREDARMPLATFORM=no
 if test "$NOMICROCONTROLLERSIM" = ""; then
 	NOMICROCONTROLLERSIM=no
 fi
@@ -608,6 +613,10 @@ while read configfileline; do
 		if test "$SECONDHALF" = "yes" || test "$SECONDHALF" = "true"; then
 			THINGSTODEFINE="MULE_INTERNAL_PRINTINTERNALERRORSLCD $THINGSTODEFINE"
 		fi
+	elif test "$FIRSTHALF" = "ARM"; then
+		if test "$SECONDHALF" != "no"; then
+			REQUIREDARMPLATFORM="$SECONDHALF"
+		fi
 	elif test "$FIRSTHALF" = "RequiredCommands" || test "$FIRSTHALF" = "Commands"; then
 		if test "$HOSTOS" != "Microsoft Windows" && test "$HOSTOS" != "4.4BSD"; then
 			echo "Platform $TARGETNAME needs additional build tools to operate properly"
@@ -671,7 +680,67 @@ if test "$NONCROSSBUILD" != "no"; then
 	fi
 else
 	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
-		showerror 4 "No C++ compiler for the TARGET PLATFORM was specified. Please re-run $0 with \"-platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> -platformar=<path to the GNU ar (or any other POSIX-compartible ar utility) program>\" flags."
+		CANFINDALTCOMPILER=no
+		dbgecho "Try to find an alternative ARM compiler"
+		if test "$REQUIREDARMPLATFORM" != "no"; then
+			POSSIBLEARMPREFIXES="arm-linux-gnu arm-mandriva-linux-gnu arm-mandriva-linux-gnueabi arm-linux-gnueabi arm-none-linux-gnu arm-none-linux-gnueabi arm-none-linux-gnueabihf arm-mandriva-linux-gnueabihf arm-linux-gnueabihf"
+			if test `echo "$REQUIREDARMPLATFORM" | cut -d '/' -f1` = "64"; then
+				POSSIBLEARMPREFIXES="aarch64-linux-gnu aarch64-mandriva-linux-gnu aarch64-none-linux-gnu aarch64-linux-gnueabi aarch64-mandriva-linux-gnueabi aarch64-none-linux-gnueabi aarch64-linux-gnueabihf aarch64-none-linux-gnueabihf aarch64-mandriva-linux-gnueabi"
+				REQUIREDARMPLATFORM=`echo "$REQUIREDARMPLATFORM" | cut -d '/' -f2`
+			fi
+			dbgecho "POSSIBLEARMPREFIXES=$POSSIBLEARMPREFIXES"
+			cat >>"$CDIR/armcctest.cxx"<<EOF
+#include <iostream>
+
+int main() {
+	std::cout << "Test\n";
+	return 0;
+}
+EOF
+			POSSIBLETARGETCXX=""
+			POSSIBLETARGETCC=""
+			POSSIBLETARGETAR=""
+			for ARMPrefix in $POSSIBLEARMPREFIXES; do
+				dbgecho "$ARMPrefix arm prefix"
+				if command -v $ARMPrefix-g++ > /dev/null 2>&1; then
+					dbgecho "found gcc"
+					POSSIBLETARGETCXX=`command -v $ARMPrefix-g++`
+					POSSIBLETARGETCC=`command -v $ARMPrefix-gcc`
+					POSSIBLETARGETAR=`command -v $ARMPrefix-ar`
+				elif command -v $ARMPrefix-clang++ > /dev/null 2>&1; then
+					dbgecho "found llvm"
+					POSSIBLETARGETCXX=`command -v $ARMPrefix-clang++`
+					POSSIBLETARGETCC=`command -v $ARMPrefix-clang`
+					POSSIBLETARGETAR=`command -v $ARMPrefix-ar`
+				else
+					dbgecho "not found"
+					POSSIBLETARGETCXX="dummyerror"
+					POSSIBLETARGETCC="dummyerror"
+					POSSIBLETARGETAR="dummyerror"
+				fi
+				if $POSSIBLETARGETCXX -o "$CDIR/armcctest.bin" -g -Os -mtune=$REQUIREDARMPLATFORM -std=c++0x "$CDIR/armcctest.cxx" > armcctest.log 2>&1; then
+					dbgecho "this compiler works"
+					rm -r -f "$CDIR/armcctest.bin" "$CDIR/armcctest.log"
+				else
+					dbgecho `cat "$CDIR/armcctest.log"`
+					POSSIBLETARGETCXX=""
+				fi
+				if test "$POSSIBLETARGETCXX" != ""; then
+					CANFINDALTCOMPILER=yes
+					break
+				fi
+			done
+			rm -r -f "$CDIR/armcctest.bin" "$CDIR/armcctest.cxx" "$CDIR/armcctest.log"
+			if test "$POSSIBLETARGETCXX" != ""; then
+				TARGETCC="$POSSIBLETARGETCC"
+				TARGETCXX="$POSSIBLETARGETCXX"
+				TARGETLD="$TARGETCXX"
+				TARGETAR="$POSSIBLETARGETAR"
+			fi
+		fi
+		if test "$CANFINDALTCOMPILER" != "yes"; then
+			showerror 4 "No C++ compiler for the TARGET PLATFORM was specified. Please re-run $0 with \"-platformcc=<path to the C cross-compiler> -platformcxx=<path to the C++ cross-compiler> -platformar=<path to the GNU ar (or any other POSIX-compartible ar utility) program>\" flags."
+		fi
 	fi
 
 	if test "$TARGETLD" = ""; then

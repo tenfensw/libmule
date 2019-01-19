@@ -2,6 +2,7 @@ OS:Linux
 PlatformID:MULE_PLATFORM_LINUXGPIO
 HardwarePinType:int
 StringType:stdstring
+ARM:cortex-a9
 MotorStopCode:-789
 Defines:
 HasCout:yes

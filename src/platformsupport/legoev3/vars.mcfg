@@ -2,6 +2,7 @@ OS:Linux
 PlatformID:MULE_PLATFORM_LEGOEV3
 HardwarePinType:unsigned
 StringType:stdstring
+ARM:arm9
 MotorStopCode:-789
 Defines:
 InternalErrorsLCD:no
