@@ -42,7 +42,7 @@ arduinoplatform_and_tests:
   script:
     - mkdir arduinoplatform-gcc-builddir toolchains
     - sh -c "cd toolchains && wget -q https://downloads.arduino.cc/arduino-nightly-linux64.tar.xz && tar -xvJf arduino-nightly-linux64.tar.xz"
-    - sh -c "cd arduinoplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=avr -prefix=$PWD/bin -modules=arduino -arduino-device=uno -arduino-idedir=$PWD/toolchains/arduino-nightly"
+    - sh -c "cd arduinoplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=avr -prefix=$PWD/bin -modules=arduino -arduino-device=uno -platformthirdpartytools=no -arduino-idedir=$PWD/toolchains/arduino-nightly"
     - sh -c "cd arduinoplatform-gcc-builddir && make && make install"
     - $PWD/bin/bin/muletool -compile tests/test01-muleapplication-test.cpp && $PWD/bin/bin/muletool -link tests/test01-muleapplication-test.o && mv -v a.out run-test01
     - $PWD/bin/bin/muletool -compile tests/test04-mulesensor-trigger.cpp && $PWD/bin/bin/muletool -link tests/test04-mulesensor-trigger.o && mv -v a.out run-test04

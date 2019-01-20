@@ -349,7 +349,7 @@ for Argument in $*; do
 	elif test "$FIRSTHALF" = "-modules"; then
 		MODULES="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-platformthirdpartytools"; then
-		if test "$SECONDHALF" = ""; then
+		if test "$SECONDHALF" = "" || test "$SECONDHALF" = "true"; then
 			SECONDHALF=yes
 		fi
 		if test "$SECONDHALF" = "yes"; then
