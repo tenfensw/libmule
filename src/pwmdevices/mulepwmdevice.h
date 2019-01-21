@@ -29,6 +29,8 @@ class MulePWMDevice : public MuleDevice {
 	public:
 	  MulePWMDevice(int devpin);
 	  ~MulePWMDevice();
+	  override MULE_OTHER_HWPINTYPE read() { return this->getRange(); }
+	  override bool write(MULE_OTHER_HWPINTYPE val) { return this->start(val); }
 	  bool start(MULE_OTHER_HWPINTYPE dutycycle);
 	  bool on() { return this->start(getRange()); }
 	  bool stop() { return this->start(0); }
