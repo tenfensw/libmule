@@ -191,7 +191,13 @@ bool MuleToolClass::fileExists(const std::string& fname) {
 
 std::string MuleToolClass::readFromFileToString(const std::string& fname) {
 	std::ifstream t(fname.c_str());
+#ifndef __sun
 	return std::string((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+#else
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+	return buffer.str();
+#endif
 }
 
 std::vector<std::string> MuleToolClass::fillPossibleLocationsVector() {

@@ -31,10 +31,14 @@
 #include <cmath>
 #include <cstdlib>
 #include <vector>
+#include <stdlib.h>
 
 #define MULEMICROSIM_DIGITALPINFREQUENCY 50
 #define MULEMICROSIM_ANALOGPINFREQUENCY 50
 #define MULEMICROSIM_UPDATEINTERVAL 150
+#ifdef __sun
+#define nullptr 0
+#endif
 
 struct MuleMicrocontrollerSimulatorPin {
     int num;
@@ -80,6 +84,13 @@ public:
     void connectDisconnectPin(int pin);
     void safeQuit();
     void closeEvent(QCloseEvent* ev);
+#ifdef __sun
+    int sunsystem(const char* in) {
+	extern "C" {
+		return system(in);
+	}
+    }
+#endif
 
 
 public slots:

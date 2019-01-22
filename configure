@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # libMule configure script with some patches that allow you to cross-compile
 # a Windows build of libMule SDK from Linux
 # This file is a part of libMule - Microcontroller-Universal 
@@ -40,7 +40,11 @@ dbgecho() {
 	if test "$DEBUG" != ""; then
 		echo "[DEBUG] $*"
 	fi
-	echo "[`date +"%d.%m.%Y %H:%M:%S"` at `pwd`] $*" >> ./muleconfigure.log 
+	printf "[" >> ./muleconfigure.log
+	printf `date +"%d.%m.%Y %H:%M:%S"` >> ./muleconfigure.log
+	printf " at $PWD" >> ./muleconfigure.log
+	printf "] " >> ./muleconfigure.log
+	echo "$*" >> ./muleconfigure.log
 }
 
 showhelp() {
@@ -207,6 +211,7 @@ BUGGYFEDORALINUXGCC=no
 BUILDQTSTUFF=no
 MINGWLINUX=no
 REQUIREDARMPLATFORM=no
+SOLARISRYZENLINKBUG=no
 if test "$NOMICROCONTROLLERSIM" = ""; then
 	NOMICROCONTROLLERSIM=no
 fi
@@ -272,6 +277,9 @@ elif (uname | grep -q "BSD") || test `uname` = "Darwin"; then
 elif test `uname` = "SunOS"; then
 	dbgecho "$0 is running on Sun Solaris, better use grep without -q flag"
 	HOSTOS="Sun Solaris"
+	if test "$HOSTCPU" = "intel32" || test "$HOSTCPU" = "amd64"; then
+		SOLARISRYZENLINKBUG=maybe
+	fi
 elif (uname | grep -q "CYGWIN") || (uname | grep -q "MINGW") || (uname | grep -q "MSYS"); then
 	dbgecho "$0 is running on Windows via MSYS2"
 	HOSTOS="Microsoft Windows"
@@ -491,6 +499,9 @@ if test "$HOSTCC" = "" && test "$HOSTCXX" = ""; then
 		HOSTCC=cc
 		HOSTCXX=CC
 		HOSTLD=$HOSTCXX
+		if test "$SOLARISRYZENLINKBUG" = "maybe"; then
+			SOLARISRYZENLINKBUG=yes
+		fi
 		echo "Sun Studio C/C++ detected"
 	elif command -v c++ > /dev/null 2>&1; then
 		HOSTCC=cc
@@ -678,6 +689,9 @@ if test "$NONCROSSBUILD" != "no"; then
 			RUNCMD="/c/$PREFIX/bin/mulemicrosim.exe \"%A\""
 		fi
 	fi
+	if test "$SOLARISRYZENLINKBUG" = "yes"; then
+		DEPLOYCMD="elfedit -e \'cap:hw1 0x1800\' \"%A\""
+	fi
 else
 	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
 		CANFINDALTCOMPILER=no
@@ -783,6 +797,16 @@ if $HOSTLD $HOSTLDFLAGS -I$SOURCEDIR/src/ideintegration/muletool -DTOOLPREFIX=\"
 else
 	echo ". failed!"
 	showerror 9 "Failed to link $CDIR/MuleToolBootstrapFiles/muletool"
+fi
+
+if test "$SOLARISRYZENLINKBUG" = "yes"; then
+	printf "Fixing $CDIR/MuleToolBootstrapFiles/muletool so that it could run on modern Intel Core/AMD Ryzen desktops and laptops with Oracle Solaris... "
+	if elfedit -e 'cap:hw1 0x1800' "$CDIR/MuleToolBootstrapFiles/muletool"; then
+		echo "done!"
+	else
+		echo "failed!"
+		showerror 107 "Failed to link $CDIR/MuleToolBootstrapFiles/muletool"
+	fi
 fi
 
 if test "$MINGWLINUX" != "no"; then

@@ -29,6 +29,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <sstream> // this is needed so that MuleTool would compile on Sun Solaris
 #include <streambuf>
 #include <sys/types.h>
 #include <sys/stat.h>

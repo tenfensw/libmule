@@ -33,37 +33,37 @@ class MuleCommonPlatform
 public:
     MuleCommonPlatform() {}
 
-    virtual bool initialize() {}
+    virtual bool initialize() { return false; }
 #ifdef MULE_FEATURES_CORE
-    virtual std::vector<MuleDevice*> getDevices() {}
-    virtual MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin) {}
-    virtual bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) {}
-    virtual MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin) {}
-    virtual bool writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) {}
-    virtual bool setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) {}
+    virtual std::vector<MuleDevice*> getDevices() { return std::vector<MuleDevice*>(); }
+    virtual MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin) { return -1; }
+    virtual bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) { return false; }
+    virtual MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin) { return -1; }
+    virtual bool writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct) { return false; }
+    virtual bool setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) { return false; }
 #endif
 #ifdef MULE_FEATURES_FILEIO
-    virtual MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file) {}
-    virtual bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {}
-    virtual bool fileExists(MULE_OTHER_STRINGTYPE file) {}
-    virtual bool deleteFile(MULE_OTHER_STRINGTYPE file) {}
+    virtual MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file) { return MULE_OTHER_STRINGTYPE(""); }
+    virtual bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) { return false; }
+    virtual bool fileExists(MULE_OTHER_STRINGTYPE file) { return false; }
+    virtual bool deleteFile(MULE_OTHER_STRINGTYPE file) { return false; }
 #endif
 #ifdef MULE_FEATURES_SOUND
     virtual void doBeep() {}
-    virtual bool playWaveFile(MULE_OTHER_STRINGTYPE filename) {}
-    virtual MULE_OTHER_STRINGTYPE getSoundBackend() {}
-    virtual bool stopAllSounds() {}
+    virtual bool playWaveFile(MULE_OTHER_STRINGTYPE filename) { return false; }
+    virtual MULE_OTHER_STRINGTYPE getSoundBackend() { return MULE_OTHER_STRINGTYPE(""); }
+    virtual bool stopAllSounds() { return false; }
 #endif
 #ifdef MULE_FEATURES_PWMDEVICES
-    virtual bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {}
-    virtual MULE_OTHER_HWPINTYPE getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {}
-    virtual MULE_OTHER_HWPINTYPE getPWMRange(MULE_OTHER_HWPINTYPE pin) {}
-    virtual bool setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {}
-    virtual MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {}
-    virtual bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {}
+    virtual bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) { return false; }
+    virtual MULE_OTHER_HWPINTYPE getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) { return -1; }
+    virtual MULE_OTHER_HWPINTYPE getPWMRange(MULE_OTHER_HWPINTYPE pin) { return -1; }
+    virtual bool setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) { return false; }
+    virtual MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin) { return -1; }
+    virtual bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) { return false; }
 #endif
 #ifdef MULE_FEATURES_SENSORS
-    virtual bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {}
+    virtual bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) { return false; }
 #endif
 
 

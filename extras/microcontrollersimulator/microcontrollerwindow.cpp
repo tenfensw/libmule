@@ -17,6 +17,14 @@
 #include "microcontrollerwindow.h"
 #include "ui_microcontrollerwindow.h"
 
+#ifdef __sun
+#define CSTRINGCONV toUtf8().constData().c_str()
+#define SYSTEMFUNC this->sunsystem
+#else
+#define CSTRINGCONV toStdString().c_str()
+#define SYSTEMFUNC std::system
+#endif
+
 MicrocontrollerWindow::MicrocontrollerWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MicrocontrollerWindow)
@@ -92,7 +100,7 @@ void MicrocontrollerWindow::initializeSocket() {
 #ifdef Q_OS_WIN
             rmCmd = "rd /q \"" + sockBaseDir + "\"";
 #endif
-            std::system(rmCmd.toStdString().c_str());
+            std::system(rmCmd.CSTRINGCONV);
         }
         else
             std::exit(-4);
@@ -101,7 +109,7 @@ void MicrocontrollerWindow::initializeSocket() {
 #ifdef Q_OS_WIN
     mkdirCmd = "mkdir \"" + sockBaseDir + "\"";
 #endif
-    if (std::system(mkdirCmd.toStdString().c_str()) != 0) {
+    if (std::system(mkdirCmd.CSTRINGCONV) != 0) {
         QMessageBox::critical(this, "Mule Microcontroller Simulator", "Creating new sockets ultimately failed. :-(", QMessageBox::Ok);
         QApplication::exit(1);
     }
@@ -581,7 +589,7 @@ void MicrocontrollerWindow::safeQuit() {
 #ifdef Q_OS_WIN
     rdirCmd = "rd /q \"" + sockBaseDir + "\"";
 #endif
-    std::system(rdirCmd.toStdString().c_str());
+    std::system(rdirCmd.CSTRINGCONV);
 }
 
 void MicrocontrollerWindow::closeEvent(QCloseEvent *ev) {

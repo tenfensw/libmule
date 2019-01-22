@@ -149,7 +149,13 @@ MuleMicrocontrollerSimulatorPin MuleMicrocontrollerSimulatorPlatform::internal_r
 
 MULE_OTHER_STRINGTYPE MuleMicrocontrollerSimulatorPlatform::internal_readToString(MULE_OTHER_STRINGTYPE fn) {
 	std::ifstream stream(fn.c_str());
+#ifndef __sun
 	return MULE_OTHER_STRINGTYPE((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+#else
+	std::stringstream buffer;
+        buffer << stream.rdbuf();
+        return buffer.str();
+#endif
 }
 
 bool MuleMicrocontrollerSimulatorPlatform::internal_fileExists(MULE_OTHER_STRINGTYPE fn) {
