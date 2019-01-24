@@ -38,20 +38,6 @@ raspberrypiplatform_and_tests:
     - $PWD/toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64_be-linux-gnu/bin/aarch64_be-linux-gnu-g++ -pthread -Isrc/3rdparty/pigpio-master -std=gnu++11 -g -Os -static-libstdc++ -static-libgcc -march=armv8-a -mtune=cortex-a53 tests/test04-mulesensor-trigger.cpp pigpio-gcc-builddir/libMule.a -Isrc -Ipigpio-gcc-builddir/src -o tests/run-test04
     - rm -r -f -v tests/run-test0* pigpio-gcc-builddir/
 
-linuxgpiobeagleboneplatform_and_tests:
-  script:
-    - mkdir beaglebone-gcc-builddir toolchains
-    - sh -c "cd toolchains && wget -O gcctc.txz -q https://dl.dropboxusercontent.com/s/e8lrwu65v7m5grq/gcc-linaro-arm-linux-gnueabihf-4.9-2014.06_linux.tar.xz && tar -xJf gcctc.txz && mv -v gcc-linaro-arm-linux-gnueabihf-4.9-2014.06_linux/ linaro/"
-    - sh -c "cd beaglebone-gcc-builddir && ../configure -platform=linuxgpio -prefix=$PWD/gpiobin -platformcc=$PWD/toolchains/linaro/bin/arm-linux-gnueabihf-gcc -platformcxx=$PWD/toolchains/linaro/bin/arm-linux-gnueabihf-g++ -platformld=$PWD/toolchains/linaro/bin/arm-linux-gnueabihf-g++ -platformar=$PWD/toolchains/linaro/bin/arm-linux-gnueabihf-gcc-ar -platformldflags=\"-static-libgcc\" -platformldflags=\"-static-libstdc++\" -platformldflags=\"-pthread\" -platformcflags=\"-pthread\" && make && make install"
-    - "$PWD/gpiobin/muletool" -compile tests/test01-muleapplication-test.cpp
-    - "$PWD/gpiobin/muletool" -link tests/test01-muleapplication-test.o
-    - mv -v a.out tests/run-test01
-    - "$PWD/gpiobin/muletool" -compile tests/test04-mulesensor-trigger.cpp
-    - "$PWD/gpiobin/muletool" -link tests/test04-mulesensor-trigger.o
-    - mv -v a.out tests/run-test04
-    - rm -r -f -v tests/run-test0* beaglebone-gcc-builddir/
-
-    
 arduinoplatform_and_tests:
   script:
     - mkdir arduinoplatform-gcc-builddir toolchains
