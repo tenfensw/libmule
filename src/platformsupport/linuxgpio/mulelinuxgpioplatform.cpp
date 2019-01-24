@@ -156,32 +156,6 @@ bool MuleLinuxGPIOPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_H
 #endif
 
 
-#ifdef MULE_FEATURES_PWMDEVICES
-bool MuleLinuxGPIOPlatform::startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) {
-	return false;
-}
-
-MULE_OTHER_HWPINTYPE MuleLinuxGPIOPlatform::getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) {
-	return -1;
-}
-
-MULE_OTHER_HWPINTYPE MuleLinuxGPIOPlatform::getPWMRange(MULE_OTHER_HWPINTYPE pin) {
-	return -1;
-}
-
-bool MuleLinuxGPIOPlatform::setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) {
-	return false;
-}
-
-MULE_OTHER_HWPINTYPE MuleLinuxGPIOPlatform::getPWMFrequency(MULE_OTHER_HWPINTYPE pin) {
-	return -1;
-}
-
-bool MuleLinuxGPIOPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) {
-	return false;
-}
-#endif
-
 #ifdef MULE_FEATURES_SENSORS
 bool MuleLinuxGPIOPlatform::sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
 	int orval = internal_readPin(pin).val;
