@@ -658,7 +658,7 @@ while read configfileline; do
 			showwarning "The platform you have chosen depends on third-party libraries. By continuing to build libMule, you agree to the terms of licenses used by the downloaded libraries. See $SOURCEDIR/src/3rdparty/README for more info."
 			RUNDOWNLOADERSCRIPT=yes
 		fi
-BeOS	elif test "$FIRSTHALF" = "AdditionalCompilerFlags"; then
+	elif test "$FIRSTHALF" = "AdditionalCompilerFlags"; then
 		ADDITIONALINCLUDES="$SECONDHALF $ADDITIONALINCLUDES"
 	elif test "$FIRSTHALF" = "AdditionalLinkerFlags"; then
 		ADDITIONALLIBS="$TARGETLDFLAGS $SECONDHALF"
