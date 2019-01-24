@@ -79,7 +79,7 @@ public:
 
 private:
     MULE_OTHER_STRINGTYPE internal_readToString(MULE_OTHER_STRINGTYPE fn);
-    MULE_OTHER_STRINGTYPE internal_muleIntToStr(int in);
+    MULE_OTHER_STRINGTYPE internal_muleIntToStr(int in) { return muleinttostr(in); }
     bool internal_fileExists(MULE_OTHER_STRINGTYPE fn);
     bool internal_writeToFile(MULE_OTHER_STRINGTYPE fn, MULE_OTHER_STRINGTYPE ct);
     MuleLinuxGPIOPin internal_readPin(int pn);
