@@ -1,5 +1,7 @@
 OS:None
 PlatformID:MULE_PLATFORM_ARDUINOAVR
+PlatformClass:MuleArduinoAVRPlatform
+PlatformHeader:mulearduinoavrplatform.h
 HardwarePinType:unsigned
 StringType:stdstring
 MotorStopCode:-789

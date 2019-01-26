@@ -37,13 +37,13 @@ bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pinNum = " + muleinttostr(pinNum));
     if (!(MuleApplicationWideData::appWideFirstInstance) || pin == -1)
         return false;
-    muledebug("I'm going to access the only running MuleApplication instance to get a pointer to MuleCurrentPlatform class");
+    muledebug("I'm going to access the only running MuleApplication instance to get a pointer to MuleCommonPlatform class");
     MuleApplication* maInstance = (MuleApplication*)(MuleApplicationWideData::appWideFirstInstance);
     muledebug("Now run getPlatformClass()");
     if (maInstance->areNecessaryPartsReady == true) {
 	muledebug("maInstance->areNecessaryPartsReady == true");
     	mcpInstance = (void*)(maInstance->getPlatformClass());
-    	MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
+    	MuleCommonPlatform* convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(mcpInstance);
     	convertedMcpInstance->getPinMode(pin);
 	this->setPinType(Generic);
     }
@@ -53,22 +53,22 @@ bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
 }
 
 MULE_OTHER_HWPINTYPE MuleDevice::read() {
-    MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
+    MuleCommonPlatform* convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(mcpInstance);
     return convertedMcpInstance->readFromPin(pinNum);
 }
 
 bool MuleDevice::write(MULE_OTHER_HWPINTYPE val) {
-    MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
+    MuleCommonPlatform* convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(mcpInstance);
     return convertedMcpInstance->writeToPin(pinNum, val);
 }
 
 MULE_OTHER_HWPINTYPE MuleDevice::mode() {
-    MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
+    MuleCommonPlatform* convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(mcpInstance);
     return convertedMcpInstance->getPinMode(pinNum);
 }
 
 bool MuleDevice::setMode(MULE_OTHER_HWPINTYPE mode) {
-    MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
+    MuleCommonPlatform* convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(mcpInstance);
     return convertedMcpInstance->setPinMode(pinNum, mode);
 }
 
@@ -107,7 +107,7 @@ bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE lev
 }
 
 bool MuleDevice::setPullUpDown(MULE_OTHER_HWPINTYPE val) {
-    MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
+    MuleCommonPlatform* convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(mcpInstance);
     return convertedMcpInstance->setPullUpDown(pinNum, val);
 }
 

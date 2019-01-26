@@ -24,7 +24,6 @@
 #include "core/muleglobalfunctions.h"
 #include "core/muleconfig.h"
 #include "core/muleapplication.h"
-#include "platformsupport/common/mulecurrentplatform.h"
 
 class MuleFile
 {
@@ -42,7 +41,7 @@ public:
 
 private:
     MULE_OTHER_STRINGTYPE fileName;
-    MuleCurrentPlatform* mcpLocalClass;
+    MuleCommonPlatform* mcpLocalClass;
     MULE_OTHER_STRINGTYPE readContents;
 
 };

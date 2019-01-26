@@ -32,7 +32,10 @@ class MuleCommonPlatform
 {
     
 public:
+    virtual ~MuleCommonPlatform() {}
+
     virtual bool initialize() = 0;
+    virtual MULE_OTHER_STRINGTYPE getPlatformName() { return "unknown"; }
 #ifdef MULE_FEATURES_CORE
     virtual std::vector<MuleDevice*> getDevices() = 0;
     virtual MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin) = 0;

@@ -28,6 +28,6 @@ MuleSensor::~MuleSensor() {
 }
 
 bool MuleSensor::waitUntilTriggered() {
-	MuleCurrentPlatform* convertedMcpInstance = (MuleCurrentPlatform*)(mcpInstance);
+	MuleCommonPlatform* convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(mcpInstance);
 	return convertedMcpInstance->sensorWaitUntilTriggered(pinNum);
 }

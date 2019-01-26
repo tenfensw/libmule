@@ -1,5 +1,7 @@
 OS:Linux
 PlatformID:MULE_PLATFORM_LEGOEV3
+PlatformClass:MuleMindstormsPlatform
+PlatformHeader:mulemindstormsplatform.h
 HardwarePinType:unsigned
 StringType:stdstring
 ARM:arm9

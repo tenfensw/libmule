@@ -1,5 +1,7 @@
 OS:Linux
 PlatformID:MULE_PLATFORM_LINUXGPIO
+PlatformClass:MuleLinuxGPIOPlatform
+PlatformHeader:mulelinuxgpioplatform.h
 HardwarePinType:int
 StringType:stdstring
 ARM:cortex-a9

@@ -24,6 +24,7 @@
 #include "core/muledevice.h"
 #include "core/muleglobalfunctions.h"
 #include "platformsupport/common/mulecurrentplatform.h"
+#include MULE_OTHER_NATIVEPLATFORMHEADER
 
 class MulePWMDevice : public MuleDevice {
 	public:

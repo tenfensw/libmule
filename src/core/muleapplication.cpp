@@ -44,9 +44,9 @@ bool MuleApplication::internalInit() {
         isFirstInstance = true;
         muledebug("This MuleApplication instance was self-appointed as the first one");
     }
-    mcpClass = new MuleCurrentPlatform();
+    mcpClass = new MULE_INTERNAL_CURRENTPLATFORMCLASS();
     areNecessaryPartsReady = true;
-    muledebug("MuleCurrentPlatform initialized");
+    muledebug("initialized MuleCommonPlatform");
     return true;
 }
 
@@ -68,7 +68,7 @@ MULE_OTHER_STRINGTYPE MuleApplication::getPlatformName() {
 	return mcpClass->getPlatformName();
 }
 
-MuleCurrentPlatform* MuleApplication::getPlatformClass() {
+MuleCommonPlatform* MuleApplication::getPlatformClass() {
 	return mcpClass;
 }
 

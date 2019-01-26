@@ -22,14 +22,16 @@
 #define MULEAPPLICATION_H
 
 #include "core/muleconfig.h"
+#include "platformsupport/common/mulecommonplatform.h"
+#include MULE_OTHER_NATIVEPLATFORMHEADER
 #include <string>
 #include <vector>
 #include <cstdlib>
 #ifndef MULE_INTERNAL_NOEXIT
 #include <csignal>
 #endif
-#include "platformsupport/common/mulecurrentplatform.h"
 #include "core/muleglobalfunctions.h"
+#include "core/muledevice.h"
 
 namespace MuleApplicationWideData {
 	extern void* appWideFirstInstance;
@@ -43,8 +45,8 @@ public:
     ~MuleApplication();
     MULE_OTHER_STRINGTYPE getPlatformName();
     MULE_OTHER_STRINGTYPE platformName() { return this->getPlatformName(); }
-    MuleCurrentPlatform* getPlatformClass();
-    MuleCurrentPlatform* platformClass() { return this->getPlatformClass(); }
+    MuleCommonPlatform* getPlatformClass();
+    MuleCommonPlatform* platformClass() { return this->getPlatformClass(); }
     std::vector<MuleDevice*> getDevices();
     std::vector<MuleDevice*> devices() { return this->getDevices(); }
     MULE_OTHER_STRINGTYPE getCurrentDirectory();
@@ -54,7 +56,7 @@ public:
     bool areNecessaryPartsReady;
 
 private:
-    MuleCurrentPlatform* mcpClass;
+    MuleCommonPlatform* mcpClass;
     bool isFirstInstance;
     bool internalInit();
     void internalCleanUp();

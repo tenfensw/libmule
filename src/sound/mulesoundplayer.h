@@ -46,7 +46,7 @@ class MuleSoundPlayer {
 	private:
 	  bool init();
 	  std::vector<MuleFile> playlist;
-	  MuleCurrentPlatform* mcpLocalClass;
+	  MuleCommonPlatform* mcpLocalClass;
 };
 
 #endif

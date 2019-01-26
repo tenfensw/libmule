@@ -1,5 +1,7 @@
 OS:Linux
 PlatformID:MULE_PLATFORM_PIGPIO
+PlatformClass:MulePigpioPlatform
+PlatformHeader:mulepigpioplatform.h
 HardwarePinType:unsigned
 StringType:stdstring
 MotorStopCode:-789
