@@ -375,6 +375,7 @@ editormainmenu() {
 }
 
 TOOLVERSION=0.4.1
+DOESWORK=no
 PLATFORMNAME=
 PLATFORMDEFINE=
 PLATFORMOS=
@@ -393,6 +394,10 @@ FULLPWD=`dirname "$0"`
 FULLPWD=`sh -c "cd \"$FULLPWD\" && pwd"`
 
 echo "Welcome to libMule Porting Assistant $TOOLVERSION! What would you like to do?"
+if test "$DOESWORK" = "no"; then
+	echo "This tool is broken and does not work. Sorry."
+	exit 1
+fi
 echo "[1] Create a new platform from scratch"
 echo "[2] Create a new platform basing on an existing one"
 echo "[3] Load and modify an existing platform"
