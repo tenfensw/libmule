@@ -43,6 +43,7 @@ MuleToolClass::MuleToolClass(int argc, char** argv) {
 		userHomeDir = "/";
 	}
 #endif
+	libMuleFilenamePrefix = "";
 	successfullyInitialized = init(argc, argv);
 }
 
@@ -148,8 +149,10 @@ bool MuleToolClass::loadConfig(const std::string& cfgname) {
 				linkerFlags_LD = htwo;
 			else if (hone == "TARGET")
 				libMuleTarget = htwo;
+			else if (hone == "LIBMULEMULTIPREFIX" || hone == "MULTIPREFIX" || hone == "INFIX" || hone == "LIBMULEINFIX")
+				libMuleFilenamePrefix = htwo;
 			else if (hone == "LIBMULE") {
-				libMuleLib = htwo + dirsepchar + "lib" + dirsepchar + "libMule.a";
+				libMuleLib = htwo + dirsepchar + "lib" + dirsepchar + "libMule" + libMuleFilenamePrefix + ".a";
 				libMuleInclude = htwo + dirsepchar + "include" + dirsepchar + "libmule";
 			}
 			else if (hone == "DEPLOY")
@@ -571,6 +574,8 @@ std::string MuleToolClass::getVariableValue(const std::string& vname) {
 		return deploy_copyFile;
 	else if (vname == "RUN")
 		return deploy_runFile;
+	else if (vname == "MULTIPREFIX")
+		return libMuleFilenamePrefix;
 	else if (vname == "INTERNAL_CONFNAME")
 		return configFilePath;
 	else if (vname == "INTERNAL_HOMEDIR")

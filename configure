@@ -55,6 +55,9 @@ Usage: $0 [arguments]
 						The default value for this option
 						is $PREFIX.
 	
+	-libmuleinfix=[value]			rename libMule.a to libMule-[value].a
+						during link time
+
 	-modules=[all/minimal/list]		build a stripped-down version of
 						libMule with only several modules
 						specified. Specify the modules in
@@ -200,6 +203,7 @@ ADDITIONALLIBS=""
 AVROBJCOPY=""
 AVRDUDEFLAGS=""
 ARDUINOHEADERLOCATION=""
+LIBMULEINFIX=""
 ARDUINOINCLUDEFLAGS=""
 ARDUINOTARGETDEVICE=""
 NONCROSSBUILD=no
@@ -331,6 +335,8 @@ for Argument in $*; do
 		NOMICROCONTROLLERSIM="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-targetcc" || test "$FIRSTHALF" = "-platformcc"; then
 		TARGETCC="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-libmuleinfix" || test "$FIRSTHALF" = "-infix"; then
+		LIBMULEINFIX="$SECONDHALF"
 	elif test "$FIRSTHALF" = "-targetcxx" || test "$FIRSTHALF" = "-platformcxx"; then
 		TARGETCXX="$SECONDHALF"
 		TARGETLD="$SECONDHALF"
@@ -901,6 +907,9 @@ echo "CXXFLAGS:$TARGETCXXFLAGS" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
 echo "LDFLAGS:$TARGETLDFLAGS" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
 echo "" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
 echo "# deployment support" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+if test "$LIBMULEINFIX" != ""; then
+	echo "MULTIPREFIX:-$LIBMULEINFIX" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
+fi
 echo "LIBMULE:$PREFIX" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
 echo "TARGET:$TARGETNAME" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
 echo "DEPLOY:$DEPLOYCMD" >> "$CDIR/MuleToolBootstrapFiles/MuleTool.mcfg"
@@ -1144,6 +1153,9 @@ echo "SOURCEDIR ?= $SOURCEDIR" >> "$CDIR/Makefile"
 echo "TARGETAR ?= $TARGETAR" >> "$CDIR/Makefile"
 echo "TARGETS = $FINALTARGETS" >> "$CDIR/Makefile"
 echo "PREFIX = \$(RPMBUILDROOT)/$PREFIX" >> "$CDIR/Makefile"
+if test "$LIBMULEINFIX" != ""; then
+	echo "LIBMULEINFIX = $LIBMULEINFIX" >> "$CDIR/Makefile"
+fi
 echo "" >> "$CDIR/Makefile"
 if test "$BUILDQTSTUFF" != "yes"; then
 	echo "all lib: build-static-libmule" >> "$CDIR/Makefile"
@@ -1158,6 +1170,10 @@ printf "\t\t" >> "$CDIR/Makefile"
 echo "\$(MAKE) \$(TARGETS)" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "\$(TARGETAR) rcs libMule.a \$(TARGETS)" >> "$CDIR/Makefile"
+if test "$LIBMULEINFIX" != ""; then
+	printf "\t\t" >> "$CDIR/Makefile"
+	echo "mv libMule.a libMule-\$(LIBMULEINFIX).a" >> "$CDIR/Makefile"
+fi
 echo "" >> "$CDIR/Makefile"
 echo "\$(TARGETS):" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
@@ -1187,7 +1203,11 @@ echo "$MAKEBUILDTOOLS" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "PREFIX=\"\$(PREFIX)\" SOURCEDIR=\"\$(SOURCEDIR)\" ./installheaders.sh && cp src/core/muleconfig.h \"\$(PREFIX)/include/libmule/core/muleconfig.h\""  >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
-echo "cp libMule.a \"\$(PREFIX)/lib/libMule.a\"" >> "$CDIR/Makefile"
+if test "$LIBMULEINFIX" != ""; then
+	echo "cp libMule-\$(LIBMULEINFIX).a \"\$(PREFIX)/lib/libMule-\$(LIBMULEINFIX).a\"" >> "$CDIR/Makefile"
+else
+	echo "cp libMule.a \"\$(PREFIX)/lib/libMule.a\"" >> "$CDIR/Makefile"
+fi
 if test "$MULESTL" = "yes"; then
 	printf "\t\t" >> "$CDIR/Makefile"
 	echo "-mkdir -p \"\$(PREFIX)/include/libmule/extras/mulestl\"" >> "$CDIR/Makefile"

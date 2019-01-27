@@ -111,6 +111,7 @@ class MuleToolClass {
 	  std::string libMuleLib;
 	  std::string libMuleInclude;
 	  std::string libMuleTarget;
+	  std::string libMuleFilenamePrefix;
 	  
 };
 #endif
