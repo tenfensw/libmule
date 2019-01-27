@@ -35,6 +35,7 @@
 #include <sstream>
 #include <sys/stat.h>
 #include <cmath>
+#include <unistd.h>
 #include "3rdparty/EV3-API-master/API/ev3.h"
 
 #define MULE_HOMEDIRECTORY "/home/root/lms2012/timkoisoft/libMule"

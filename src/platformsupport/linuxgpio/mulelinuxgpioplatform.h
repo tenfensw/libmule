@@ -26,6 +26,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <sstream>
+#include <unistd.h>
 #include <sys/stat.h>
 
 #define MULE_HOMEDIRECTORY MULE_OTHER_STRINGTYPE(getenv("HOME"))

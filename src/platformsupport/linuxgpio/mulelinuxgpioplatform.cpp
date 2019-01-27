@@ -104,7 +104,7 @@ bool MuleLinuxGPIOPlatform::initialize() {
     if (std::system("cd /sys/class/gpio && for File in gpiochip*/; do  echo $File; done | sed 's+/++g' | tail -1 | sed 's/gpiochip//g' > /tmp/mulelingpio-maxpin.socket") != 0 || internal_fileExists("/tmp/mulelingpio-maxpin.socket") == false)
 	return false;
     maxpin = internal_stringToNum(internal_readToString("/tmp/mulelingpio-maxpin.socket"));
-    std::system("rm -r -f /tmp/mulelingpio-maxpin.socket");
+    unlink("/tmp/mulelingpio-maxpin.socket");
     for (int i = 0; i < maxpin; i++) {
 	internal_writeToFile("/sys/class/gpio/export", muleinttostr(i));
 	if (internal_fileExists(MULE_OTHER_STRINGTYPE("/sys/class/gpio/gpio") + muleinttostr(i)) == false)

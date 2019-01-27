@@ -125,11 +125,7 @@ bool MuleMindstormsPlatform::fileExists(MULE_OTHER_STRINGTYPE file) {
 }
 
 bool MuleMindstormsPlatform::deleteFile(MULE_OTHER_STRINGTYPE file) {
-	if (std::system(MULE_OTHER_STRINGTYPE("rm -r -f " + file).c_str()) == 0) 
-                return true;
-        else
-                return false;
-
+   return (unlink(file.c_str()) == 0);
 }
 #endif
 
