@@ -9,8 +9,6 @@ mulemicrocontrollersimulator_and_tests:
     - mkdir dummyplatform-gcc-builddir
     - sh -c "cd dummyplatform-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=ms -modules=all NOMICROCONTROLLERSIM=yes && make"
     - /usr/bin/g++ -g -Os tests/test01-muleapplication-test.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test01
-    - /usr/bin/g++ -g -Os tests/test02-mulefile-currentdirectory.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test02
-    - /usr/bin/g++ -g -Os tests/test03-mulesound-beeping.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test03
     - /usr/bin/g++ -g -Os tests/test04-mulesensor-trigger.cpp dummyplatform-gcc-builddir/libMule.a -Isrc -Idummyplatform-gcc-builddir/src -o tests/run-test04
     - rm -r -f ./tests/run-test0* ./dummyplatform-gcc-builddir/
 
