@@ -17,6 +17,8 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
+#include "Arduino.h"
 #include "core/muleplatformdependantfunctions.h"
 
 void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {}
+void muleplatformsleep(double seconds) { delay(seconds * 1000); }

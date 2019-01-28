@@ -19,6 +19,7 @@
 //
 
 #include "core/muleplatformdependantfunctions.h"
+#include <unistd.h>
 
 void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {
 	va_list otherargs;
@@ -37,4 +38,9 @@ void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {
     else
 	delete myf;
 	va_end(otherargs);
+}
+void muleplatformsleep(double seconds) {
+#ifdef MULE_OS_UNIX
+	usleep(seconds * 1000 * 1000);
+#endif
 }

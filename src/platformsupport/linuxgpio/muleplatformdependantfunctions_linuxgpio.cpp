@@ -18,5 +18,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "core/muleplatformdependantfunctions.h"
+#include <unistd.h>
 
 void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {}
+void muleplatformsleep(double seconds) { usleep(seconds * 1000 * 1000); }

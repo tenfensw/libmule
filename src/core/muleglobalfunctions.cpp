@@ -1,7 +1,7 @@
 //
 // This file is a part of libMule - Microcontroller-Universal 
 // Library (that is extendable)
-// Copyright (C) 2018 Tim K <timprogrammer@rambler.ru>
+// Copyright (C) 2018-2019 Tim K <timprogrammer@rambler.ru>
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -101,25 +101,10 @@ void muleexception(int errcode, MULE_OTHER_STRINGTYPE errtext, bool cancatch) {
 
 
 void mulesleep(double seconds) {
-#ifdef MULE_PLATFORM_LEGOEV3
-	Wait((int)(seconds * 1000));
-#elif defined(MULE_PLATFORM_MICROCONTROLLERSIM)
-	usleep((int)(1000 * 1000 * seconds));
-#elif defined(MULE_PLATFORM_ARDUINOAVR)
-	delay((long)(seconds * 1000));
-#elif defined(MULE_OS_UNIX)
-	std::system(MULE_OTHER_STRINGTYPE("sleep " + muleinttostr((int)(ceil(seconds)))).c_str());
-#else
-	muleprintf("[libMule/WARNING] mulesleep is not supported on this platform");
-	return;
-#endif
+	muleplatformsleep(seconds);
 }
 
 void mulemicrosecsleep(int microseconds) {
-#ifdef MULE_OS_LINUX
-	usleep(microseconds);
-#else
 	mulesleep(((1/100000) * microseconds));
-#endif
 }
 

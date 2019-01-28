@@ -22,8 +22,12 @@
 
 void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {
 	va_list otherargs;
-    va_start(otherargs, in);
+	va_start(otherargs, in);
 	LcdPrintf('0', in.c_str(), otherargs);
 	Wait(500);
 	va_end(otherargs);
+}
+
+void muleplatformsleep(double seconds) {
+	Wait(seconds * 1000);
 }

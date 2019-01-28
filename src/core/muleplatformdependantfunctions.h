@@ -30,4 +30,5 @@
 
 // These functions should be implemented if the target microcontroller does not use default functions
 void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...);
+void muleplatformsleep(double seconds);	
 #endif
