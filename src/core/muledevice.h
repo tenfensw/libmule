@@ -25,6 +25,8 @@
 #include "core/muleglobalfunctions.h"
 #include "platformsupport/common/mulecommonplatform.h"
 
+class MuleCommonPlatform;
+
 class MuleDevice
 {
 public:
