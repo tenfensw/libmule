@@ -20,10 +20,6 @@
 
 #include "core/muleapplication.h"
 
-namespace MuleApplicationWideData {
-	void* appWideFirstInstance;
-};
-
 MuleApplication::MuleApplication()
 {
     areNecessaryPartsReady = false;
@@ -40,7 +36,7 @@ MuleApplication::~MuleApplication() {
 bool MuleApplication::internalInit() {
     isFirstInstance = false;
     if (!(MuleApplicationWideData::appWideFirstInstance)) {
-        MuleApplicationWideData::appWideFirstInstance = (void*)this;
+        MuleApplicationWideData::appWideFirstInstance = this;
         isFirstInstance = true;
         muledebug("This MuleApplication instance was self-appointed as the first one");
     }
@@ -61,7 +57,7 @@ void MuleApplication::internalCleanUp() {
 }
 
 MuleApplication* MuleApplication::getRunningInstance() {
-	return (MuleApplication*)(MuleApplicationWideData::appWideFirstInstance);
+	return MuleApplicationWideData::appWideFirstInstance;
 }
 
 MULE_OTHER_STRINGTYPE MuleApplication::getPlatformName() {

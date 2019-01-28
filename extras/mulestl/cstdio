@@ -1,0 +1,6 @@
+#ifndef MULESTL_CSTDIO_HEADER
+#define MULESTL_CSTDIO_HEADER
+namespace std {
+#include <stdio.h>
+}
+#endif

@@ -1,7 +1,7 @@
 //
 // This file is a part of libMule - Microcontroller-Universal 
 // Library (that is extendable)
-// Copyright (C) 2018 Tim K <timprogrammer@rambler.ru>
+// Copyright (C) 2018-2019 Tim K <timprogrammer@rambler.ru>
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -61,7 +61,7 @@ protected:
     bool dvinit(MULE_OTHER_HWPINTYPE pin);
 
     bool setPinType(int type);
-    void* mcpInstance;
+    MuleCommonPlatform* convertedMcpInstance;
     int pinNum;
     int pType;
 };
