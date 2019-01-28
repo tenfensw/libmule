@@ -13,5 +13,5 @@ Requires3rdPartyDownloads:yes
 AdditionalCompilerFlags:-I$(SOURCEDIR)/src/3rdparty/pigpio-master
 AdditionalLinkerFlags:-lrt
 AfterBuildCompilerFlags:-I%P/3rdparty/pigpio-master
-Sources:../../3rdparty/pigpio-master/pigpio.c ../../3rdparty/pigpio-master/command.c mulepigpioplatform.cpp
+Sources:../../3rdparty/pigpio-master/pigpio.c ../../3rdparty/pigpio-master/command.c mulepigpioplatform.cpp muleplatformdependantfunctions_pigpio.cpp
 Headers:../../3rdparty/pigpio-master/pigpio.h ../../3rdparty/pigpio-master/command.h mulepigpioplatform.h

@@ -23,7 +23,7 @@
 #include <iostream>
 #include <vector>
 #include "core/muleapplication.h"
-#include "platformsupport/common/mulecurrentplatform.h"
+#include "platformsupport/common/mulecommonplatform.h"
 #include "fileio/mulefile.h"
 
 class MuleSoundPlayer {

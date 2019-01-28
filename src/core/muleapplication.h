@@ -47,8 +47,8 @@ public:
     MULE_OTHER_STRINGTYPE platformName() { return this->getPlatformName(); }
     MuleCommonPlatform* getPlatformClass();
     MuleCommonPlatform* platformClass() { return this->getPlatformClass(); }
-    std::vector<MuleDevice*> getDevices();
-    std::vector<MuleDevice*> devices() { return this->getDevices(); }
+    const std::vector<MuleDevice*> getDevices();
+    const std::vector<MuleDevice*> devices() { return this->getDevices(); }
     MULE_OTHER_STRINGTYPE getCurrentDirectory();
     MULE_OTHER_STRINGTYPE currentDirectory() { return this->getCurrentDirectory(); }
     static MuleApplication* getRunningInstance();

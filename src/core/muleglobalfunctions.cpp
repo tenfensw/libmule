@@ -41,24 +41,7 @@ void muleprintf(MULE_OTHER_STRINGTYPE in, ...) {
 #ifdef MULE_FEATURES_SUPPORTSCOUT
     vprintf(in.c_str(), otherargs);
 #endif
-#ifdef MULE_PLATFORM_LEGOEV3
-    LcdPrintf('0', in.c_str(), otherargs);
-    Wait(500);
-#elif defined(MULE_PLATFORM_MICROCONTROLLERSIM)
-    FILE* myf;
-#  ifndef _WIN32
-    char* name = "/tmp/mulemicrosim/SERIAL";
-#  else
-    const char* name = MULE_OTHER_STRINGTYPE(MULE_OTHER_STRINGTYPE(getenv("TEMP")) + "\\mulemicrosim\\SERIAL").c_str();
-#  endif
-    myf = fopen(name, "a");
-    if (myf != NULL) {
-	fprintf(myf, in.c_str(), otherargs);
-	fclose(myf);
-    }
-    else
-	delete myf;
-#endif
+    muleplatformprintf(in, otherargs);
     va_end(otherargs);
     return;
 }

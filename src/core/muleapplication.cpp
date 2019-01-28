@@ -72,7 +72,7 @@ MuleCommonPlatform* MuleApplication::getPlatformClass() {
 	return mcpClass;
 }
 
-std::vector<MuleDevice*> MuleApplication::getDevices() {
+const std::vector<MuleDevice*> MuleApplication::getDevices() {
 	return mcpClass->getDevices();
 }
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # libMule Porting Assistant
 # This file is a part of libMule - Microcontroller-Universal 
 # Library (that is extendable)
@@ -377,7 +377,7 @@ editormainmenu() {
 }
 
 TOOLVERSION=0.4.2
-DOESWORK=yes
+DOESWORK=no
 PLATFORMNAME=
 PLATFORMDEFINE=
 PLATFORMOS=

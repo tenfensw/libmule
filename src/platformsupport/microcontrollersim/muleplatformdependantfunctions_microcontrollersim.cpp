@@ -1,7 +1,7 @@
 //
 // This file is a part of libMule - Microcontroller-Universal 
 // Library (that is extendable)
-// Copyright (C) 2018-2019 Tim K <timprogrammer@rambler.ru>
+// Copyright (C) 2019 Tim K <timprogrammer@rambler.ru>
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,25 +18,23 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#include "core/muleconfig.h"
-#include "core/muleapplication.h"
-#include "core/muledevice.h"
-#include "platformsupport/common/mulecommonplatform.h"
-#include MULE_OTHER_NATIVEPLATFORMHEADER
-#include "core/muleglobalfunctions.h"
 #include "core/muleplatformdependantfunctions.h"
-#ifdef MULE_FEATURES_FILEIO
-#include "fileio/mulefile.h"
-#include "fileio/muledirectoryfunctions.h"
-#endif
-#ifdef MULE_FEATURES_SOUND
-#include "sound/mulesoundplayer.h"
-#endif
-#ifdef MULE_FEATURES_PWMDEVICES
-#include "pwmdevices/mulepwmdevice.h"
-#include "pwmdevices/muleservodevice.h"
-#endif
-#ifdef MULE_FEATURES_SENSORS
-#include "sensors/mulesensor.h"
-#endif
 
+void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {
+	va_list otherargs;
+	va_start(otherargs, in);
+	FILE* myf;
+#  ifndef _WIN32
+    char* name = "/tmp/mulemicrosim/SERIAL";
+#  else
+    const char* name = MULE_OTHER_STRINGTYPE(MULE_OTHER_STRINGTYPE(getenv("TEMP")) + "\\mulemicrosim\\SERIAL").c_str();
+#  endif
+    myf = fopen(name, "a");
+    if (myf != NULL) {
+	fprintf(myf, in.c_str(), otherargs);
+	fclose(myf);
+    }
+    else
+	delete myf;
+	va_end(otherargs);
+}

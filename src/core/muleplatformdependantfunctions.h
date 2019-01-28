@@ -18,9 +18,15 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef MULECURRENTPLATFORM_H
-#define MULECURRENTPLATFORM_H
-#include "core/muleconfig.h"
-#include "platformsupport/common/mulecommonplatform.h"
-#include MULE_OTHER_NATIVEPLATFORMHEADER
+#ifndef MULEPLATFORMDEPENDANTFUNCTIONS_H
+#define MULEPLATFORMDEPENDANTFUNCTIONS_H
+
+#include <string>
+#include <sstream>
+#include <cstdlib>
+#include <cstdio>
+#include <cstdarg>
+
+// These functions should be implemented if the target microcontroller does not use default functions
+void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...);
 #endif

@@ -21,9 +21,9 @@
 #ifndef MULESENSOR_H
 #define MULESENSOR_H
 
-#include "platformsupport/common/mulecurrentplatform.h"
+#include "platformsupport/common/mulecommonplatform.h"
 #include "core/muledevice.h"
-
+#include MULE_OTHER_NATIVEPLATFORMHEADER
 
 class MuleSensor : public MuleDevice {
 	public:

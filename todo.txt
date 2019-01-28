@@ -1,0 +1,3 @@
+- Remove unneeded ifdefs from muleglobalfunctions.cpp
+- Long options
+- MuleApplication::appWideFirstInstance shall be made static

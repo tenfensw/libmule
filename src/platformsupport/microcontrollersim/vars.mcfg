@@ -12,5 +12,5 @@ InternalErrorsLCD:yes
 Requires3rdPartyDownloads:no
 AdditionalCompilerFlags:
 AdditionalLinkerFlags:
-Sources:mulemicrocontrollersimplatform.cpp
+Sources:muleplatformdependantfunctions_microcontrollersim.cpp mulemicrocontrollersimplatform.cpp
 Headers:mulemicrocontrollersimplatform.h

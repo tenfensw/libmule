@@ -3,9 +3,4 @@ Subdir:fileio
 Sources:mulefile.cpp
 Headers:muledirectoryfunctions.h mulefile.h
 ModuleID:MULE_FEATURES_FILEIO
- 
- 
- 
- 
- 
- 
+BrokenPlatforms:arduinoavr 
