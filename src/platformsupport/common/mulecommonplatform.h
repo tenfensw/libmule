@@ -28,6 +28,8 @@
 #include <cstdlib>
 #include "core/muleglobalfunctions.h"
 
+class MuleDevice;
+
 class MuleCommonPlatform
 {
     
