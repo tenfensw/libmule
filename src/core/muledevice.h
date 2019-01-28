@@ -21,8 +21,9 @@
 #ifndef MULEDEVICE_H
 #define MULEDEVICE_H
 
-#include "core/muleglobalfunctions.h"
 #include "core/muleconfig.h"
+#include "core/muleglobalfunctions.h"
+#include "platformsupport/common/mulecommonplatform.h"
 
 class MuleDevice
 {
