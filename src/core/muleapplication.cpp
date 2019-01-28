@@ -35,8 +35,8 @@ MuleApplication::~MuleApplication() {
 
 bool MuleApplication::internalInit() {
     isFirstInstance = false;
-    if (!(MuleApplicationWideData::appWideFirstInstance)) {
-        MuleApplicationWideData::appWideFirstInstance = this;
+    if (!(appWideFirstInstance)) {
+        appWideFirstInstance = this;
         isFirstInstance = true;
         muledebug("This MuleApplication instance was self-appointed as the first one");
     }
@@ -50,14 +50,14 @@ void MuleApplication::internalCleanUp() {
     delete mcpClass;
     if (isFirstInstance == true)
 #ifndef MULE_FEATURES_SUPPORTSNULLPTR
-        MuleApplicationWideData::appWideFirstInstance = NULL;
+        appWideFirstInstance = NULL;
 #else
-        MuleApplicationWideData::appWideFirstInstance = nullptr;
+        appWideFirstInstance = nullptr;
 #endif
 }
 
 MuleApplication* MuleApplication::getRunningInstance() {
-	return MuleApplicationWideData::appWideFirstInstance;
+	return appWideFirstInstance;
 }
 
 MULE_OTHER_STRINGTYPE MuleApplication::getPlatformName() {
