@@ -21,6 +21,7 @@
 #ifndef MULEPLATFORMDEPENDANTFUNCTIONS_H
 #define MULEPLATFORMDEPENDANTFUNCTIONS_H
 
+#include "core/muleconfig.h"
 #include <string>
 #include <sstream>
 #include <cstdlib>
