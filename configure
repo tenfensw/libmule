@@ -122,6 +122,9 @@ Usage: $0 [arguments]
 						target microcontroller's firmware does not have a
 						built-in C++ library.
 
+	-scite=[yes/no]				Build SciTE text editor with some
+						libMule patches.
+
         -nocrosscompile=[yes/no]                Set this option if you are compiling libMule right
                                                 on your target device (e.g. you are building libMule
                                                 right on your Raspberry Pi). (default: no)
@@ -213,6 +216,7 @@ MULESTLSTREAMS=no
 MULESTLSTRINGS=yes
 BUGGYFEDORALINUXGCC=no
 BUILDQTSTUFF=no
+BUILDSCITE=auto
 MINGWLINUX=no
 REQUIREDARMPLATFORM=no
 SOLARISRYZENLINKBUG=no
@@ -376,6 +380,13 @@ for Argument in $*; do
 		if test "$MULESTL" = ""; then
 			MULESTL=yes
 		fi
+	elif test "$FIRSTHALF" = "-scite"; then
+		BUILDSCITE="$SECONDHALF"
+		if test "$BUILDSCITE" = "yes" || test "$BUILDSCITE" = "" || test "$BUILDSCITE" = "true"; then
+			BUILDSCITE=yes
+		else
+			BUILDSCITE=no
+		fi
 	elif test "$FIRSTHALF" = "-arduino-header"; then
 		#if test -e "$SECONDHALF"; then
 		#	ARDUINOHEADERLOCATION="$SECONDHALF"
@@ -492,6 +503,7 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 	dbgecho "Detected objcopy: $AVROBJCOPY"
 fi
 
+
 if test "$TARGETNAME" != "dummy" && test "$TARGETNAME" != "microcontrollersim"; then
 	dbgecho "Since we aren't compiling a dummy libMule build, keep old GCC flags"
 	BUGGYFEDORALINUXGCC=no
@@ -587,6 +599,18 @@ else
 	fi
 fi
 
+if test "$BUILDSCITE" = "auto" || test "$BUILDSCITE" = "yes"; then
+	if test "$BUILDQTSTUFF" = "yes" && pkg-config --libs gtk+-3.0 > /dev/null 2>&1; then
+		BUILDSCITE=yes
+		echo "SciTE will be built (GTK+3.0 was detected)"
+	else
+		if test "$BUILDSCITE" = "yes"; then
+			showerror 56 "SciTE won't be built, because either GTK+3.0 is not installed or Qt 4/5 is not installed."
+		fi
+		BUILDSCITE=no
+		echo "SciTE won't be built (GTK+3.0 was not detected)"
+	fi
+fi
 
 if test ! -e "$SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg"; then
 	showerror 2 "The platform you've specified ($TARGETNAME) is not supported by libMule"
@@ -1158,12 +1182,12 @@ if test "$LIBMULEINFIX" != ""; then
 fi
 echo "" >> "$CDIR/Makefile"
 if test "$BUILDQTSTUFF" != "yes"; then
-	echo "all lib: build-static-libmule" >> "$CDIR/Makefile"
+	echo "all: lib scite" >> "$CDIR/Makefile"
 else
-	echo "all: lib qtmicrocontrollersim qttoolchainmanager" >> "$CDIR/Makefile"
-	echo "" >> "$CDIR/Makefile"
-	echo "lib: build-static-libmule" >> "$CDIR/Makefile"
+	echo "all: lib scite qtmicrocontrollersim qttoolchainmanager" >> "$CDIR/Makefile"
 fi
+echo "" >> "$CDIR/Makefile"
+echo "lib: build-static-libmule" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "build-static-libmule:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
@@ -1179,7 +1203,7 @@ echo "\$(TARGETS):" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "\$(MULETOOL) -quiet -config MuleToolBootstrapFiles/MuleTool.mcfg -compile \$(SOURCEDIR)/\$(shell printf \`dirname \"\$@\"\` && printf '/' && printf \`basename \"\$@\" .libmulebuild.o\`) -o \"\$@\" -nolibmule -I\$(SOURCEDIR)/src -Isrc $ADDITIONALINCLUDES" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
-echo "clean:" >> "$CDIR/Makefile"
+echo "clean: clean-scite" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "rm -r -f libMule.a \$(TARGETS)" >> "$CDIR/Makefile"
 if test "$BUILDQTSTUFF" = "yes"; then
@@ -1191,7 +1215,7 @@ echo "distclean: clean" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "rm -r -f MuleToolBootstrapFiles/ src/core/muleconfig.h" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
-echo "install:" >> "$CDIR/Makefile"
+echo "install: install-scite" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "if test ! -e \"\$(PREFIX)\"; then mkdir -p \"\$(PREFIX)\"; fi" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
@@ -1250,6 +1274,26 @@ echo "" >> "$CDIR/Makefile"
 echo "qttoolchainmanager:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "sh -c \"cd \\\"\$(SOURCEDIR)/src/ideintegration/toolchainmanager-qt\\\" && $HOSTQMAKE -r && \$(MAKE) $MAKEFLAGSQT all\"" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+if test "$BUILDSCITE" = "no"; then
+	echo "scite install-scite clean-scite:" >> "$CDIR/Makefile"
+	printf "\t\t" >> "$CDIR/Makefile"
+	echo "@echo \"SciTE won't be built\"" >> "$CDIR/Makefile"
+	echo "" >> "$CDIR/Makefile"
+else
+	echo "scite:" >> "$CDIR/Makefile"
+	printf "\t\t" >> "$CDIR/Makefile"
+	echo "sh -c \"cd \\\"\$(SOURCEDIR)/extras/scite-libmule-edition/scintilla/gtk\\\" && \$(MAKE) GTK3=1 all && cd ../../scite/gtk && \$(MAKE) GTK3=1 prefix=\\\"\$(PREFIX)\\\" all\"" >> "$CDIR/Makefile"
+	echo "" >> "$CDIR/Makefile"
+	echo "install-scite:" >> "$CDIR/Makefile"
+	printf "\t\t" >> "$CDIR/Makefile"
+	echo "sh -c \"cd \\\"\$(SOURCEDIR)/extras/scite-libmule-edition/scite/gtk\\\" && DESTDIR=\\\"\$(RPMBUILDROOT)\\\" \$(MAKE) prefix=\\\"\$(PREFIX)\\\" GTK3=1 install\"" >> "$CDIR/Makefile"
+	echo "" >> "$CDIR/Makefile"
+	echo "clean-scite:" >> "$CDIR/Makefile"
+	printf "\t\t" >> "$CDIR/Makefile"
+	echo "sh -c \"cd \\\"\$(SOURCEDIR)/extras/scite-libmule-edition/scite/gtk\\\" && \$(MAKE) clean && cd ../../scintilla/gtk && \$(MAKE) clean\"" >> "$CDIR/Makefile"
+	echo "" >> "$CDIR/Makefile"
+fi
 echo "" >> "$CDIR/Makefile"
 echo "done!"
 printf "Creating $CDIR/installheaders.sh... "
