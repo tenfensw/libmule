@@ -1160,7 +1160,7 @@ echo "" >> "$CDIR/Makefile"
 if test "$BUILDQTSTUFF" != "yes"; then
 	echo "all lib: build-static-libmule" >> "$CDIR/Makefile"
 else
-	echo "all: lib qtmicrocontrollersim" >> "$CDIR/Makefile"
+	echo "all: lib qtmicrocontrollersim qttoolchainmanager" >> "$CDIR/Makefile"
 	echo "" >> "$CDIR/Makefile"
 	echo "lib: build-static-libmule" >> "$CDIR/Makefile"
 fi
@@ -1182,6 +1182,10 @@ echo "" >> "$CDIR/Makefile"
 echo "clean:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "rm -r -f libMule.a \$(TARGETS)" >> "$CDIR/Makefile"
+if test "$BUILDQTSTUFF" = "yes"; then
+	printf "\t\t" >> "$CDIR/Makefile"
+	echo "-sh -c \"cd \\\"\$(SOURCEDIR)/src/ideintegration\\\" && cd toolchainmanager-qt && \$(MAKE) distclean && cd ../../../extras/microcontrollersimulator && \$(MAKE) distclean\"" >> "$CDIR/Makefile"
+fi
 echo "" >> "$CDIR/Makefile"
 echo "distclean: clean" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
@@ -1222,8 +1226,12 @@ if test "$BUILDQTSTUFF" = "yes"; then
 	printf "\t\t" >> "$CDIR/Makefile"
 	if test "$MINGWLINUX" != "no"; then
 		echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/release/mulemicrosim.exe\" \"\$(PREFIX)/bin/mulemicrosim.exe\"" >> "$CDIR/Makefile"
+		printf "\t\t" >> "$CDIR/Makefile"
+		echo "cp \"\$(SOURCEDIR)/src/ideintegration/toolchainmanager-qt/release/muletcm-qt.exe\" \"\$(PREFIX)/bin/muletcm-qt.exe\"" >> "$CDIR/Makefile"
 	else
 		echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/mulemicrosim\" \"\$(PREFIX)/bin/mulemicrosim\"" >> "$CDIR/Makefile"
+		printf "\t\t" >> "$CDIR/Makefile"
+		echo "cp \"\$(SOURCEDIR)/src/ideintegration/toolchainmanager-qt/muletcm-qt\" \"\$(PREFIX)/bin/muletcm-qt\"" >> "$CDIR/Makefile"
 	fi
 fi
 printf "\t\t" >> "$CDIR/Makefile"
@@ -1238,6 +1246,10 @@ fi
 echo "qtmicrocontrollersim:" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "sh -c \"cd \\\"\$(SOURCEDIR)/extras/microcontrollersimulator\\\" && $HOSTQMAKE -r && \$(MAKE) $MAKEFLAGSQT all\"" >> "$CDIR/Makefile"
+echo "" >> "$CDIR/Makefile"
+echo "qttoolchainmanager:" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
+echo "sh -c \"cd \\\"\$(SOURCEDIR)/src/ideintegration/toolchainmanager-qt\\\" && $HOSTQMAKE -r && \$(MAKE) $MAKEFLAGSQT all\"" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "done!"
 printf "Creating $CDIR/installheaders.sh... "
