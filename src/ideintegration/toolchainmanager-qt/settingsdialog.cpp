@@ -138,11 +138,13 @@ MuleStudioGlobalSettingsStructure SettingsDialog::findTheConfigFile() {
 #ifdef Q_OS_WIN
 	possibleLocations.append(QDir::homePath() + "/AppData/Roaming/Timkoisoft/libMule/ToolchainManager.mcfg");
 	possibleLocations.append(QDir::homePath() + "/Timkoisoft/libMule/ToolchainManager.mcfg");
-	possibleLocations.append("/Timkoisoft/libMule-SDK/Tools/SciTE/ToolchainManager.mcfg");
 #else
 	possibleLocations.append(QDir::homePath() + "/.config/Timkoisoft/mule/ToolchainManager.mcfg");
 	possibleLocations.append(QDir::homePath() + "/.timkoisoft/mule/ToolchainManager.mcfg");
 #endif
+	possibleLocations.append(QString(LIBMULESDKPREFIX) + "/etc/ToolchainManager.mcfg");
+	possibleLocations.append(QString(LIBMULESDKPREFIX) + "/ToolchainManager.mcfg");
+	possibleLocations.append("ToolchainManager.mcfg");
 	//qDebug() << possibleLocations;
 	defaultLocation = possibleLocations.at(1);
 	for (int i = 0; i < possibleLocations.count(); i++) {

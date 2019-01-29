@@ -2,6 +2,8 @@ QT += core widgets gui
 TARGET = muletcm-qt
 TEMPLATE = app
 
+DEFINES += LIBMULESDKPREFIX=\\\"$$sdkprefix\\\"
+
 SOURCES = main.cpp \
 	  settingsdialog.cpp
 

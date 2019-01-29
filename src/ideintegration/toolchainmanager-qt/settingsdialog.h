@@ -11,6 +11,9 @@
 #include <csignal>
 
 #define TOOLVERSION QString("0.4.0")
+#ifndef LIBMULESDKPREFIX
+#define LIBMULESDKPREFIX "."
+#endif
 
 namespace Ui {
     class SettingsDialog;
