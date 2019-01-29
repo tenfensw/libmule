@@ -600,7 +600,7 @@ else
 fi
 
 if test "$BUILDSCITE" = "auto" || test "$BUILDSCITE" = "yes"; then
-	if test "$BUILDQTSTUFF" = "yes" && pkg-config --libs gtk+-3.0 > /dev/null 2>&1; then
+	if test "$BUILDQTSTUFF" = "yes" && test "$ISTHISWINDOWS" = "no" && test "$MINGWLINUX" = "no" && pkg-config --libs gtk+-3.0 > /dev/null 2>&1; then
 		BUILDSCITE=yes
 		echo "SciTE will be built (GTK+3.0 was detected)"
 	else
