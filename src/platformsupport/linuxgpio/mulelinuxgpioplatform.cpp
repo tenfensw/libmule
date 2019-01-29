@@ -164,3 +164,60 @@ bool MuleLinuxGPIOPlatform::sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
 	return true;
 }
 #endif
+
+#ifdef MULE_FEATURES_FILEIO
+MULE_OTHER_STRINGTYPE MuleLinuxGPIOPlatform::readFromFile(MULE_OTHER_STRINGTYPE file) {
+    muledebug("file = " + file);
+    std::ifstream t(file.c_str());
+    return MULE_OTHER_STRINGTYPE((std::istreambuf_iterator<char>(t)),
+                                    std::istreambuf_iterator<char>());
+}
+
+bool MuleLinuxGPIOPlatform::writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) {
+    muledebug("MuleLinuxGPIOPlatform::writeToFile(" + file + "," + ct + ") called");
+    try {
+	    std::ofstream stream(file.c_str());
+	    stream << ct;
+	    stream.close();
+	    return true;
+    }
+    catch (...) {
+	    muledebug("try catch failed");
+    }
+    return false;
+}
+
+bool MuleLinuxGPIOPlatform::fileExists(MULE_OTHER_STRINGTYPE file) {
+    struct stat buffer;
+    return (stat (file.c_str(), &buffer) == 0);
+}
+
+bool MuleLinuxGPIOPlatform::deleteFile(MULE_OTHER_STRINGTYPE file) {
+    return (unlink(file.c_str()) == 0);
+}
+#endif
+
+
+#ifdef MULE_FEATURES_SOUND
+void MuleLinuxGPIOPlatform::doBeep() {
+	std::system("aplay -d 1 /dev/urandom");
+}
+
+bool MuleLinuxGPIOPlatform::playWaveFile(MULE_OTHER_STRINGTYPE filename) {
+	if (fileExists(filename) == false)
+		return false;
+	if (std::system(MULE_OTHER_STRINGTYPE("aplay " + filename).c_str()) == 0)
+		return true;
+	else
+		return false;
+	return false;
+}
+
+bool MuleLinuxGPIOPlatform::stopAllSounds() {
+	if (std::system("killall aplay") == 0)
+		return true;
+	else
+		return false;
+}
+#endif
+

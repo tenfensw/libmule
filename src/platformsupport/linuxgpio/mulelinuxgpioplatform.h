@@ -77,6 +77,20 @@ public:
 #ifdef MULE_FEATURES_SENSORS
     bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
 #endif
+#ifdef MULE_FEATURES_FILEIO
+    MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file);
+    bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct);
+    bool fileExists(MULE_OTHER_STRINGTYPE file);
+    bool deleteFile(MULE_OTHER_STRINGTYPE file);
+#endif
+#ifdef MULE_FEATURES_SOUND
+    void doBeep();
+    bool playWaveFile(MULE_OTHER_STRINGTYPE filename);
+    MULE_OTHER_STRINGTYPE getSoundBackend() {
+	return "dynamic";
+    }
+    bool stopAllSounds();
+#endif
 
 private:
     MULE_OTHER_STRINGTYPE internal_readToString(MULE_OTHER_STRINGTYPE fn);
