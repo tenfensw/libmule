@@ -377,7 +377,7 @@ editormainmenu() {
 }
 
 TOOLVERSION=0.4.2
-DOESWORK=no
+DOESWORK=yes
 PLATFORMNAME=
 PLATFORMDEFINE=
 PLATFORMOS=
@@ -753,9 +753,21 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "#endif" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "#include \"core/muleplatformdependantfunctions.h\"" > ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "    // it will either print the string in on the built-in LCD or will just do nothing" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "void muleplatformsleep(double seconds) {" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "    // TODO: implement this function" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "    // it will sleep for \"seconds\" seconds" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "}" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
+	echo "" >> ./src/platformsupport/$PLATFORMNAME/muleplatformdependantfunctions_$PLATFORMNAME.cpp
 	echo "PlatformClass:$tmp_deviceclassname" >> ./src/platformsupport/$PLATFORMNAME/vars.mcfg
 	echo "PlatformHeader:$tmp_deviceclassname.h" >> ./src/platformsupport/$PLATFORMNAME/vars.mcfg
-	echo "Sources:$tmp_deviceclassname.cpp" >> ./src/platformsupport/$PLATFORMNAME/vars.mcfg
+	echo "Sources:muleplatformdependantfunctions_$PLATFORMNAME.cpp $tmp_deviceclassname.cpp" >> ./src/platformsupport/$PLATFORMNAME/vars.mcfg
 	echo "Headers:$tmp_deviceclassname.h" >> ./src/platformsupport/$PLATFORMNAME/vars.mcfg
 	echo "Platform creation finished, now you can reconfigure it to your needs"
 	echo ""
