@@ -181,7 +181,7 @@ MuleStudioGlobalSettingsStructure SettingsDialog::findTheConfigFile() {
 	QStringList fileSplit = wholeFile.split("\n");
 	//qDebug() << fileSplit;
 	for (int j = 0; j < fileSplit.count(); j++) {
-		if (fileSplit.at(j) != '#' && fileSplit.at(j).isEmpty() == false) {
+		if (fileSplit.at(j).at(0) != '#' && fileSplit.at(j).isEmpty() == false) {
 			QString firstword = fileSplit.at(j).split(":").at(0);
 			QString secondword = fileSplit.at(j).split(":").at(1);
 			//qDebug() << "firstword = " << firstword << ", secondword = " << secondword;

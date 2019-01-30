@@ -4,3 +4,4 @@ Sources:mulesensor.cpp
 Headers:mulesensor.h
 ModuleID:MULE_FEATURES_SENSORS
 Requires:core pwmdevices
+ 
