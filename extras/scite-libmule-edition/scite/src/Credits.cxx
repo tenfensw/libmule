@@ -37,6 +37,7 @@
 
 // Contributor names are in UTF-8
 const char *contributors[] = {
+	    "Tim K <timprogrammer@rambler.ru>",
             "Atsuo Ishimoto",
             "Mark Hammond",
             "Francois Le Coguiec",
@@ -425,7 +426,7 @@ void SciTEBase::SetAboutMessage(GUI::ScintillaWindow &wsci, const char *appTitle
 		SetAboutStyle(wsci, 2, ColourRGB(0, 0, 0));
 		wsci.Send(SCI_STYLESETITALIC, 2, 1);
 		AddStyledText(wsci, GetTranslationToAbout("by").c_str(), trsSty);
-		AddStyledText(wsci, " Neil Hodgson.\n", 2);
+		AddStyledText(wsci, " Neil Hodgson, with patches by Tim K <timprogrammer@rambler.ru>.\n", 2);
 		SetAboutStyle(wsci, 3, ColourRGB(0, 0, 0));
 		AddStyledText(wsci, COPYRIGHT_DATES ".\n", 3);
 		SetAboutStyle(wsci, 4, ColourRGB(0, 0x7f, 0x7f));

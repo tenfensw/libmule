@@ -3,7 +3,3 @@ Subdir:core
 Sources:muleglobalfunctions.cpp muledevice.cpp muleapplication.cpp
 Headers:../platformsupport/common/mulecommonplatform.h muleplatformdependantfunctions.h muleglobalfunctions.h muledevice.h muleapplication.h
 ModuleID:MULE_FEATURES_CORE 
- 
- 
- 
- 
