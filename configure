@@ -1,6 +1,5 @@
 #!/bin/sh
-# libMule configure script with some patches that allow you to cross-compile
-# a Windows build of libMule SDK from Linux
+# libMule configure script
 # This file is a part of libMule - Microcontroller-Universal 
 # Library (that is extendable)
 # Copyright (C) 2018-2019 Tim K <timprogrammer@rambler.ru>
@@ -164,7 +163,7 @@ MULEVERSIONMAJOR=0
 MULEVERSIONMINOR=4
 MULEVERSIONUPDATE=0
 MULEVERSION=$MULEVERSIONMAJOR.$MULEVERSIONMINOR.$MULEVERSIONUPDATE
-TOOLVERSION=07122018-mingw
+TOOLVERSION=$MULEVERSION
 if test "$PREFIX" = ""; then
 	PREFIX=/opt/timkoisoft/libmule
 fi

@@ -7,7 +7,7 @@ some ways... except Qt is for cross-platform GUI apps and Mule is
 for embedded microcontroller apps.
 
 ====== Supported platforms ======
-Currently, only three platforms are supported:
+Currently, only these platforms are supported:
 - Raspberry Pi
 - LEGO EV3 (Mindstorms)
 - Mule Microcontroller Simulator
