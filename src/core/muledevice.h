@@ -34,13 +34,11 @@ class MuleCommonPlatform;
 #define MULE_LOW 0
 #endif
 
+typedef enum { Generic = 0, PWM = 1, Sensor = 2 } MuleDeviceType;
+
 class MuleDevice
 {
 public:
-    const static int Generic = 0;
-    const static int PWM = 1;
-    const static int Sensor = 2;
-
     MuleDevice(MULE_OTHER_HWPINTYPE pin);
     ~MuleDevice();
     MULE_OTHER_HWPINTYPE pin() {
@@ -60,10 +58,10 @@ public:
     }
     bool setMode(MULE_OTHER_HWPINTYPE mode);
     bool trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE level = 0);
-    int pinType() {
+    MuleDeviceType pinType() {
 	return pType;
     }
-    int getPinType() {
+    MuleDeviceType getPinType() {
 	return pinType();
     }
     bool setPullUpDown(MULE_OTHER_HWPINTYPE val);
@@ -72,7 +70,7 @@ public:
 protected:
     bool dvinit(MULE_OTHER_HWPINTYPE pin);
 
-    bool setPinType(int type);
+    bool setPinType(MuleDeviceType type);
     MuleCommonPlatform* convertedMcpInstance;
     int pinNum;
     int pType;
