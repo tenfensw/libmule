@@ -73,7 +73,7 @@ protected:
     bool setPinType(MuleDeviceType type);
     MuleCommonPlatform* mcpLocalClass;
     int pinNum;
-    int pType;
+    MuleDeviceType pType;
 };
 
 #endif // MULEDEVICE_H
