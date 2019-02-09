@@ -48,3 +48,5 @@ That's it!
 * Platform names for each supported device: "legoev3" for LEGO EV3, 
 "pigpio_rpi" for Raspberry Pi, "dummy" for the dummy platform, "microcontrollersim"
 for Mule Microcontroller Simulator
+
+Documentation and API reference is available at https://gitlab.com/timkoi/libmule/wikis/home
