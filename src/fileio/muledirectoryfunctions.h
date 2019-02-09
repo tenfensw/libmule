@@ -30,9 +30,9 @@
 std::vector<MuleFile> mulels(MULE_OTHER_STRINGTYPE indir) {
 	DIR *dir;
 	struct dirent *ent;
-	if ((dir = opendir (indir.c_str())) != NULL) {
+	if ((dir = opendir (indir.c_str())) != nullptr) {
 		std::vector<MuleFile> result;
-		while ((ent = readdir (dir)) != NULL)
+		while ((ent = readdir (dir)) != nullptr)
 			result.push_back(MuleFile(MULE_OTHER_STRINGTYPE(ent->d_name)));
 		closedir (dir);
 		return result;

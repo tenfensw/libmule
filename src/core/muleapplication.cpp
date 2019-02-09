@@ -20,7 +20,7 @@
 
 #include "core/muleapplication.h"
 
-static MuleApplication* appWideFirstInstance = NULL;
+static MuleApplication* appWideFirstInstance = nullptr;
 
 MuleApplication::MuleApplication()
 {
@@ -48,13 +48,9 @@ bool MuleApplication::internalInit() {
 
 void MuleApplication::internalCleanUp() {
     delete mcpClass;
-    mcpClass = NULL;
+    mcpClass = nullptr;
     if (isFirstInstance == true)
-#ifndef MULE_FEATURES_SUPPORTSNULLPTR
-        appWideFirstInstance = NULL;
-#else
         appWideFirstInstance = nullptr;
-#endif
 }
 
 MuleApplication* MuleApplication::getRunningInstance() {

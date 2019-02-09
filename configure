@@ -732,6 +732,7 @@ while read configfileline; do
 done < "$SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg"
 
 echo "Platform configuration file $SOURCEDIR/src/platformsupport/$TARGETNAME/vars.mcfg was imported successfully, can continue"
+
 if test "$NONCROSSBUILD" != "no"; then
 	TARGETCC=$HOSTCC
 	TARGETCXX=$HOSTCXX
@@ -836,6 +837,20 @@ elif $TARGETCXX -V 2>&1 | grep -q "Sun C++"; then
 else
 	showerror 5 "Unsupported C++ cross-compiler $TARGETCXX. Please try to find either a GCC or a Clang toolchain for your target platform."
 fi
+
+echo "#include <iostream>" > "$CDIR/nullptrtest.cxx"
+echo "int main() {" >> "$CDIR/nullptrtest.cxx"
+echo "      int* zeropointer = nullptr;" >> "$CDIR/nullptrtest.cxx"
+echo "      return 0;" >> "$CDIR/nullptrtest.cxx"
+echo "}" >> "$CDIR/nullptrtest.cxx"
+if $TARGETCXX $TARGETCXXFLAGS $TARGETLDFLAGS -o nullptrtest.bin nullptrtest.cxx > "$CDIR/nullptrtest.log" 2>&1; then
+	echo "$TARGETCXX supports nullptr"
+else
+	echo "$TARGETCXX does not support nullptr"
+	THINGSTODEFINE="$THINGSTODEFINE nullptr=NULL"
+	TARGETCXXFLAGS="$TARGETCXXFLAGS -Dnullptr=NULL"
+fi
+rm -r -f nullptrtest.*
 
 if test "$DOADDMINUSGTOCOMPILERFLAGS" = "yes"; then
 	TARGETCXXFLAGS="$TARGETCXXFLAGS -g"

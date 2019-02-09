@@ -178,7 +178,7 @@ std::vector<std::string> MuleToolClass::split(const std::string& origstr, const 
 	result.push_back(std::string(strtokedstring));
 
 	while (true) {
-		strtokedstring = strtok(NULL, delim);
+		strtokedstring = strtok(nullptr, delim);
 		if (!strtokedstring)
 			break;
 		result.push_back(std::string(strtokedstring));
@@ -239,7 +239,7 @@ std::vector<std::string> MuleToolClass::fillPossibleLocationsVector() {
 
 std::string MuleToolClass::getCurrentDirectory() {
 	char cwd[1400];
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	if (getcwd(cwd, sizeof(cwd)) != nullptr)
 		return std::string(cwd);
 	return userHomeDir;
 }
@@ -545,8 +545,8 @@ std::vector<std::string> MuleToolClass::getDirectoryContents(const std::string& 
 	std::vector<std::string> result;
 	DIR *dir;
 	struct dirent *ent;
-	if ((dir = opendir (dname.c_str())) != NULL) {
-		while ((ent = readdir (dir)) != NULL)
+	if ((dir = opendir (dname.c_str())) != nullptr) {
+		while ((ent = readdir (dir)) != nullptr)
 			result.push_back(std::string(ent->d_name));
 		closedir (dir);
 	}

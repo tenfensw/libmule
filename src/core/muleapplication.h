@@ -50,7 +50,7 @@ public:
     MULE_OTHER_STRINGTYPE currentDirectory() { return getCurrentDirectory(); }
     static MuleApplication* getRunningInstance();
     int exit(int status);
-    bool areNecessaryPartsReady() const { return (mcpClass != NULL); }
+    bool areNecessaryPartsReady() const { return (mcpClass != nullptr); }
 
 private:
     MuleCommonPlatform* mcpClass;

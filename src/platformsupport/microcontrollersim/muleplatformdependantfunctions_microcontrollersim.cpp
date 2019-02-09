@@ -31,7 +31,7 @@ void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {
     const char* name = MULE_OTHER_STRINGTYPE(MULE_OTHER_STRINGTYPE(getenv("TEMP")) + "\\mulemicrosim\\SERIAL").c_str();
 #  endif
     myf = fopen(name, "a");
-    if (myf != NULL) {
+    if (myf != nullptr) {
 	fprintf(myf, in.c_str(), otherargs);
 	fclose(myf);
     }
