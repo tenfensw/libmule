@@ -42,8 +42,8 @@ bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
     muledebug("Now run getPlatformClass()");
     if (maInstance->areNecessaryPartsReady() == true) {
 	muledebug("maInstance->areNecessaryPartsReady() == true");
-    	convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(maInstance->getPlatformClass());
-    	convertedMcpInstance->getPinMode(pin);
+    	mcpLocalClass = maInstance->getPlatformClass();
+    	mcpLocalClass->getPinMode(pin);
 	setPinType(Generic);
     }
     else
@@ -53,22 +53,22 @@ bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
 
 MULE_OTHER_HWPINTYPE MuleDevice::read() {
     
-    return convertedMcpInstance->readFromPin(pinNum);
+    return mcpLocalClass->readFromPin(pinNum);
 }
 
 bool MuleDevice::write(MULE_OTHER_HWPINTYPE val) {
     
-    return convertedMcpInstance->writeToPin(pinNum, val);
+    return mcpLocalClass->writeToPin(pinNum, val);
 }
 
 MULE_OTHER_HWPINTYPE MuleDevice::mode() {
     
-    return convertedMcpInstance->getPinMode(pinNum);
+    return mcpLocalClass->getPinMode(pinNum);
 }
 
 bool MuleDevice::setMode(MULE_OTHER_HWPINTYPE mode) {
     
-    return convertedMcpInstance->setPinMode(pinNum, mode);
+    return mcpLocalClass->setPinMode(pinNum, mode);
 }
 
 bool MuleDevice::continuousWrite(int times, double delay) {
@@ -106,7 +106,7 @@ bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE lev
 }
 
 bool MuleDevice::setPullUpDown(MULE_OTHER_HWPINTYPE val) {
-    return convertedMcpInstance->setPullUpDown(pinNum, val);
+    return mcpLocalClass->setPullUpDown(pinNum, val);
 }
 
 bool MuleDevice::setPinType(MuleDeviceType type) {

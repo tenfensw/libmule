@@ -29,5 +29,5 @@ MuleSensor::~MuleSensor() {
 
 bool MuleSensor::waitUntilTriggered() {
 	
-	return convertedMcpInstance->sensorWaitUntilTriggered(pinNum);
+	return mcpLocalClass->sensorWaitUntilTriggered(pinNum);
 }

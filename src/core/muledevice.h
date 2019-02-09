@@ -71,7 +71,7 @@ protected:
     bool dvinit(MULE_OTHER_HWPINTYPE pin);
 
     bool setPinType(MuleDeviceType type);
-    MuleCommonPlatform* convertedMcpInstance;
+    MuleCommonPlatform* mcpLocalClass;
     int pinNum;
     int pType;
 };

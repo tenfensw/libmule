@@ -30,7 +30,7 @@ MulePWMDevice::~MulePWMDevice() {
 
 bool MulePWMDevice::start(MULE_OTHER_HWPINTYPE dutycycle) {
 	
-	bool result = convertedMcpInstance->startPWM(pinNum, dutycycle);
+	bool result = mcpLocalClass->startPWM(pinNum, dutycycle);
 	if (result == true && dutycycle != 0)
 		deviceIsTurnedOn = true;
 	else
@@ -40,12 +40,12 @@ bool MulePWMDevice::start(MULE_OTHER_HWPINTYPE dutycycle) {
 
 int MulePWMDevice::getRange() {
 	
-	return convertedMcpInstance->getPWMRange(pinNum);
+	return mcpLocalClass->getPWMRange(pinNum);
 }
 
 int MulePWMDevice::getFrequency() {
 	
-	return convertedMcpInstance->getPWMFrequency(pinNum);
+	return mcpLocalClass->getPWMFrequency(pinNum);
 }
 
 bool MulePWMDevice::isOn() {
@@ -54,10 +54,10 @@ bool MulePWMDevice::isOn() {
 
 bool MulePWMDevice::setRange(MULE_OTHER_HWPINTYPE range) {
 	
-	return convertedMcpInstance->setPWMRange(pinNum, range);
+	return mcpLocalClass->setPWMRange(pinNum, range);
 }
 
 bool MulePWMDevice::setFrequency(MULE_OTHER_HWPINTYPE frequency) {
 	
-	return convertedMcpInstance->setPWMFrequency(pinNum, frequency);
+	return mcpLocalClass->setPWMFrequency(pinNum, frequency);
 }
