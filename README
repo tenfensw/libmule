@@ -49,4 +49,4 @@ That's it!
 "pigpio_rpi" for Raspberry Pi, "dummy" for the dummy platform, "microcontrollersim"
 for Mule Microcontroller Simulator
 
-Documentation and API reference is available at https://gitlab.com/timkoi/libmule/wikis/home
+Documentation and API reference are available at https://gitlab.com/timkoi/libmule/wikis/home
