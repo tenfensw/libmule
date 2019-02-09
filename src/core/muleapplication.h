@@ -33,9 +33,6 @@
 #include "core/muleglobalfunctions.h"
 #include "core/muledevice.h"
 
-class MuleApplication;
-
-static MuleApplication* appWideFirstInstance = NULL;
 
 class MuleApplication
 {   

@@ -20,6 +20,8 @@
 
 #include "core/muleapplication.h"
 
+static MuleApplication* appWideFirstInstance = NULL;
+
 MuleApplication::MuleApplication()
 {
     areNecessaryPartsReady = false;
