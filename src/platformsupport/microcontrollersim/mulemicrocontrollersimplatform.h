@@ -64,6 +64,7 @@ public:
     MuleMicrocontrollerSimulatorPlatform();
     ~MuleMicrocontrollerSimulatorPlatform() { internal_cleanDevList(); }
 
+    void internal_cleanDevList();
     bool initialize();
     MULE_OTHER_STRINGTYPE getPlatformName() {
         return "microcontrollersim";
