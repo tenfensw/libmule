@@ -52,7 +52,6 @@ class MuleLinuxGPIOPlatform : public MuleCommonPlatform
 {
 public:
     MuleLinuxGPIOPlatform();
-    ~MuleLinuxGPIOPlatform();
 
     bool initialize();
     MULE_OTHER_STRINGTYPE getPlatformName() {
@@ -67,12 +66,12 @@ public:
     bool setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val);
 #endif
 #ifdef MULE_FEATURES_PWMDEVICES
-    virtual bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) { return false; }
-    virtual MULE_OTHER_HWPINTYPE getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) { return -1; }
-    virtual MULE_OTHER_HWPINTYPE getPWMRange(MULE_OTHER_HWPINTYPE pin) { return -1; }
-    virtual bool setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) { return false; }
-    virtual MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin) { return -1; }
-    virtual bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) { return false; }
+    bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) { return false; }
+    MULE_OTHER_HWPINTYPE getPWMDutyCycle(MULE_OTHER_HWPINTYPE pin) { return -1; }
+    MULE_OTHER_HWPINTYPE getPWMRange(MULE_OTHER_HWPINTYPE pin) { return -1; }
+    bool setPWMRange(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE range) { return false; }
+    MULE_OTHER_HWPINTYPE getPWMFrequency(MULE_OTHER_HWPINTYPE pin) { return -1; }
+    bool setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE freq) { return false; }
 #endif
 #ifdef MULE_FEATURES_SENSORS
     bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);

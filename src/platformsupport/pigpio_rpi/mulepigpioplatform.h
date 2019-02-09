@@ -52,7 +52,6 @@ class MulePigpioPlatform : public MuleCommonPlatform
 {
 public:
     MulePigpioPlatform();
-    ~MulePigpioPlatform();
 
     bool initialize();
     MULE_OTHER_STRINGTYPE getPlatformName() {

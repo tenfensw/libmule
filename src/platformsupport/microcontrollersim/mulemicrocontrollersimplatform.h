@@ -62,7 +62,6 @@ class MuleMicrocontrollerSimulatorPlatform : public MuleCommonPlatform
 {
 public:
     MuleMicrocontrollerSimulatorPlatform();
-    ~MuleMicrocontrollerSimulatorPlatform() { internal_cleanDevList(); }
 
     bool initialize();
     MULE_OTHER_STRINGTYPE getPlatformName() {

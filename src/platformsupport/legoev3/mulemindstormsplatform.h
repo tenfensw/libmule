@@ -53,7 +53,6 @@ class MuleMindstormsPlatform : public MuleCommonPlatform
 {
 public:
     MuleMindstormsPlatform();
-    ~MuleMindstormsPlatform();
 
     bool initialize();
     MULE_OTHER_STRINGTYPE getPlatformName() {

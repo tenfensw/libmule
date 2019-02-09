@@ -39,16 +39,12 @@ bool MuleMindstormsPlatform::initialize() {
 }
 
 void MuleMindstormsPlatform::internal_cleanDevList() {
+    FreeEV3();
     for (int i = 0; i < devlist.size(); i++) {
 	delete devlist.at(i);
 	devlist.at(i) = nullptr;
     }
     devlist.clear();
-}
-
-MuleMindstormsPlatform::~MuleMindstormsPlatform() {
-	FreeEV3();
-	return;
 }
 
 void MuleMindstormsPlatform::legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE type) {

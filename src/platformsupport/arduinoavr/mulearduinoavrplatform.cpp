@@ -138,8 +138,6 @@ bool MuleArduinoAVRPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHE
 #endif
 #ifdef MULE_FEATURES_SENSORS
 bool MuleArduinoAVRPlatform::sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
-    // TODO: implement this function
-    // it just waits until the specified pin goes from low to high and returns true
     return false;
 }
 #endif
