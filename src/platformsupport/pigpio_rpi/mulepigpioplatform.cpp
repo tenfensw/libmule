@@ -29,7 +29,7 @@ void MulePigpioPlatform::internal_cleanDevList() {
     gpioTerminate();
     for (int i = 0; i < devlist.size(); i++) {
 	delete devlist.at(i);
-	devlist.at(i) = nullptr;
+	devlist.at(i) = NULL;
     }
     devlist.clear();
 }

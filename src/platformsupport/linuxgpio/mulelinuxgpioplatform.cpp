@@ -30,7 +30,7 @@ void MuleLinuxGPIOPlatform::internal_cleanDevList() {
 	for (int d = 0; d < devlist.size(); d++) {
 		internal_writeToFile("/sys/class/gpio/unexport", muleinttostr(d));
 		delete devlist.at(d);
-		devlist.at(d) = nullptr;
+		devlist.at(d) = NULL;
 	}
 	devlist.clear();
 }

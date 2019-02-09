@@ -73,7 +73,7 @@ public:
 
 protected:
     MuleCommonPlatform() {}
-    virtual void internal_cleanDevList() = 0;
+    virtual void internal_cleanDevList() {}
     void platformInitializationException(int erc, MULE_OTHER_STRINGTYPE message) {
 #ifdef MULE_INTERNAL_PRINTINTERNALERRORSLCD
         muleprintf("libMule " + muleinttostr(MULE_VERSION_MAJOR) + "." + muleinttostr(MULE_VERSION_MINOR) + "." + muleinttostr(MULE_VERSION_UPDATE) + " Platform Initialization Error\n");
