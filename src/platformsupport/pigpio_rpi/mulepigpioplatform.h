@@ -92,8 +92,6 @@ public:
     bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
 #endif
 
-private:
-    std::vector<MuleDevice*> devlist;
 };
 
 #endif // MulePigpioPlatform_H

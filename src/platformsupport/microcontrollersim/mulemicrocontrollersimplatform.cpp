@@ -25,6 +25,14 @@ MuleMicrocontrollerSimulatorPlatform::MuleMicrocontrollerSimulatorPlatform() {
         platformInitializationException(1, "MuleMicrocontrollerSimulatorPlatform::initialize() returned false, not true");
 }
 
+void MuleMicrocontrollerSimulatorPlatform::internal_cleanDevList() {
+    for (int i = 0; i < devlist.size(); i++) {
+	delete devlist.at(i);
+	devlist.at(i) = nullptr;
+    }
+    devlist.clear();
+}
+
 MULE_OTHER_STRINGTYPE MuleMicrocontrollerSimulatorPlatform::internal_muleIntToStr(int in) {
 	std::stringstream stream;
 	stream << in;
@@ -175,10 +183,6 @@ bool MuleMicrocontrollerSimulatorPlatform::initialize() {
 }
 
 #ifdef MULE_FEATURES_CORE
-std::vector<MuleDevice*> MuleMicrocontrollerSimulatorPlatform::getDevices() {
-    return devlist;
-}
-
 MULE_OTHER_HWPINTYPE MuleMicrocontrollerSimulatorPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     if (internal_readPin(pin).input == true)

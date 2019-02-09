@@ -94,8 +94,6 @@ public:
 #endif
 
 private:
-    std::vector<MuleDevice*> devlist;
-    
     void legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE type);
 };
 

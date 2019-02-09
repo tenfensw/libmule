@@ -27,6 +27,11 @@ MulePigpioPlatform::MulePigpioPlatform() {
 
 MulePigpioPlatform::~MulePigpioPlatform() {
     gpioTerminate();
+    for (int i = 0; i < devlist.size(); i++) {
+	delete devlist.at(i);
+	devlist.at(i) = nullptr;
+    }
+    devlist.clear();
 }
 
 bool MulePigpioPlatform::initialize() {
@@ -39,10 +44,6 @@ bool MulePigpioPlatform::initialize() {
 }
 
 #ifdef MULE_FEATURES_CORE
-std::vector<MuleDevice*> MulePigpioPlatform::getDevices() {
-    return devlist;
-}
-
 MULE_OTHER_HWPINTYPE MulePigpioPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     return gpioGetMode(pin);

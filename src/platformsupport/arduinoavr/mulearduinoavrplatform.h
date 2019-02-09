@@ -47,7 +47,7 @@
 class MuleArduinoAVRPlatform : public MuleCommonPlatform {
     public:
       MuleArduinoAVRPlatform();
-      ~MuleArduinoAVRPlatform() {}
+      ~MuleArduinoAVRPlatform() { internal_cleanDevList(); }
       bool initialize() { return true; }
       MULE_OTHER_STRINGTYPE getPlatformName() { return "arduinoavr"; }
 # ifdef MULE_FEATURES_CORE
@@ -73,6 +73,7 @@ class MuleArduinoAVRPlatform : public MuleCommonPlatform {
     private:
       bool arduinoIsDigitalPin(MULE_OTHER_HWPINTYPE pin);
       MULE_OTHER_HWPINTYPE arduinoMulePinToNativeAnalog(MULE_OTHER_HWPINTYPE pin);
+      void internal_cleanDevList();
 };
 
 #endif

@@ -62,6 +62,7 @@ class MuleMicrocontrollerSimulatorPlatform : public MuleCommonPlatform
 {
 public:
     MuleMicrocontrollerSimulatorPlatform();
+    ~MuleMicrocontrollerSimulatorPlatform() { internal_cleanDevList(); }
 
     bool initialize();
     MULE_OTHER_STRINGTYPE getPlatformName() {
@@ -94,8 +95,6 @@ private:
     bool internal_writeToFile(MULE_OTHER_STRINGTYPE fn, MULE_OTHER_STRINGTYPE ct);
     MuleMicrocontrollerSimulatorPin internal_readPin(int pn);
     bool internal_flushPin(const MuleMicrocontrollerSimulatorPin& pin);
-
-    std::vector<MuleDevice*> devlist;
 };
 
 #endif // MULEMICROCONTROLLERSIMPLATFORM_H

@@ -101,8 +101,6 @@ private:
     bool internal_flushPin(const MuleLinuxGPIOPin& pin);
     int internal_stringToNum(MULE_OTHER_STRINGTYPE in);
     bool internal_dirExists(MULE_OTHER_STRINGTYPE dir);
-
-    std::vector<MuleDevice*> devlist;
 };
 
 #endif // MULEMICROCONTROLLERSIMPLATFORM_H

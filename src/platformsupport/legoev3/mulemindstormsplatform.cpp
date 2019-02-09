@@ -32,11 +32,19 @@ bool MuleMindstormsPlatform::initialize() {
 	mule_mindstorms_lcdscreenlines = 0;
 	InitEV3();
 	SetLedPattern(LED_ORANGE);
+    	devlist.clear();
+   	for (int i = 0; i < 5; i++)
+		devlist.push_back(new MuleDevice(i));
 	return true;
 }
 
 MuleMindstormsPlatform::~MuleMindstormsPlatform() {
 	FreeEV3();
+	for (int i = 0; i < devlist.size(); i++) {
+		delete devlist.at(i);
+		devlist.at(i) = nullptr;
+	}
+	devlist.clear();
 	return;
 }
 
@@ -54,13 +62,6 @@ void MuleMindstormsPlatform::legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER
 }
 
 #ifdef MULE_FEATURES_CORE
-std::vector<MuleDevice*> MuleMindstormsPlatform::getDevices() {
-    devlist.clear();
-    for (int i = 0; i < 5; i++)
-	devlist.push_back(new MuleDevice(i));
-    return devlist;
-}
-
 MULE_OTHER_HWPINTYPE MuleMindstormsPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     if (pin == MULE_MINDSTORMS_MOTORPIN)

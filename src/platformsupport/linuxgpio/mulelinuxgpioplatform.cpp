@@ -27,8 +27,12 @@ MuleLinuxGPIOPlatform::MuleLinuxGPIOPlatform() {
 
 
 MuleLinuxGPIOPlatform::~MuleLinuxGPIOPlatform() {
-	for (int d = 0; d < devlist.size(); d++)
+	for (int d = 0; d < devlist.size(); d++) {
 		internal_writeToFile("/sys/class/gpio/unexport", muleinttostr(d));
+		delete devlist.at(d);
+		devlist.at(d) = nullptr;
+	}
+	devlist.clear();
 }
 
 bool MuleLinuxGPIOPlatform::internal_flushPin(const MuleLinuxGPIOPin& pin) {

@@ -29,21 +29,26 @@ MuleArduinoAVRPlatform::MuleArduinoAVRPlatform() {
 #if defined(USBCON)
       USBDevice.attach();
 #endif
+     std::vector<MuleDevice*> list_of_connected_devices;
+     list_of_connected_devices.clear();
+     int maxpincount = MULE_ARDUINO_DIGITALPINCOUNT + MULE_ARDUINO_ANALOGPINCOUNT; 
+     for (int i = 0; i < maxpincount; i++)
+          list_of_connected_devices.push_back(new MuleDevice(i));
+     devlist = list_of_connected_devices;
+}
+
+void MuleArduinoAVRPlatform::internal_cleanDevList() {
+    for (int i = 0; i < devlist.size(); i++) {
+	delete devlist.at(i);
+	devlist.at(i) = nullptr;
+    }
+    devlist.clear();
 }
 
 bool MuleArduinoAVRPlatform::arduinoIsDigitalPin(MULE_OTHER_HWPINTYPE pin) {
 	if (pin < (MULE_ARDUINO_LASTDIGITALPIN + 1))
 		return true;
 	return false;
-}
-
-std::vector<MuleDevice*> MuleArduinoAVRPlatform::getDevices() {
-     std::vector<MuleDevice*> list_of_connected_devices;
-     list_of_connected_devices.clear();
-     int maxpincount = MULE_ARDUINO_DIGITALPINCOUNT + MULE_ARDUINO_ANALOGPINCOUNT; 
-     for (int i = 0; i < maxpincount; i++)
-          list_of_connected_devices.push_back(new MuleDevice(i));
-     return list_of_connected_devices;
 }
 
 MULE_OTHER_HWPINTYPE MuleArduinoAVRPlatform::arduinoMulePinToNativeAnalog(MULE_OTHER_HWPINTYPE pin) {

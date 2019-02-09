@@ -39,7 +39,7 @@ public:
     virtual bool initialize() = 0;
     virtual MULE_OTHER_STRINGTYPE getPlatformName() { return "unknown"; }
 #ifdef MULE_FEATURES_CORE
-    virtual std::vector<MuleDevice*> getDevices() = 0;
+    virtual std::vector<MuleDevice*> getDevices() { return devlist; };
     virtual MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin) = 0;
     virtual bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) = 0;
     virtual MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin) = 0;
@@ -85,7 +85,8 @@ protected:
         int exitcode = 400 + erc;
 	std::exit(exitcode);
     }
-
+    
+    std::vector<MuleDevice*> devlist;
 
 };
 
