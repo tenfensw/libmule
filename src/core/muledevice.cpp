@@ -40,14 +40,14 @@ bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
     muledebug("I'm going to access the only running MuleApplication instance to get a pointer to MuleCommonPlatform class");
     MuleApplication* maInstance = (MuleApplication::getRunningInstance());
     muledebug("Now run getPlatformClass()");
-    if (maInstance->areNecessaryPartsReady == true) {
-	muledebug("maInstance->areNecessaryPartsReady == true");
+    if (maInstance->areNecessaryPartsReady() == true) {
+	muledebug("maInstance->areNecessaryPartsReady() == true");
     	convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(maInstance->getPlatformClass());
     	convertedMcpInstance->getPinMode(pin);
 	setPinType(Generic);
     }
     else
-	muledebug("maInstance->areNecessaryPartsReady != true");
+	muledebug("maInstance->areNecessaryPartsReady() != true");
     return true;
 }
 

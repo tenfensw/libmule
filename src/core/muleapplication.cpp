@@ -24,7 +24,6 @@ static MuleApplication* appWideFirstInstance = NULL;
 
 MuleApplication::MuleApplication()
 {
-    areNecessaryPartsReady = false;
     if (internalInit())
         muledebug("MuleApplication was successfully initialized");
     else
@@ -43,13 +42,13 @@ bool MuleApplication::internalInit() {
         muledebug("This MuleApplication instance was self-appointed as the first one");
     }
     mcpClass = new MULE_INTERNAL_CURRENTPLATFORMCLASS();
-    areNecessaryPartsReady = true;
     muledebug("initialized MuleCommonPlatform");
     return true;
 }
 
 void MuleApplication::internalCleanUp() {
     delete mcpClass;
+    mcpClass = NULL;
     if (isFirstInstance == true)
 #ifndef MULE_FEATURES_SUPPORTSNULLPTR
         appWideFirstInstance = NULL;
