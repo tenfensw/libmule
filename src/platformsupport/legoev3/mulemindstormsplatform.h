@@ -94,6 +94,7 @@ public:
 #endif
 
 private:
+    void internal_cleanDevList();
     void legoSetPinType(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE type);
 };
 

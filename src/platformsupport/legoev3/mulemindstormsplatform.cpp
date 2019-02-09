@@ -38,13 +38,16 @@ bool MuleMindstormsPlatform::initialize() {
 	return true;
 }
 
+void MuleMindstormsPlatform::internal_cleanDevList() {
+    for (int i = 0; i < devlist.size(); i++) {
+	delete devlist.at(i);
+	devlist.at(i) = nullptr;
+    }
+    devlist.clear();
+}
+
 MuleMindstormsPlatform::~MuleMindstormsPlatform() {
 	FreeEV3();
-	for (int i = 0; i < devlist.size(); i++) {
-		delete devlist.at(i);
-		devlist.at(i) = nullptr;
-	}
-	devlist.clear();
 	return;
 }
 

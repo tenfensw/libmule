@@ -34,7 +34,7 @@ class MuleCommonPlatform
 {
     
 public:
-    virtual ~MuleCommonPlatform() {}
+    virtual ~MuleCommonPlatform() { internal_cleanDevList(); }
 
     virtual bool initialize() = 0;
     virtual MULE_OTHER_STRINGTYPE getPlatformName() { return "unknown"; }
@@ -73,6 +73,7 @@ public:
 
 protected:
     MuleCommonPlatform() {}
+    void internal_cleanDevList();
     void platformInitializationException(int erc, MULE_OTHER_STRINGTYPE message) {
 #ifdef MULE_INTERNAL_PRINTINTERNALERRORSLCD
         muleprintf("libMule " + muleinttostr(MULE_VERSION_MAJOR) + "." + muleinttostr(MULE_VERSION_MINOR) + "." + muleinttostr(MULE_VERSION_UPDATE) + " Platform Initialization Error\n");

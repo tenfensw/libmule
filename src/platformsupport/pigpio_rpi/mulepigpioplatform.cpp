@@ -25,7 +25,7 @@ MulePigpioPlatform::MulePigpioPlatform() {
         platformInitializationException(1, "MulePigpioPlatform::initialize() returned false, not true");
 }
 
-MulePigpioPlatform::~MulePigpioPlatform() {
+void MulePigpioPlatform::internal_cleanDevList() {
     gpioTerminate();
     for (int i = 0; i < devlist.size(); i++) {
 	delete devlist.at(i);

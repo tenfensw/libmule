@@ -26,7 +26,7 @@ MuleLinuxGPIOPlatform::MuleLinuxGPIOPlatform() {
 }
 
 
-MuleLinuxGPIOPlatform::~MuleLinuxGPIOPlatform() {
+void MuleLinuxGPIOPlatform::internal_cleanDevList() {
 	for (int d = 0; d < devlist.size(); d++) {
 		internal_writeToFile("/sys/class/gpio/unexport", muleinttostr(d));
 		delete devlist.at(d);

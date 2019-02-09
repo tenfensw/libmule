@@ -64,7 +64,6 @@ public:
     MuleMicrocontrollerSimulatorPlatform();
     ~MuleMicrocontrollerSimulatorPlatform() { internal_cleanDevList(); }
 
-    void internal_cleanDevList();
     bool initialize();
     MULE_OTHER_STRINGTYPE getPlatformName() {
         return "microcontrollersim";
@@ -90,6 +89,7 @@ public:
 #endif
 
 private:
+    void internal_cleanDevList();
     MULE_OTHER_STRINGTYPE internal_readToString(MULE_OTHER_STRINGTYPE fn);
     MULE_OTHER_STRINGTYPE internal_muleIntToStr(int in);
     bool internal_fileExists(MULE_OTHER_STRINGTYPE fn);

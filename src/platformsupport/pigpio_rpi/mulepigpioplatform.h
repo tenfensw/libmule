@@ -92,6 +92,9 @@ public:
     bool sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin);
 #endif
 
+private:
+    void internal_cleanDevList();
+
 };
 
 #endif // MulePigpioPlatform_H

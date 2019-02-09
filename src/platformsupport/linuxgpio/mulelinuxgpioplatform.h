@@ -93,6 +93,7 @@ public:
 #endif
 
 private:
+    void internal_cleanDevList();
     MULE_OTHER_STRINGTYPE internal_readToString(MULE_OTHER_STRINGTYPE fn);
     MULE_OTHER_STRINGTYPE internal_muleIntToStr(int in) { return muleinttostr(in); }
     bool internal_fileExists(MULE_OTHER_STRINGTYPE fn);
