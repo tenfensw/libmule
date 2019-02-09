@@ -27,6 +27,13 @@
 
 class MuleCommonPlatform;
 
+#ifndef MULE_HIGH
+#define MULE_HIGH 1
+#endif
+#ifndef MULE_LOW
+#define MULE_LOW 0
+#endif
+
 class MuleDevice
 {
 public:

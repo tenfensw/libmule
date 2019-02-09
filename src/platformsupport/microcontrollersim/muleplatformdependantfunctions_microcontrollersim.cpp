@@ -40,7 +40,5 @@ void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {
 	va_end(otherargs);
 }
 void muleplatformsleep(double seconds) {
-#ifdef MULE_OS_UNIX
 	usleep(seconds * 1000 * 1000);
-#endif
 }
