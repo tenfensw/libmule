@@ -30,18 +30,18 @@ class MulePWMDevice : public MuleDevice {
 	public:
 	  MulePWMDevice(int devpin);
 	  ~MulePWMDevice();
-	  MULE_OTHER_HWPINTYPE read() { return this->getRange(); }
-	  bool write(MULE_OTHER_HWPINTYPE val) { return this->start(val); }
+	  MULE_OTHER_HWPINTYPE read() { return getRange(); }
+	  bool write(MULE_OTHER_HWPINTYPE val) { return start(val); }
 	  bool start(MULE_OTHER_HWPINTYPE dutycycle);
-	  bool on() { return this->start(getRange()); }
-	  bool stop() { return this->start(0); }
-	  bool off() { return this->stop(); }
+	  bool on() { return start(getRange()); }
+	  bool stop() { return start(0); }
+	  bool off() { return stop(); }
 	  int getRange();
-	  int range() { return this->getRange(); }
+	  int range() { return getRange(); }
 	  int getFrequency();
-	  int frequency() { return this->getFrequency(); }
+	  int frequency() { return getFrequency(); }
 	  bool isOn();
-	  bool isActive() { return this->isOn(); };
+	  bool isActive() { return isOn(); };
 	  bool setRange(MULE_OTHER_HWPINTYPE range);
 	  bool setFrequency(MULE_OTHER_HWPINTYPE frequency);
 	  

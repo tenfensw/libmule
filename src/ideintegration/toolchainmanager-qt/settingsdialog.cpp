@@ -17,11 +17,11 @@ SettingsDialog::SettingsDialog(QWidget *parent, int defaulttab) :
     QDialog(parent),
     ui(new Ui::SettingsDialog)
 {
-    this->ui->setupUi(this);
-    MuleStudioGlobalSettingsStructure str = this->findTheConfigFile();
+    ui->setupUi(this);
+    MuleStudioGlobalSettingsStructure str = findTheConfigFile();
     initializeSettingsDialog(defaulttab, str);
 #ifndef MULETCM_ENABLEBROKENFEATURES
-    this->ui->editToolchainButton->setVisible(false);
+    ui->editToolchainButton->setVisible(false);
 #endif
 }
 
@@ -242,15 +242,15 @@ void SettingsDialog::flushToolchains(MuleStudioGlobalSettingsStructure structure
 void SettingsDialog::convertChangedSettingsToStructure() {
     MuleStudioGlobalSettingsStructure newStructure;
     newStructure.baseConfigFile = outConfigFile;
-    newStructure.projectDir = this->ui->projectDirEdit->text();
-    newStructure.font = this->ui->fontBox->currentFont().family();
-    newStructure.fontSize = this->ui->fontSizeBox->value();
-    newStructure.darkThemeFriendly = this->ui->darkThemeCheckBox->isChecked();
+    newStructure.projectDir = ui->projectDirEdit->text();
+    newStructure.font = ui->fontBox->currentFont().family();
+    newStructure.fontSize = ui->fontSizeBox->value();
+    newStructure.darkThemeFriendly = ui->darkThemeCheckBox->isChecked();
     QList<MuleStudioToolchain*> newToolchainsList;
-    for (int i = 0; i < this->ui->listWidget->count(); i++) {
+    for (int i = 0; i < ui->listWidget->count(); i++) {
         MuleStudioToolchain* tc = new MuleStudioToolchain();
-        QString tcname = QString((this->ui->listWidget->item(i)->text().split("["))[0]);
-        QString tcmuletool = QString((this->ui->listWidget->item(i)->text().split("["))[1]);
+        QString tcname = QString((ui->listWidget->item(i)->text().split("["))[0]);
+        QString tcmuletool = QString((ui->listWidget->item(i)->text().split("["))[1]);
         tcname = tcname.remove(tcname.length() - 1, 1);
         tcmuletool = tcmuletool.remove(tcmuletool.length() - 1, 1);
         tc->toolchainName = tcname;
@@ -268,31 +268,31 @@ void SettingsDialog::initializeSettingsDialog(int defaulttab, MuleStudioGlobalSe
     if (outConfigFile.isEmpty())
         setEnabledStateToEverything(false);
     else {
-        this->ui->projectDirEdit->setText(settingsStructure.projectDir);
-        this->ui->fontBox->setFont(QFont(settingsStructure.font, 10));
-        this->ui->fontSizeBox->setValue(settingsStructure.fontSize);
-        this->ui->darkThemeCheckBox->setChecked(settingsStructure.darkThemeFriendly);
+        ui->projectDirEdit->setText(settingsStructure.projectDir);
+        ui->fontBox->setFont(QFont(settingsStructure.font, 10));
+        ui->fontSizeBox->setValue(settingsStructure.fontSize);
+        ui->darkThemeCheckBox->setChecked(settingsStructure.darkThemeFriendly);
 	//qDebug() << settingsStructure.configDefinedToolchains.size();
         for (int i = 0; i < settingsStructure.configDefinedToolchains.size(); i++) {
 	    //qDebug() << settingsStructure.configDefinedToolchains.at(i)->toolchainName;
-            this->ui->listWidget->addItem(settingsStructure.configDefinedToolchains[i]->toolchainName + " [" + settingsStructure.configDefinedToolchains[i]->toolchainMuleToolPath + "]");
+            ui->listWidget->addItem(settingsStructure.configDefinedToolchains[i]->toolchainName + " [" + settingsStructure.configDefinedToolchains[i]->toolchainMuleToolPath + "]");
 	}
 
     }
-    this->ui->muleStudioAboutLabel->setText(this->ui->muleStudioAboutLabel->text().replace("^V^", TOOLVERSION));
-    this->ui->tabWidget->removeTab(0);
-    this->ui->tabWidget->setCurrentIndex(0);
+    ui->muleStudioAboutLabel->setText(ui->muleStudioAboutLabel->text().replace("^V^", TOOLVERSION));
+    ui->tabWidget->removeTab(0);
+    ui->tabWidget->setCurrentIndex(0);
 }
 
 void SettingsDialog::setEnabledStateToEverything(bool state) {
-    this->ui->fontBox->setEnabled(state);
-    this->ui->fontSizeBox->setEnabled(state);
-    this->ui->addToolchainButton->setEnabled(state);
-    this->ui->removeToolchainButton->setEnabled(state);
-    this->ui->editToolchainButton->setEnabled(state);
-    this->ui->listWidget->setEnabled(state);
-    this->ui->projectDirEdit->setEnabled(state);
-    this->ui->projectDirButton->setEnabled(state);
+    ui->fontBox->setEnabled(state);
+    ui->fontSizeBox->setEnabled(state);
+    ui->addToolchainButton->setEnabled(state);
+    ui->removeToolchainButton->setEnabled(state);
+    ui->editToolchainButton->setEnabled(state);
+    ui->listWidget->setEnabled(state);
+    ui->projectDirEdit->setEnabled(state);
+    ui->projectDirButton->setEnabled(state);
 }
 
 void SettingsDialog::on_projectDirButton_clicked()
@@ -300,7 +300,7 @@ void SettingsDialog::on_projectDirButton_clicked()
     QString out = QFileDialog::getExistingDirectory(this, tr("Default projects directory"), QDir::homePath());
     if (out.isEmpty())
         return;
-    this->ui->projectDirEdit->setText(out);
+    ui->projectDirEdit->setText(out);
 }
 
 void SettingsDialog::on_addToolchainButton_clicked()
@@ -322,14 +322,14 @@ void SettingsDialog::on_addToolchainButton_clicked()
     QString tcMuleToolPath = QFileDialog::getOpenFileName(this, tr("Add"), QDir::homePath(), tcMuleToolFileType + ";;" + tr("Anything (*)"));
     if (tcMuleToolPath.isEmpty())
         return;
-    this->ui->listWidget->addItem(tcName + " [" + tcMuleToolPath + "]");
+    ui->listWidget->addItem(tcName + " [" + tcMuleToolPath + "]");
 }
 
 void SettingsDialog::on_editToolchainButton_clicked()
 {
-    if (this->ui->listWidget->selectedItems().count() != 1)
+    if (ui->listWidget->selectedItems().count() != 1)
         return;
-    editToolchain(this->ui->listWidget->currentItem()->text());
+    editToolchain(ui->listWidget->currentItem()->text());
 }
 
 void SettingsDialog::editToolchain(const QString& tcitemstring) {
@@ -364,10 +364,10 @@ void SettingsDialog::editToolchain(const QString& tcitemstring) {
 
 void SettingsDialog::on_removeToolchainButton_clicked()
 {
-    if (this->ui->listWidget->selectedItems().count() != 1)
+    if (ui->listWidget->selectedItems().count() != 1)
         return;
     if (QMessageBox::question(this, tr("Remove"), tr("Are you sure?"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
-        delete this->ui->listWidget->takeItem(this->ui->listWidget->currentRow());
+        delete ui->listWidget->takeItem(ui->listWidget->currentRow());
 }
 
 MuleStudioGlobalSettingsStructure SettingsDialog::getNewSettingsStructure() {

@@ -52,8 +52,8 @@ public:
     }
     MULE_OTHER_HWPINTYPE read();
     bool write(MULE_OTHER_HWPINTYPE val);
-    virtual bool on() { return this->write(MULE_HIGH); }
-    virtual bool off() { return this->write(MULE_LOW); }
+    virtual bool on() { return write(MULE_HIGH); }
+    virtual bool off() { return write(MULE_LOW); }
     MULE_OTHER_HWPINTYPE mode();
     MULE_OTHER_HWPINTYPE getMode() {
 	return mode();

@@ -181,12 +181,12 @@ bool MulePigpioPlatform::setPWMFrequency(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HW
 
 #ifdef MULE_FEATURES_SENSORS
 bool MulePigpioPlatform::sensorWaitUntilTriggered(MULE_OTHER_HWPINTYPE pin) {
-	if (this->setPullUpDown(pin, MULE_PUD_DOWN) == false)
+	if (setPullUpDown(pin, MULE_PUD_DOWN) == false)
 		return false;
 	mulesleep(0.1);
 	
 	int numberofchecks = 0;
-	while (this->readFromPin(pin) == MULE_LOW)
+	while (readFromPin(pin) == MULE_LOW)
 		numberofchecks = numberofchecks + 1;
 	
 	return true;

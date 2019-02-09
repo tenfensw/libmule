@@ -19,7 +19,7 @@
 
 #ifdef __sun
 #define CSTRINGCONV toUtf8().constData().c_str()
-#define SYSTEMFUNC this->sunsystem
+#define SYSTEMFUNC sunsystem
 #else
 #define CSTRINGCONV toStdString().c_str()
 #define SYSTEMFUNC std::system
@@ -29,8 +29,8 @@ MicrocontrollerWindow::MicrocontrollerWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MicrocontrollerWindow)
 {
-    this->ui->setupUi(this);
-    this->initializeSocket();
+    ui->setupUi(this);
+    initializeSocket();
 }
 
 void MicrocontrollerWindow::flushPin(const MuleMicrocontrollerSimulatorPin &pin) {
@@ -149,7 +149,7 @@ void MicrocontrollerWindow::initializeSocket() {
     if (serialFile->open(QIODevice::Text | QIODevice::WriteOnly) == false) {
         serialFile->close();
         delete serialFile;
-        this->ui->serialEdit->setText("Connection lost");
+        ui->serialEdit->setText("Connection lost");
     }
     serialFile->write(QString(QString("Initialized serial output on ") + QDateTime::currentDateTime().toString() + "\n\n\n").toUtf8());
     serialFile->close();
@@ -268,7 +268,7 @@ void MicrocontrollerWindow::updateSerial() {
     qDebug() << "serial path might be " << serial;
     if (QFile::exists(serial) == false) {
         qDebug() << "nope, that's not it";
-        this->ui->serialEdit->setText("Connection lost");
+        ui->serialEdit->setText("Connection lost");
         return;
     }
     qDebug() << "yes it is, open QFile then";
@@ -277,15 +277,15 @@ void MicrocontrollerWindow::updateSerial() {
         qDebug() << "access is denied";
         reader->close();
         delete reader;
-        this->ui->serialEdit->setText("Connection lost");
+        ui->serialEdit->setText("Connection lost");
         return;
     }
     QString serialOut = QString(reader->readAll());
     reader->close();
     delete reader;
     qDebug() << "cool, got the data, now display it on the screen";
-    this->ui->serialEdit->setText(serialOut);
-    this->ui->serialEdit->verticalScrollBar()->setValue(this->ui->serialEdit->verticalScrollBar()->maximum());
+    ui->serialEdit->setText(serialOut);
+    ui->serialEdit->verticalScrollBar()->setValue(ui->serialEdit->verticalScrollBar()->maximum());
 }
 
 void MicrocontrollerWindow::updateGUI() {
@@ -295,22 +295,22 @@ void MicrocontrollerWindow::updateGUI() {
         onOffPWM(i, deviceVector.at(i).pwmCapable, false);
         dcUpdateBlocker = true;
         if (i == 0) {
-            this->ui->pin0_dval->setText("Digital value: " + QString::number(deviceVector.at(i).currentDigitalValue));
-            this->ui->pin0_analogdcval->setText("Current DC: " + QString::number(deviceVector.at(i).currentDutyCycle));
-            this->ui->pin0_dcBox->setValue(deviceVector.at(i).maxDutyCycle);
+            ui->pin0_dval->setText("Digital value: " + QString::number(deviceVector.at(i).currentDigitalValue));
+            ui->pin0_analogdcval->setText("Current DC: " + QString::number(deviceVector.at(i).currentDutyCycle));
+            ui->pin0_dcBox->setValue(deviceVector.at(i).maxDutyCycle);
         }
         else if (i == 1) {
-            this->ui->pin1_dval->setText("Digital value: " + QString::number(deviceVector.at(i).currentDigitalValue));
-            this->ui->pin1_analogdcval->setText("Current DC: " + QString::number(deviceVector.at(i).currentDutyCycle));
-            this->ui->pin1_dcBox->setValue(deviceVector.at(i).maxDutyCycle);
+            ui->pin1_dval->setText("Digital value: " + QString::number(deviceVector.at(i).currentDigitalValue));
+            ui->pin1_analogdcval->setText("Current DC: " + QString::number(deviceVector.at(i).currentDutyCycle));
+            ui->pin1_dcBox->setValue(deviceVector.at(i).maxDutyCycle);
         }
         else if (i == 2) {
-            this->ui->pin3_analogdcval->setText("Current DC: " + QString::number(deviceVector.at(i).currentDutyCycle));
-            this->ui->pin3_dcBox->setValue(deviceVector.at(i).maxDutyCycle);
+            ui->pin3_analogdcval->setText("Current DC: " + QString::number(deviceVector.at(i).currentDutyCycle));
+            ui->pin3_dcBox->setValue(deviceVector.at(i).maxDutyCycle);
         }
         else if (i == 3) {
-            this->ui->pin4_analogdcval->setText("Current DC: " + QString::number(deviceVector.at(i).currentDutyCycle));
-            this->ui->pin4_dcBox->setValue(deviceVector.at(i).maxDutyCycle);
+            ui->pin4_analogdcval->setText("Current DC: " + QString::number(deviceVector.at(i).currentDutyCycle));
+            ui->pin4_dcBox->setValue(deviceVector.at(i).maxDutyCycle);
         }
         dcUpdateBlocker = false;
     }
@@ -343,13 +343,13 @@ void MicrocontrollerWindow::updateGUI() {
                     toSet = "PR triggered";
             }
             if (j == 0)
-                this->ui->pin0_cdevstatus->setText(toSet);
+                ui->pin0_cdevstatus->setText(toSet);
             else if (j == 1)
-                this->ui->pin1_cdevstatus->setText(toSet);
+                ui->pin1_cdevstatus->setText(toSet);
             else if (j == 2)
-                this->ui->pin3_cdevstatus->setText(toSet);
+                ui->pin3_cdevstatus->setText(toSet);
             else if (j == 3)
-                this->ui->pin4_cdevstatus->setText(toSet);
+                ui->pin4_cdevstatus->setText(toSet);
 #else
             QString resToSet = "";
             if (deviceConnected.at(j) == "led") {
@@ -369,13 +369,13 @@ void MicrocontrollerWindow::updateGUI() {
             else if (deviceConnected.at(j) == "photoresistor")
                 resToSet = ":/visualresources/resources/photoresistor.png";
             if (j == 0)
-                this->ui->pin0_cdevstatus->setPixmap(QPixmap(resToSet).scaled(this->ui->pin0_cdevstatus->size().width(), this->ui->pin0_cdevstatus->size().height(), Qt::KeepAspectRatio));
+                ui->pin0_cdevstatus->setPixmap(QPixmap(resToSet).scaled(ui->pin0_cdevstatus->size().width(), ui->pin0_cdevstatus->size().height(), Qt::KeepAspectRatio));
             else if (j == 1)
-                this->ui->pin1_cdevstatus->setPixmap(QPixmap(resToSet).scaled(this->ui->pin1_cdevstatus->size().width(), this->ui->pin1_cdevstatus->size().height(), Qt::KeepAspectRatio));
+                ui->pin1_cdevstatus->setPixmap(QPixmap(resToSet).scaled(ui->pin1_cdevstatus->size().width(), ui->pin1_cdevstatus->size().height(), Qt::KeepAspectRatio));
             else if (j == 2)
-                this->ui->pin3_cdevstatus->setPixmap(QPixmap(resToSet).scaled(this->ui->pin3_cdevstatus->size().width(), this->ui->pin3_cdevstatus->size().height(), Qt::KeepAspectRatio));
+                ui->pin3_cdevstatus->setPixmap(QPixmap(resToSet).scaled(ui->pin3_cdevstatus->size().width(), ui->pin3_cdevstatus->size().height(), Qt::KeepAspectRatio));
             else if (j == 3)
-                this->ui->pin4_cdevstatus->setPixmap(QPixmap(resToSet).scaled(this->ui->pin4_cdevstatus->size().width(), this->ui->pin4_cdevstatus->size().height(), Qt::KeepAspectRatio));
+                ui->pin4_cdevstatus->setPixmap(QPixmap(resToSet).scaled(ui->pin4_cdevstatus->size().width(), ui->pin4_cdevstatus->size().height(), Qt::KeepAspectRatio));
 #endif
         }
     }
@@ -413,24 +413,24 @@ void MicrocontrollerWindow::onOffPWM(int pin, bool val, bool resave) {
     timerUpdateBlocker = true;
     deviceVector.at(pin).pwmCapable = val;
     if (pin == 0) {
-        this->ui->pin0_pwmbox->setChecked(val);
-        this->ui->pin0_dcBox->setEnabled(val);
-        this->ui->pin0_analogdcval->setVisible(val);
+        ui->pin0_pwmbox->setChecked(val);
+        ui->pin0_dcBox->setEnabled(val);
+        ui->pin0_analogdcval->setVisible(val);
     }
     else if (pin == 1) {
-        this->ui->pin1_pwmBox->setChecked(val);
-        this->ui->pin1_dcBox->setEnabled(val);
-        this->ui->pin1_analogdcval->setVisible(val);
+        ui->pin1_pwmBox->setChecked(val);
+        ui->pin1_dcBox->setEnabled(val);
+        ui->pin1_analogdcval->setVisible(val);
     }
     else if (pin == 2) {
-        this->ui->pin3_pwmbox->setChecked(val);
-        this->ui->pin3_dcBox->setEnabled(val);
-        this->ui->pin3_analogdcval->setVisible(val);
+        ui->pin3_pwmbox->setChecked(val);
+        ui->pin3_dcBox->setEnabled(val);
+        ui->pin3_analogdcval->setVisible(val);
     }
     else if (pin == 3) {
-        this->ui->pin4_pwmBox->setChecked(val);
-        this->ui->pin4_dcBox->setEnabled(val);
-        this->ui->pin4_analogdcval->setVisible(val);
+        ui->pin4_pwmBox->setChecked(val);
+        ui->pin4_dcBox->setEnabled(val);
+        ui->pin4_analogdcval->setVisible(val);
     }
     if (resave == true)
         flushPin(deviceVector.at(pin));
@@ -442,7 +442,7 @@ void MicrocontrollerWindow::clearSerial() {
     qDebug() << "serial path might be " << serial;
     if (QFile::exists(serial) == false) {
         qDebug() << "nope, that's not it";
-        this->ui->serialEdit->setText("Connection lost");
+        ui->serialEdit->setText("Connection lost");
         return;
     }
     qDebug() << "yes it is, open QFile then";
@@ -451,7 +451,7 @@ void MicrocontrollerWindow::clearSerial() {
         qDebug() << "access is denied";
         writer->close();
         delete writer;
-        this->ui->serialEdit->setText("Connection lost");
+        ui->serialEdit->setText("Connection lost");
         return;
     }
     writer->write(QString("").toUtf8());
@@ -462,22 +462,22 @@ void MicrocontrollerWindow::clearSerial() {
 
 void MicrocontrollerWindow::on_pin0_pwmbox_clicked()
 {
-    onOffPWM(0, this->ui->pin0_pwmbox->isChecked());
+    onOffPWM(0, ui->pin0_pwmbox->isChecked());
 }
 
 void MicrocontrollerWindow::on_pin1_pwmBox_clicked()
 {
-    onOffPWM(1, this->ui->pin1_pwmBox->isChecked());
+    onOffPWM(1, ui->pin1_pwmBox->isChecked());
 }
 
 void MicrocontrollerWindow::on_pin3_pwmbox_clicked()
 {
-    onOffPWM(2, this->ui->pin3_pwmbox->isChecked());
+    onOffPWM(2, ui->pin3_pwmbox->isChecked());
 }
 
 void MicrocontrollerWindow::on_pin4_pwmBox_clicked()
 {
-    onOffPWM(3, this->ui->pin4_pwmBox->isChecked());
+    onOffPWM(3, ui->pin4_pwmBox->isChecked());
 }
 
 void MicrocontrollerWindow::on_pin0_dcBox_valueChanged(int arg1)
@@ -528,24 +528,24 @@ void MicrocontrollerWindow::connectDisconnectPin(int pin) {
         qDebug() << "user chose " << item;
         deviceConnected.at(pin) = item.toLower();
         if (pin == 0)
-            this->ui->pin0_button->setText("Disconnect " + item);
+            ui->pin0_button->setText("Disconnect " + item);
         else if (pin == 1)
-            this->ui->pin1_button->setText("Disconnect " + item);
+            ui->pin1_button->setText("Disconnect " + item);
         else if (pin == 2)
-            this->ui->pin2_button->setText("Disconnect " + item);
+            ui->pin2_button->setText("Disconnect " + item);
         else if (pin == 3)
-            this->ui->pin3_button->setText("Disconnect " + item);
+            ui->pin3_button->setText("Disconnect " + item);
     }
     else {
         deviceConnected.at(pin) = "U";
         if (pin == 0)
-            this->ui->pin0_button->setText("Connect device");
+            ui->pin0_button->setText("Connect device");
         else if (pin == 1)
-            this->ui->pin1_button->setText("Connect device");
+            ui->pin1_button->setText("Connect device");
         else if (pin == 2)
-            this->ui->pin2_button->setText("Connect device");
+            ui->pin2_button->setText("Connect device");
         else if (pin == 3)
-            this->ui->pin3_button->setText("Connect device");
+            ui->pin3_button->setText("Connect device");
         //qDebug() << "not implemented";
     }
     timerUpdateBlocker = false;
@@ -599,7 +599,7 @@ void MicrocontrollerWindow::closeEvent(QCloseEvent *ev) {
 
 void MicrocontrollerWindow::on_actionQuit_triggered()
 {
-    this->close();
+    close();
 }
 
 void MicrocontrollerWindow::on_actionAbout_Mule_Microcontroller_Simulator_triggered()

@@ -44,13 +44,13 @@ public:
     MuleApplication();
     ~MuleApplication();
     MULE_OTHER_STRINGTYPE getPlatformName();
-    MULE_OTHER_STRINGTYPE platformName() { return this->getPlatformName(); }
+    MULE_OTHER_STRINGTYPE platformName() { return getPlatformName(); }
     MuleCommonPlatform* getPlatformClass();
-    MuleCommonPlatform* platformClass() { return this->getPlatformClass(); }
+    MuleCommonPlatform* platformClass() { return getPlatformClass(); }
     const std::vector<MuleDevice*> getDevices();
-    const std::vector<MuleDevice*> devices() { return this->getDevices(); }
+    const std::vector<MuleDevice*> devices() { return getDevices(); }
     MULE_OTHER_STRINGTYPE getCurrentDirectory();
-    MULE_OTHER_STRINGTYPE currentDirectory() { return this->getCurrentDirectory(); }
+    MULE_OTHER_STRINGTYPE currentDirectory() { return getCurrentDirectory(); }
     static MuleApplication* getRunningInstance();
     int exit(int status);
     bool areNecessaryPartsReady;

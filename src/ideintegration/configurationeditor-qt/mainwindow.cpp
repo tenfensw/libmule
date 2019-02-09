@@ -34,9 +34,9 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initializeForm() {
-    this->ui->setupUi(this);
-    this->ui->titleLabel->setText(this->ui->titleLabel->text().replace("^V^", QString::fromLocal8Bit(TOOLVERSION.c_str())).replace("^Y^", QString::number(QDateTime::currentDateTime().date().year())).replace("^L^", "GNU LGPLv2.1"));
-    this->ui->titleLabel->resize(this->width(), this->ui->titleLabel->height());
+    ui->setupUi(this);
+    ui->titleLabel->setText(ui->titleLabel->text().replace("^V^", QString::fromLocal8Bit(TOOLVERSION.c_str())).replace("^Y^", QString::number(QDateTime::currentDateTime().date().year())).replace("^L^", "GNU LGPLv2.1"));
+    ui->titleLabel->resize(width(), ui->titleLabel->height());
     char* argvfake[2];
     argvfake[0] = "one";
     argvfake[1] = "-lazy";
@@ -48,22 +48,22 @@ void MainWindow::initializeForm() {
 #ifdef Q_OS_WIN
         theConfigFile = userHomeDir + "\\timkoisoft\\libmule\\MuleTool.mcfg";
 #endif
-        this->ui->targetLabel->setText(this->ui->targetLabel->text().replace("^T^", "custom"));
+        ui->targetLabel->setText(ui->targetLabel->text().replace("^T^", "custom"));
     }
     else
         fillUpInfo();
-    this->ui->currentConfigEdit->setText(theConfigFile);
+    ui->currentConfigEdit->setText(theConfigFile);
 }
 
 void MainWindow::fillUpInfo() {
-    this->ui->compilerCppEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("C++").c_str()));
-    this->ui->compilerFlagsEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("C++FLAGS").c_str()));
-    this->ui->linkerLdEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("LD").c_str()));
-    this->ui->linkerFlagsEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("LDFLAGS").c_str()));
-    this->ui->deployEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("DEPLOY").c_str()));
-    this->ui->runEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("RUN").c_str()));
-    this->ui->targetLabel->setText(this->ui->targetLabel->text().replace("^T^", QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("TARGET").c_str())));
-    this->ui->sdkPathEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("LIBMULE").c_str()));
+    ui->compilerCppEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("C++").c_str()));
+    ui->compilerFlagsEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("C++FLAGS").c_str()));
+    ui->linkerLdEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("LD").c_str()));
+    ui->linkerFlagsEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("LDFLAGS").c_str()));
+    ui->deployEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("DEPLOY").c_str()));
+    ui->runEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("RUN").c_str()));
+    ui->targetLabel->setText(ui->targetLabel->text().replace("^T^", QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("TARGET").c_str())));
+    ui->sdkPathEdit->setText(QString::fromLocal8Bit(muleToolClassInstance->getVariableValue("LIBMULE").c_str()));
 }
 
 QString MainWindow::selectBinaryFile() {
@@ -76,12 +76,12 @@ QString MainWindow::selectBinaryFile() {
 
 void MainWindow::on_compilerCppSelectButton_clicked()
 {
-    this->ui->compilerCppEdit->setText(selectBinaryFile());
+    ui->compilerCppEdit->setText(selectBinaryFile());
     probeCompiler();
 }
 
 void MainWindow::probeCompiler() {
-    QString proposedcompiler = this->ui->compilerCppEdit->text();
+    QString proposedcompiler = ui->compilerCppEdit->text();
     QString possibleFlags = "-c";
     QStringList args;
     bool isGNU = false;
@@ -100,10 +100,10 @@ void MainWindow::probeCompiler() {
     }
     if (isGNU == true)
         possibleFlags = "-c -std=c++0x -Os -Wall -Wextra";
-    if (this->ui->compilerFlagsEdit->text().isEmpty() == true)
-        this->ui->compilerFlagsEdit->setText(possibleFlags);
-    if (this->ui->linkerLdEdit->text().isEmpty() == true && this->ui->linkerFlagsEdit->text().isEmpty()) {
-        this->ui->linkerLdEdit->setText(proposedcompiler);
+    if (ui->compilerFlagsEdit->text().isEmpty() == true)
+        ui->compilerFlagsEdit->setText(possibleFlags);
+    if (ui->linkerLdEdit->text().isEmpty() == true && ui->linkerFlagsEdit->text().isEmpty()) {
+        ui->linkerLdEdit->setText(proposedcompiler);
         probeLinker();
     }
     procrunner->close();
@@ -112,14 +112,14 @@ void MainWindow::probeCompiler() {
 
 void MainWindow::on_linkerLdSelectButton_clicked()
 {
-    this->ui->linkerLdEdit->setText(selectBinaryFile());
+    ui->linkerLdEdit->setText(selectBinaryFile());
     probeLinker();
 }
 
 void MainWindow::probeLinker() {
     bool isGNU = false;
     bool isLLVM = false;
-    QString proposedlinker = this->ui->linkerLdEdit->text();
+    QString proposedlinker = ui->linkerLdEdit->text();
     QString possibleFlags = "";
     QStringList args;
     args.append("-v");
@@ -136,7 +136,7 @@ void MainWindow::probeLinker() {
     }
     procrunner->close();
     procrunner->deleteLater();
-    if (this->ui->linkerFlagsEdit->text().isEmpty() == true) {
+    if (ui->linkerFlagsEdit->text().isEmpty() == true) {
         if (isGNU == true) {
             possibleFlags = "-Os";
             if (isLLVM == true)
@@ -144,7 +144,7 @@ void MainWindow::probeLinker() {
             else
                 possibleFlags = possibleFlags + " -static-libstdc++ -static-libgcc";
         }
-        this->ui->linkerFlagsEdit->setText(possibleFlags);
+        ui->linkerFlagsEdit->setText(possibleFlags);
     }
 }
 
@@ -154,9 +154,9 @@ QString MainWindow::selectDirectory() {
 
 void MainWindow::on_sdkPathSelectButton_clicked()
 {
-    this->ui->sdkPathEdit->setText(selectDirectory());
-    if (QFile::exists(this->ui->sdkPathEdit->text() + "/libMule.a"))
-        this->ui->sdkPathEdit->setText(this->ui->sdkPathEdit->text() + "/..");
+    ui->sdkPathEdit->setText(selectDirectory());
+    if (QFile::exists(ui->sdkPathEdit->text() + "/libMule.a"))
+        ui->sdkPathEdit->setText(ui->sdkPathEdit->text() + "/..");
 }
 
 void MainWindow::on_currentConfigSelectButton_clicked()
@@ -188,7 +188,7 @@ void MainWindow::on_actionAbout_Qt_framework_triggered()
 
 void MainWindow::on_saveButton_clicked()
 {
-    saveToFile(this->ui->currentConfigEdit->text());
+    saveToFile(ui->currentConfigEdit->text());
 }
 
 void MainWindow::saveToFile(const QString &fn) {
@@ -204,12 +204,12 @@ void MainWindow::saveToFile(const QString &fn) {
 #endif
 
     QString proposedconfig = "# This configuration file was generated via libMule Toolchain Configuration Manager on " + QDateTime::currentDateTime().toString() + "\n";
-    proposedconfig = proposedconfig + "# Specify the location of libMule first\nLIBMULE:" + this->ui->sdkPathEdit->text() + "\n# Now name the target\nTARGET:custom\n";
-    proposedconfig = proposedconfig + "\n# Various compiler information\nCC:" + this->ui->compilerCppEdit->text() + "\nCXX:" + this->ui->compilerCppEdit->text() + "\n";
-    proposedconfig = proposedconfig + "LD:" + this->ui->linkerLdEdit->text() + "\n\n# Flags for various compilers and utilities\n";
-    proposedconfig = proposedconfig + "CFLAGS:" + this->ui->compilerFlagsEdit->text() + "\nCXXFLAGS:" + this->ui->compilerFlagsEdit->text() + "\n";
-    proposedconfig = proposedconfig + "LDFLAGS:" + this->ui->linkerFlagsEdit->text() + "\n\n# Now various deployment info";
-    proposedconfig = proposedconfig + "\nDEPLOY:" + this->ui->deployEdit->text() + "\nRUN:" + this->ui->runEdit->text() + "\n# End of file";
+    proposedconfig = proposedconfig + "# Specify the location of libMule first\nLIBMULE:" + ui->sdkPathEdit->text() + "\n# Now name the target\nTARGET:custom\n";
+    proposedconfig = proposedconfig + "\n# Various compiler information\nCC:" + ui->compilerCppEdit->text() + "\nCXX:" + ui->compilerCppEdit->text() + "\n";
+    proposedconfig = proposedconfig + "LD:" + ui->linkerLdEdit->text() + "\n\n# Flags for various compilers and utilities\n";
+    proposedconfig = proposedconfig + "CFLAGS:" + ui->compilerFlagsEdit->text() + "\nCXXFLAGS:" + ui->compilerFlagsEdit->text() + "\n";
+    proposedconfig = proposedconfig + "LDFLAGS:" + ui->linkerFlagsEdit->text() + "\n\n# Now various deployment info";
+    proposedconfig = proposedconfig + "\nDEPLOY:" + ui->deployEdit->text() + "\nRUN:" + ui->runEdit->text() + "\n# End of file";
     QFile* fwriter = new QFile(fn);
     if (fwriter->open(QIODevice::WriteOnly | QIODevice::Text) == true) {
         fwriter->write(proposedconfig.toUtf8());
@@ -223,7 +223,7 @@ void MainWindow::saveToFile(const QString &fn) {
 
 void MainWindow::on_actionExit_triggered()
 {
-    this->close();
+    close();
 }
 
 

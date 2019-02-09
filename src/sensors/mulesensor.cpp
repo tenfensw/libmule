@@ -21,7 +21,7 @@
 #include "sensors/mulesensor.h"
 
 MuleSensor::MuleSensor(int devpin) : MuleDevice(devpin) {
-	this->setPinType(Sensor);
+	setPinType(Sensor);
 }
 
 MuleSensor::~MuleSensor() {

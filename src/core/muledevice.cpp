@@ -44,7 +44,7 @@ bool MuleDevice::dvinit(MULE_OTHER_HWPINTYPE pin) {
 	muledebug("maInstance->areNecessaryPartsReady == true");
     	convertedMcpInstance = (MULE_INTERNAL_CURRENTPLATFORMCLASS*)(maInstance->getPlatformClass());
     	convertedMcpInstance->getPinMode(pin);
-	this->setPinType(Generic);
+	setPinType(Generic);
     }
     else
 	muledebug("maInstance->areNecessaryPartsReady != true");
@@ -74,7 +74,7 @@ bool MuleDevice::setMode(MULE_OTHER_HWPINTYPE mode) {
 bool MuleDevice::continuousWrite(int times, double delay) {
     muledebug("times = " + muleinttostr(times));
     muledebug("(int)(delay) = " + muleinttostr((int)(delay)));
-    int startval = this->read();
+    int startval = read();
     if (startval == MULE_LOW)
 	startval = MULE_HIGH;
     else
@@ -83,7 +83,7 @@ bool MuleDevice::continuousWrite(int times, double delay) {
     for (int i = 0; i < times; i++) {
 	    muledebug("lap " + muleinttostr(i));
 	    mulesleep(delay);
-	    if (this->write(startval))
+	    if (write(startval))
 		    return false;
 	    if (startval == MULE_LOW)
 		startval = MULE_HIGH;
@@ -96,12 +96,12 @@ bool MuleDevice::continuousWrite(int times, double delay) {
 
 bool MuleDevice::trigger(MULE_OTHER_HWPINTYPE pulselen, MULE_OTHER_HWPINTYPE level) {
     muledebug("Software implementation of GPIO trigger is active");
-    this->write(level);
+    write(level);
     mulemicrosecsleep(pulselen);
     if (level != 0)
-    	this->write(0);
+	write(0);
     else
-    	this->write(1);
+	write(1);
     return true;
 }
 

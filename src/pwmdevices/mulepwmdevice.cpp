@@ -21,7 +21,7 @@
 #include "pwmdevices/mulepwmdevice.h"
 
 MulePWMDevice::MulePWMDevice(int devpin) : MuleDevice(devpin) {
-	this->setPinType(PWM);
+	setPinType(PWM);
 	deviceIsTurnedOn = false;
 }
 

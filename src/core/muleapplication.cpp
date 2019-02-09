@@ -30,7 +30,7 @@ MuleApplication::MuleApplication()
 }
 
 MuleApplication::~MuleApplication() {
-    this->exit(0);
+    this->exit(0); // Prepend this before exit() to avoid confusion with stdlib exit()
 }
 
 bool MuleApplication::internalInit() {
