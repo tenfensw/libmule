@@ -119,10 +119,6 @@ bool MuleLinuxGPIOPlatform::initialize() {
 }
 
 #ifdef MULE_FEATURES_CORE
-std::vector<MuleDevice*> MuleLinuxGPIOPlatform::getDevices() {
-    return devlist;
-}
-
 MULE_OTHER_HWPINTYPE MuleLinuxGPIOPlatform::getPinMode(MULE_OTHER_HWPINTYPE pin) {
     muledebug("pin = " + muleinttostr((int)(pin)));
     if (internal_readPin(pin).input == true)

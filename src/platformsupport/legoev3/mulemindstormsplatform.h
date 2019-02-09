@@ -59,7 +59,6 @@ public:
         return "legoev3";
     }
 #ifdef MULE_FEATURES_CORE
-    std::vector<MuleDevice*> getDevices();
     MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin);
     bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode);
     MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin);
