@@ -146,7 +146,7 @@ MuleStudioGlobalSettingsStructure SettingsDialog::findTheConfigFile() {
 	possibleLocations.append(QString(LIBMULESDKPREFIX) + "/ToolchainManager.mcfg");
 	possibleLocations.append("ToolchainManager.mcfg");
 	//qDebug() << possibleLocations;
-	defaultLocation = possibleLocations.at(1);
+	defaultLocation = possibleLocations.at(possibleLocations.size() - 2);
 	for (int i = 0; i < possibleLocations.count(); i++) {
 		if (QFile::exists(possibleLocations.at(i))) {
 			foundLocation = possibleLocations.at(i);

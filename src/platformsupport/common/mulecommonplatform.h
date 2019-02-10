@@ -34,12 +34,12 @@ class MuleCommonPlatform
 {
     
 public:
-    virtual ~MuleCommonPlatform() { internal_cleanDevList(); }
+    virtual ~MuleCommonPlatform();
 
     virtual bool initialize() = 0;
-    virtual MULE_OTHER_STRINGTYPE getPlatformName() { return "unknown"; }
+    virtual MULE_OTHER_STRINGTYPE getPlatformName();
 #ifdef MULE_FEATURES_CORE
-    virtual std::vector<MuleDevice*> getDevices() { return devlist; };
+    virtual std::vector<MuleDevice*> getDevices();
     virtual MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin) = 0;
     virtual bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode) = 0;
     virtual MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin) = 0;
@@ -73,19 +73,8 @@ public:
 
 protected:
     MuleCommonPlatform() {}
-    virtual void internal_cleanDevList() {}
-    void platformInitializationException(int erc, MULE_OTHER_STRINGTYPE message) {
-#ifdef MULE_INTERNAL_PRINTINTERNALERRORSLCD
-        muleprintf("libMule " + muleinttostr(MULE_VERSION_MAJOR) + "." + muleinttostr(MULE_VERSION_MINOR) + "." + muleinttostr(MULE_VERSION_UPDATE) + " Platform Initialization Error\n");
-        muleprintf( "A critical error occured during the initialization of the device platform.\n");
-        muleprintf("\n");
-        muleprintf("Error №" + muleinttostr(erc) + ": " + message);
-        muleprintf("\n\n");
-        muleprintf("The application will now exit now.\n");
-#endif
-        int exitcode = 400 + erc;
-	std::exit(exitcode);
-    }
+    virtual void internal_cleanDevList();
+    void platformInitializationException(int erc, MULE_OTHER_STRINGTYPE message);
     
     std::vector<MuleDevice*> devlist;
 
