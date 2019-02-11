@@ -33,6 +33,11 @@ std::vector<MuleDevice*> MuleCommonPlatform::getDevices() {
 }
 
 void MuleCommonPlatform::internal_cleanDevList() {
+	for (int d = 0; d < devlist.size(); d++) {
+		delete devlist.at(d);
+		devlist.at(d) = NULL;
+	}
+	devlist.clear();
 }
 
 void MuleCommonPlatform::platformInitializationException(int erc, MULE_OTHER_STRINGTYPE message) {

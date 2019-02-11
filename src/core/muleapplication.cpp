@@ -24,6 +24,7 @@ static MuleApplication* appWideFirstInstance = NULL;
 
 MuleApplication::MuleApplication()
 {
+    mcpClass = NULL;
     if (internalInit())
         muledebug("MuleApplication was successfully initialized");
     else

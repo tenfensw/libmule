@@ -73,7 +73,6 @@ class MuleArduinoAVRPlatform : public MuleCommonPlatform {
     private:
       bool arduinoIsDigitalPin(MULE_OTHER_HWPINTYPE pin);
       MULE_OTHER_HWPINTYPE arduinoMulePinToNativeAnalog(MULE_OTHER_HWPINTYPE pin);
-      void internal_cleanDevList();
 };
 
 #endif

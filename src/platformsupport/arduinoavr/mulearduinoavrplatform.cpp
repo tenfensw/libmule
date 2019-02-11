@@ -37,14 +37,6 @@ MuleArduinoAVRPlatform::MuleArduinoAVRPlatform() {
      devlist = list_of_connected_devices;
 }
 
-void MuleArduinoAVRPlatform::internal_cleanDevList() {
-    for (int i = 0; i < devlist.size(); i++) {
-	delete devlist.at(i);
-	devlist.at(i) = NULL;
-    }
-    devlist.clear();
-}
-
 bool MuleArduinoAVRPlatform::arduinoIsDigitalPin(MULE_OTHER_HWPINTYPE pin) {
 	if (pin < (MULE_ARDUINO_LASTDIGITALPIN + 1))
 		return true;

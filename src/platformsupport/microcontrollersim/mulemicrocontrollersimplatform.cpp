@@ -25,14 +25,6 @@ MuleMicrocontrollerSimulatorPlatform::MuleMicrocontrollerSimulatorPlatform() {
         platformInitializationException(1, "MuleMicrocontrollerSimulatorPlatform::initialize() returned false, not true");
 }
 
-void MuleMicrocontrollerSimulatorPlatform::internal_cleanDevList() {
-    for (int i = 0; i < devlist.size(); i++) {
-	delete devlist.at(i);
-	devlist.at(i) = NULL;
-    }
-    devlist.clear();
-}
-
 MULE_OTHER_STRINGTYPE MuleMicrocontrollerSimulatorPlatform::internal_muleIntToStr(int in) {
 	std::stringstream stream;
 	stream << in;
