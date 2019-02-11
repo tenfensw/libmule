@@ -270,11 +270,8 @@ if test `uname` = "Linux"; then
 	elif test -e "/etc/redhat-release"; then
 		dbgecho "RedHat detected"
 		HOSTOS="RedHat Linux"
-		if test -e "/etc/fedora-release"; then
-			dbgecho "Whoah, it's Fedora, it has buggy GCC, better fix GCC flags later"
-			HOSTOS="Fedora Linux"
-			BUGGYFEDORALINUXGCC=yes
-		fi
+		dbgecho "Whoah, it's Fedora or RedHat, it has buggy GCC, better fix GCC flags later"
+		BUGGYFEDORALINUXGCC=yes
 	elif command -v dpkg > /dev/null 2>&1; then
 		dbgecho "Debian detected"
 		HOSTOS="Debian Linux"
