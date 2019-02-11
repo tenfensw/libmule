@@ -377,7 +377,7 @@ editormainmenu() {
 }
 
 TOOLVERSION=0.4.2
-DOESWORK=no
+DOESWORK=yes
 PLATFORMNAME=
 PLATFORMDEFINE=
 PLATFORMOS=
@@ -567,11 +567,9 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	echo "class $tmp_deviceclassname : public MuleCommonPlatform {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "    public:" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      $tmp_deviceclassname();" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
-	echo "      ~$tmp_deviceclassname() {}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      bool initialize() { return true; }" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
-	echo "      MULE_OTHER_STRINGTYPE getPlatformName() { return "$PLATFORMNAME"; }" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
+	echo "      MULE_OTHER_STRINGTYPE getPlatformName() { return \"$PLATFORMNAME\"; }" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "# ifdef MULE_FEATURES_CORE" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
-	echo "      std::vector<MuleDevice*> getDevices();" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      MULE_OTHER_HWPINTYPE getPinMode(MULE_OTHER_HWPINTYPE pin);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      bool setPinMode(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE mode);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
 	echo "      MULE_OTHER_HWPINTYPE readFromPin(MULE_OTHER_HWPINTYPE pin);" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h
@@ -607,16 +605,13 @@ if test "$SELECTEDACTIONID" = "1" || test "$SELECTEDACTIONID" = "2"; then
 	echo "#include \"platformsupport/$PLATFORMNAME/$tmp_deviceclassname.h\"" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo ""  >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "$tmp_deviceclassname::$tmp_deviceclassname() {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
-	echo "      // TODO: implement device initialization code here" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
-	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
-	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
-	echo "std::vector<MuleDevice*> $tmp_deviceclassname::getDevices() {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "     std::vector<MuleDevice*> list_of_connected_devices;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "     list_of_connected_devices.clear();" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "     int maxpincount = 54; // replace this with the total amount of GPIO/device pins available on your device" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "     for (int i = 0; i < maxpincount; i++)" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "          list_of_connected_devices.push_back(new MuleDevice(i));" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
-	echo "     return list_of_connected_devices;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "     devlist = list_of_connected_devices;" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
+	echo "      // TODO: implement device initialization code here" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "}" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp
 	echo "MULE_OTHER_HWPINTYPE $tmp_deviceclassname::getPinMode(MULE_OTHER_HWPINTYPE pin) {" >> ./src/platformsupport/$PLATFORMNAME/$tmp_deviceclassname.cpp

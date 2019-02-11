@@ -279,6 +279,19 @@ if test `uname` = "Linux"; then
 		dbgecho "Arch detected"
 		HOSTOS="Arch Linux"
 	fi
+elif test `uname` = "FreeBSD" || test `uname` = "OpenBSD"; then
+	dbgecho "$0 is running on FreeBSD or OpenBSD, will be using LLVM Clang if \$HOSTCC is not specified"
+	HOSTOS="FreeBSD"
+	if test `uname` = "OpenBSD"; then
+		HOSTOS="OpenBSD"
+	fi
+	# use built-in LLVM
+	if test "$HOSTCC" = "" && test "$HOSTCXX" = "" && test "$HOSTLD" = "" && test "$HOSTAR" = ""; then
+		HOSTCC=clang
+		HOSTCXX=clang++
+		HOSTLD=clang++
+		HOSTAR=ar
+	fi
 elif (uname | grep -q "BSD") || test `uname` = "Darwin"; then
 	dbgecho "$0 is running on a wild unknown BSD-like operating system... or it's just running on a Mac"
 	HOSTOS="4.4BSD"
@@ -433,6 +446,9 @@ if test "$HOSTOS" = "BeOS"; then
 	else
 		echo "GCC 2.95 is used to build libMule on BeOS, that's really bad"
 		showerror 198 "GCC 2 is not supported by libMule"
+	fi
+	if test "$BUILDSCITE" = "yes"; then
+		showerror 199 "Building SciTE libMule Edition requires GTK+ 3, which is not available on BeOS and Haiku OS at all."
 	fi
 fi
 
