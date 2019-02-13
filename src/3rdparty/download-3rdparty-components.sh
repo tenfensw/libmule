@@ -55,7 +55,7 @@ else
 	exit 1
 fi
 
-COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio ArduinoCoreSlim=https://dl.dropboxusercontent.com/s/xvdtr0vkwsmhtae/ArduinoCore-avr-slim-29112018-release2.tar.gz ev3duder=https://dl.dropboxusercontent.com/s/hzrun77ak51scz2/ev3duder-snapshot-04_01_2019.tar.gz avrdude=https://dl.dropboxusercontent.com/s/4hqpnpw6h7367g4/avrdude-6.3.1mule.tgz"
+COMPONENTS="ev3api=https://github.com/c4ev3/EV3-API pigpio=https://github.com/joan2937/pigpio ArduinoCoreSlim=https://testmakerplusofficial.000webhostapp.com/opensource/libmule/thirdparty/ArduinoCore-avr-slim-29112018-release2.tar.gz ev3duder=https://testmakerplusofficial.000webhostapp.com/opensource/libmule/thirdparty/ev3duder-snapshot-04_01_2019.tar.gz avrdude=https://testmakerplusofficial.000webhostapp.com/opensource/libmule/thirdparty/avrdude-6.3.1mule.tgz"
 if test -e "./.stamp"; then
 	echo "[INFO] Everything was already downloaded"
 	exit 0
