@@ -47,16 +47,16 @@ public:
     virtual bool setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val) = 0;
 #endif
 #ifdef MULE_FEATURES_FILEIO
-    virtual MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file) = 0;
-    virtual bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) = 0;
-    virtual bool fileExists(MULE_OTHER_STRINGTYPE file) = 0;
-    virtual bool deleteFile(MULE_OTHER_STRINGTYPE file) = 0;
+    virtual MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file) { return ""; }
+    virtual bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct) { return false; }
+    virtual bool fileExists(MULE_OTHER_STRINGTYPE file) { return false; }
+    virtual bool deleteFile(MULE_OTHER_STRINGTYPE file) { return false; }
 #endif
 #ifdef MULE_FEATURES_SOUND
     virtual void doBeep() {}
-    virtual bool playWaveFile(MULE_OTHER_STRINGTYPE filename) = 0;
-    virtual MULE_OTHER_STRINGTYPE getSoundBackend() = 0;
-    virtual bool stopAllSounds() = 0;
+    virtual bool playWaveFile(MULE_OTHER_STRINGTYPE filename) { return false; }
+    virtual MULE_OTHER_STRINGTYPE getSoundBackend() { return "none"; }
+    virtual bool stopAllSounds() { return false; }
 #endif
 #ifdef MULE_FEATURES_PWMDEVICES
     virtual bool startPWM(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE dutycycle) = 0;
