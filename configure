@@ -161,11 +161,11 @@ arduinoerrormsg() {
 # set all variables first
 MULEVERSIONMAJOR=0
 MULEVERSIONMINOR=4
-MULEVERSIONUPDATE=0
+MULEVERSIONUPDATE=1
 MULEVERSION=$MULEVERSIONMAJOR.$MULEVERSIONMINOR.$MULEVERSIONUPDATE
 TOOLVERSION=$MULEVERSION
 if test "$PREFIX" = ""; then
-	PREFIX=/opt/timkoisoft/libmule
+	PREFIX=/opt/libmule-sdk
 fi
 HOSTCC=$CC
 HOSTCXX=$CXX
@@ -1220,7 +1220,11 @@ echo "SOURCEDIR ?= $SOURCEDIR" >> "$CDIR/Makefile"
 echo "TARGETAR ?= $TARGETAR" >> "$CDIR/Makefile"
 echo "TARGETS = $FINALTARGETS" >> "$CDIR/Makefile"
 echo "RPREFIX = $PREFIX" >> "$CDIR/Makefile"
-echo "PREFIX = \$(RPMBUILDROOT)/\$(RPREFIX)" >> "$CDIR/Makefile"
+echo "ifdef RPM_BUILD_ROOT" >> "$CDIR/Makefile"
+printf "\t" >> "$CDIR/Makefile"
+echo "RPMBUILDROOT ?= \$(RPM_BUILD_ROOT)/" >> "$CDIR/Makefile"
+echo "endif" >> "$CDIR/Makefile"
+echo "PREFIX = \$(RPMBUILDROOT)\$(RPREFIX)" >> "$CDIR/Makefile"
 if test "$LIBMULEINFIX" != ""; then
 	echo "LIBMULEINFIX = $LIBMULEINFIX" >> "$CDIR/Makefile"
 fi
