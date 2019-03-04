@@ -57,10 +57,9 @@ bool MuleToolClass::init(int argc, char** argv) {
 	currentProgName = std::string(argv[0]);
 	actionToRun = "nmtd";
 	arduinoPort = "NONE";
-	
-	if ((stringVectorContains(cliArgs, "-quiet") == false) && (stringVectorContains(cliArgs, "-q") == false)) {
-		beQuiet = false;
+	if (stringVectorContains(cliArgs, "-quiet") == false && stringVectorContains(cliArgs, "-q") == false) {
 		viewHeaderMessage();
+		beQuiet = false;
 	}
 	else
 		beQuiet = true;
@@ -71,17 +70,21 @@ bool MuleToolClass::init(int argc, char** argv) {
 		doNotIncludeLibMule = true;
 		
 		
-	if (stringVectorContains(cliArgs, "-config") == true)
+	if (stringVectorContains(cliArgs, "-config") == true || stringVectorContains(cliArgs, "-c") == true)
 		haveToDetectConfig = false;
 	else
 		haveToDetectConfig = true;
 	
-	if (stringVectorContains(cliArgs, "-internal-printconfigfile") == true) {
+	if (stringVectorContains(cliArgs, "-internal-printconfigfile") == true || stringVectorContains(cliArgs, "-pf") == true) {
 		actionToRun = "printconfigfilename";
 		needToDumpConfigFileName = true;
 	}
 	else
 		needToDumpConfigFileName = false;
+
+	if (stringVectorContains(cliArgs, "-internal-printplatform") == true || stringVectorContains(cliArgs, "-pt") == true)
+		actionToRun = "printplatform";
+
 		
 	if (stringVectorContains(cliArgs, "-internal-nocmdprint") == true)
 		printCommandsOnScreen = false;
@@ -90,11 +93,11 @@ bool MuleToolClass::init(int argc, char** argv) {
 	
 	if ((stringVectorContains(cliArgs, "--help") == true) || (stringVectorContains(cliArgs, "-help") == true) || (stringVectorContains(cliArgs, "-h") == true)) {
 		actionToRun = "printhelp";
-		return true;	
+		return true;
 	}
 	else
 		parseArguments();
-		
+
 	if (detectAndLoadConfig() == false)
 		return false;
 	
@@ -158,7 +161,7 @@ bool MuleToolClass::loadConfig(const std::string& cfgname) {
 			else if (hone == "DEPLOY")
 				deploy_copyFile = htwo;
 			else if (hone == "ARDUINOPORT") {
-				if (arduinoPort == "NONE")
+				if (arduinoPort != "NONE")
 					arduinoPort = htwo;
 			}
 			else if (hone == "RUN")
@@ -270,6 +273,10 @@ int MuleToolClass::run() {
 		return deployProgram();
 	else if (actionToRun == "printconfigfilename") {
 		std::cout << configFilePath << std::endl;
+		return 0;
+	}
+	else if (actionToRun == "printplatform") {
+		std::cout << libMuleTarget << std::endl;
 		return 0;
 	}
 	return -1;
