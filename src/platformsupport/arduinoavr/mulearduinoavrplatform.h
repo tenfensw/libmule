@@ -47,7 +47,7 @@
 class MuleArduinoAVRPlatform : public MuleCommonPlatform {
     public:
       MuleArduinoAVRPlatform();
-      ~MuleArduinoAVRPlatform() {}
+      ~MuleArduinoAVRPlatform();
 
       bool initialize() { return true; }
       MULE_OTHER_STRINGTYPE getPlatformName() { return "arduinoavr"; }

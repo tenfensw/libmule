@@ -652,7 +652,7 @@ int MuleToolClass::compileAndLinkProgram() {
 			extension = fn.substr(pos + 1);
 		if (extension == "cxx" || extension == "cpp" || extension == "c++" || extension == "cc" || extension == "C" || extension == "c") {
 			fn = fn.substr(0, pos);
-			fn = fn + "o";
+			fn = fn + ".o";
 		}
 		actionArgs3[j] = fn;
 	}

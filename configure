@@ -1285,7 +1285,7 @@ fi
 echo "" >> "$CDIR/Makefile"
 echo "distclean: clean" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
-echo "rm -r -f MuleToolBootstrapFiles/ src/core/muleconfig.h" >> "$CDIR/Makefile"
+echo "rm -r -f MuleToolBootstrapFiles/ src/core/muleconfig.h \"\$(SOURCEDIR)/extras/mulestl/sys\" \"\$(SOURCEDIR)/extras/mulestl/unistd.h\"" >> "$CDIR/Makefile"
 echo "" >> "$CDIR/Makefile"
 echo "install: install-scite" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
