@@ -1,5 +1,5 @@
-======= Dummy platform =======
-While dummy platform is essentially just a wrapper to native POSIX C/C++ functions and most C++11-compartible compilers should work with libMule, only these configurations were tested:
+======= Mule Microcontroller Simulator platform =======
+While Mule Microcontroller Simulator platform is essentially just a wrapper to native POSIX C/C++ functions and most C++11-compartible compilers should work with libMule, only these configurations were tested:
 - GCC 8.2, glibc 2.26 on Linux with binutils 2.31.1
 - GCC 6.3, glibc 2.19 on Linux with binutils 2.28
 - LLVM 3.8, glibc 2.19 on Linux with LLVM custom binutils version 3.8
@@ -12,7 +12,7 @@ These are the tested (and the only officially supported) configurations:
 - Linaro 2015.06 (GCC 4.8.1) on Linux
 
 ======= Raspberry Pi =======
-A C++11-compartible compiler for ARMv8-A Big-endian is enough to build libMule. All the tests and binaries are compiled with Linaro 2017.11 (GCC 5.5.0) on Linux.
+A C++11-compartible compiler for ARMv8-A Little-endian is enough to build libMule. All the tests and binaries are compiled with Linaro 2017.11 (GCC 5.5.0) on Linux.
 
 ======= Arduino =======
 You may use ArchLinux AVR GCC builds, however, only Arduino IDE's AVR GCC version is officially supported.

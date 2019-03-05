@@ -269,6 +269,8 @@ int MuleToolClass::run() {
 		return compileFiles();
 	else if (actionToRun == "link")
 		return linkProgram();
+	else if (actionToRun == "completebuild")
+		return compileAndLinkProgram();
 	else if (actionToRun == "deploy")
 		return deployProgram();
 	else if (actionToRun == "printconfigfilename") {
@@ -308,12 +310,15 @@ void MuleToolClass::viewHelp() {
 	std::cout << "                                     -compile, then it will be compiled " << std::endl;
 	std::cout << "                                     into an object file."  << std::endl;
 	std::cout << "" << std::endl;
-	std::cout << "     -link [optionally object files] Link all object files specified on" << std::endl;
+	std::cout << "     -link [object files]            Link all object files specified on" << std::endl;
 	std::cout << "                                     the command-line (if none are spe-" << std::endl;
 	std::cout << "                                     cified, then all object files in  " << std::endl;
 	std::cout << "                                     $PWD will be automatically selected)" << std::endl;
 	std::cout << "                                     into a binary file that could be ran" << std::endl;
 	std::cout << "                                     on the target device." << std::endl;
+	std::cout << "" << std::endl;
+	std::cout << "    -compile-and-link [object files] Compile [object files] and link them" << std::endl;
+	std::cout << "                                     into a binary.";
 	std::cout << "" << std::endl;
 	std::cout << "     -o [filename]                   A useful option that specifies out-" << std::endl;
 	std::cout << "                                     put filename for -compile and -link" << std::endl;
@@ -372,26 +377,33 @@ std::string MuleToolClass::replaceContextAlternatives(const std::string& vname, 
 void MuleToolClass::parseArguments() {
 	actionArgs.clear();
 	for (int i = 0; i < cliArgs.size(); i++) {
-		if (cliArgs[i] == "-compile") {
+		if (cliArgs[i] == "-compile" || cliArgs[i] == "-bc") {
 			actionToRun = "compile";
 			if ((i + 1) < (cliArgs.size() - 1)) {
 				actionArgs.push_back(cliArgs[i + 1]);
 				i = i + 1;
 			}
 		}
-		else if (cliArgs[i] == "-link") {
+		else if (cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-clink" || cliArgs[i] == "-cl" || cliArgs[i] == "-be" || cliArgs[i] == "-build") {
+			actionToRun = "completebuild";
+			if ((i + 1) < (cliArgs.size() - 1)) {
+				actionArgs.push_back(cliArgs[i + 1]);
+				i = i + 1;
+			}
+		}
+		else if (cliArgs[i] == "-link" || cliArgs[i] == "-bl") {
 			actionToRun = "link";
 			if ((i + 1) < (cliArgs.size() - 1)) {
 				actionArgs.push_back(cliArgs[i + 1]);
 				i = i + 1;
 			}
 		}
-		else if (cliArgs[i] == "-deploy") {
+		else if (cliArgs[i] == "-deploy" || cliArgs[i] == "-br") {
 			actionToRun = "deploy";
 			deploy_binName = cliArgs[i + 1];
 			i = i + 1;
 		}
-		else if (cliArgs[i] == "-config") {
+		else if (cliArgs[i] == "-config" || cliArgs[i] == "-c") {
 			if ((i + 1) < (cliArgs.size() - 1) && (fileExists(cliArgs[i + 1]))) {
 				haveToDetectConfig = false;
 				configFilePath = cliArgs[i + 1];
@@ -408,7 +420,7 @@ void MuleToolClass::parseArguments() {
 				i = i + 1;
 			}
 		}
-		else if ((cliArgs[i] == "-aport") || (cliArgs[i] == "-arduinoport") || (cliArgs[i] == "-port")) {
+		else if ((cliArgs[i] == "-aport") || (cliArgs[i] == "-arduinoport") || (cliArgs[i] == "-port") || (cliArgs[i] == "-ba")) {
 			if ((i + 1) < (cliArgs.size() - 1)) {
 				arduinoPort = cliArgs[i + 1];
 				i = i + 1;
@@ -419,8 +431,7 @@ void MuleToolClass::parseArguments() {
 		else if (cliArgs[i] == "-lazy")
 			actionToRun = "lazymode";
 		else {
-			if ((fileExists(cliArgs[i])) || (cliArgs[i][0] == '-' && cliArgs[i][1] == 'D') || (cliArgs[i][0] == '-' && cliArgs[i][1] == 'I') || (cliArgs[i][0] == '-' && cliArgs[i][1] == 's'))
-				actionArgs.push_back(cliArgs[i]);
+			actionArgs.push_back(cliArgs[i]);
 		}
 	}
 	
@@ -460,7 +471,9 @@ int MuleToolClass::compileFiles() {
 	if ((filesToCompile.size() < 2) && (stringVectorContains(actionArgs, "-o") == true))
 		oneFileNoNeedToIgnoreOutput = true;
 	for (int j = 0; j < filesToCompile.size(); j++) {
-		std::string extension = split(filesToCompile[j], ".").back();
+		std::string extension = "";
+		if (filesToCompile.at(j).find_last_of(".") != std::string::npos)
+			extension = (std::string(filesToCompile[j]).substr(filesToCompile.at(j).find_last_of(".") + 1));
 		std::string buildcmd;
 		if (extension == "cxx" || extension == "cpp" || extension == "c++" || extension == "cc" || extension == "C")
 			buildcmd = compilerCXX + " " + cxxflags;
@@ -614,4 +627,35 @@ std::string MuleToolClass::replaceSubstring(const std::string& origstring, const
 
 int MuleToolClass::stringLength(const std::string& origstring) {
 	return strlen(origstring.c_str());
+}
+
+int MuleToolClass::compileAndLinkProgram() {
+	std::vector<std::string> actionArgs2;
+	for (int i = 0; i < actionArgs.size(); i++) {
+		int prev = i - 1;
+		if (prev < 0)
+			prev = 0;
+		if (actionArgs.at(i) != "-o" && actionArgs.at(prev) != "-o")
+			actionArgs2.push_back(actionArgs.at(i));
+	}
+	std::vector<std::string> actionArgs3 = actionArgs;
+	actionArgs = actionArgs2;
+	int toret = compileFiles();
+	if (toret != 0)
+		return toret;
+	for (int j = 0; j < actionArgs3.size(); j++) {
+		std::string extension = "";
+		std::string fn = actionArgs3.at(j);
+		std::size_t pos = fn.find_last_of(".");
+		if (pos != std::string::npos)
+			extension = fn.substr(pos + 1);
+		if (extension == "cxx" || extension == "cpp" || extension == "c++" || extension == "cc" || extension == "C" || extension == "c") {
+			fn = fn.substr(0, pos);
+			fn = fn + "o";
+		}
+		actionArgs3[j] = fn;
+	}
+	actionArgs = actionArgs3;
+	toret = linkProgram();
+	return toret;
 }

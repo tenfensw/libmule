@@ -73,6 +73,7 @@ class MuleToolClass {
 	  int compileFiles();
 	  int linkProgram();
 	  int deployProgram();
+	  int compileAndLinkProgram();
 	  std::vector<std::string> fillPossibleLocationsVector();
 	  std::string readFromFileToString(const std::string& fname);
 	  std::string getCurrentDirectory();
