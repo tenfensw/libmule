@@ -47,3 +47,13 @@ arduinoplatform_and_tests:
     - $PWD/bin/bin/muletool -compile tests/test01-muleapplication-test.cpp && $PWD/bin/bin/muletool -link tests/test01-muleapplication-test.o && mv -v a.out run-test01
     - $PWD/bin/bin/muletool -compile tests/test04-mulesensor-trigger.cpp && $PWD/bin/bin/muletool -link tests/test04-mulesensor-trigger.o && mv -v a.out run-test04
     - rm -r -f run-test* arduinoplatform-gcc-builddir/ bin/
+
+arduinoplatform_and_tests_distrotoolchain:
+  script:
+    - mkdir arduinoplatform-mdv-gcc-builddir
+    - /usr/sbin/urpmi --auto cross-avr-gcc-c++
+    - sh -c "cd arduinoplatform-mdv-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=avr -prefix=$PWD/bin -modules=arduino -arduino-device=uno -platformthirdpartytools=no"
+    - sh -c "cd arduinoplatform-mdv-gcc-builddir && make && make install"
+    - $PWD/bin/bin/muletool -compile tests/test01-muleapplication-test.cpp && $PWD/bin/bin/muletool -link tests/test01-muleapplication-test.o && mv -v a.out run-test01
+    - $PWD/bin/bin/muletool -compile tests/test04-mulesensor-trigger.cpp && $PWD/bin/bin/muletool -link tests/test04-mulesensor-trigger.o && mv -v a.out run-test04
+    - rm -r -f run-test* arduinoplatform-mdv-gcc-builddir/ bin/
