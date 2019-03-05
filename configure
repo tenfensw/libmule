@@ -115,6 +115,9 @@ Usage: $0 [arguments]
 	-arduino-device=[uno/mega/leonardo]     Required only when cross-compiling for Arduino.
 	                                        Specify the target Arduino board - Uno, Mega 2560
 						or Leonardo.
+						
+	-arduino-lto=[yes/no]			Enable link-time optimization (LTO) for Arduino
+						[default: yes].
 
 	-mulestl=[yes/no]                       Use libMule's custom bundled C++ library instead of
 	                                        libstdc++/libc++/uClibc++. Use this option if the
@@ -211,6 +214,7 @@ ARDUINOHEADERLOCATION=""
 LIBMULEINFIX=""
 ARDUINOINCLUDEFLAGS=""
 ARDUINOTARGETDEVICE=""
+ARDUINOLTO=yes
 NONCROSSBUILD=no
 ISTHISWINDOWS=no
 MULESTL=no
@@ -267,6 +271,7 @@ if test `uname` = "Linux"; then
 	if test -e "/etc/mandriva-release"; then
 		dbgecho "Mandriva detected"
 		HOSTOS="Mandriva Linux"
+		ARDUINOLTO=no
 	elif test -e "/etc/redhat-release"; then
 		dbgecho "RedHat detected"
 		HOSTOS="RedHat Linux"
@@ -404,6 +409,12 @@ for Argument in $*; do
 		if test "$SECONDHALF" != "no" && test "$SECONDHALF" != "false"; then
 			SCITEGTK=2
 		fi
+	elif test "$FIRSTHALF" = "-arduino-lto"; then
+		if test "$SECONDHALF" != "no" && test "$SECONDHALF" != "false"; then
+			ARDUINOLTO=yes
+		else
+			ARDUINOLTO=no
+		fi
 	elif test "$FIRSTHALF" = "-arduino-header"; then
 		#if test -e "$SECONDHALF"; then
 		#	ARDUINOHEADERLOCATION="$SECONDHALF"
@@ -501,10 +512,14 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 		TARGETLDFLAGS="-mmcu=atmega328p $TARGETLDFLAGS"
 		AVRDUDEFLAGS="-patmega328p -cstk500v2 -Pusb"
 	fi
-	ARDUINOIDEFLAGS="-w -ffunction-sections -fdata-sections -fno-threadsafe-statics -flto -w -fpermissive"
+	ARDUINOIDEFLAGS="-w -ffunction-sections -fdata-sections -fno-threadsafe-statics -w -fpermissive"
+	if test "$ARDUINOLTO" = "yes"; then
+		ARDUINOIDEFLAGS="$ARDUINOIDEFLAGS -flto"
+		TARGETLDFLAGS="-flto $TARGETLDFLAGS"
+	fi
 	TARGETCXXFLAGS="$ARDUINOIDEFLAGS -x c++ -fpermissive -fexceptions $ARDUINOINCLUDEFLAGS $TARGETCXXFLAGS"
 	TARGETCFLAGS="$ARDUINOIDEFLAGS -fpermissive -fexceptions $ARDUINOINCLUDEFLAGS $TARGETCFLAGS"
-	TARGETLDFLAGS="-mrelax -flto -Wl,--gc-sections,--allow-multiple-definition -fuse-linker-plugin $TARGETLDFLAGS"
+	TARGETLDFLAGS="-mrelax -Wl,--gc-sections,--allow-multiple-definition -fuse-linker-plugin $TARGETLDFLAGS"
 	if command -v avr-gcc > /dev/null 2>&1 && command -v avr-g++ > /dev/null 2>&1 && test "$TARGETCC" = "" && test "$TARGETCXX" = "" && test "$TARGETAR" = ""; then
 		TARGETCC=`command -v avr-gcc`
 		TARGETCXX=`command -v avr-g++`
