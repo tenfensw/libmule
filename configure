@@ -524,6 +524,9 @@ elif test "$TARGETNAME" = "arduino" || test "$TARGETNAME" = "arduinoavr" || test
 		TARGETCC=`command -v avr-gcc`
 		TARGETCXX=`command -v avr-g++`
 		TARGETAR=`command -v avr-gcc-ar`
+		if test "$ARDUINOLTO" = "no"; then
+			TARGETAR=`command -v avr-ar`
+		fi
 	fi
 	if test "$TARGETCC" = "" || test "$TARGETCXX" = "" || test "$TARGETAR" = ""; then
 		arduinoerrormsg
