@@ -1001,13 +1001,22 @@ fi
 if test "$TARGETNAME" = "arduinoavr"; then
 	echo "#include <unistd.h>" > unistd-test.cpp
 	echo "int main() { return 0; }" >> unistd-test.cpp
+	echo "#include <sys/types.h>" > systypes-test.cpp
+	echo "int main() { return 0; }" >> systypes-test.cpp
 	if "$PWD/MuleToolBootstrapFiles/muletool" -compile unistd-test.cpp > /dev/null 2>&1; then
 		echo "avr-libc build used by $TARGETCXX contains \"unistd.h\""
 	else
 		echo "avr-libc build used by $TARGETCXX does not contain \"unistd.h\""
 		cp "$SOURCEDIR/extras/mulestl/arduino-unistd.h" "$SOURCEDIR/extras/mulestl/unistd.h"
 	fi
-	rm -r -f unistd-test.*
+	if "$PWD/MuleToolBootstrapFiles/muletool" -compile systypes-test.cpp > /dev/null 2>&1; then
+		echo "avr-libc build used by $TARGETCXX contains \"sys/types.h\""
+	else
+		echo "avr-libc build used by $TARGETCXX does not contain \"sys/types.h\""
+		mkdir "$SOURCEDIR/extras/mulestl/sys"
+		cp "$SOURCEDIR/extras/mulestl/arduino-systypes.h" "$SOURCEDIR/extras/mulestl/sys/types.h"
+	fi
+	rm -r -f unistd-test.* systypes-test.*
 fi
 
 # deal with modules
