@@ -2,8 +2,8 @@ image: mageia:6
 
 before_script:
   - /usr/sbin/urpmi.removemedia -a
-  - /usr/sbin/urpmi.addmedia --distrib http://mirror.yandex.ru/mageia/distrib/6.1/x86_64/
-  - /usr/sbin/urpmi --auto wget gcc-c++ bsdtar curl bison autoconf automake
+  - /usr/sbin/urpmi.addmedia --distrib http://mirror.yandex.ru/mageia/distrib/6.1/x86_64/ > /dev/null 2>&1
+  - /usr/sbin/urpmi --auto wget gcc-c++ bsdtar curl bison autoconf automake make > /dev/null 2>&1
 
 mulemicrocontrollersimulator_and_tests:
   script:
