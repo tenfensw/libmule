@@ -955,6 +955,10 @@ fi
 if test "$MULESTL" = "yes"; then
 	TARGETCXXFLAGS="-I$PREFIX/include/libmule/extras/mulestl $TARGETCXXFLAGS"
 	TARGETCFLAGS="-I$PREFIX/include/libmule/extras/mulestl $TARGETCFLAGS"
+	if test "$TARGETNAME" = "arduinoavr"; then
+		TARGETCXXFLAGS="-DMULESTL_ARDUINOSTANDARDS -DMULESTL_HEADERS_NOSIGNALH $TARGETCXXFLAGS"
+		TARGETCFLAGS="-DMULESTL_ARDUINOSTANDARDS -DMULESTL_HEADERS_NOSIGNALH $TARGETCFLAGS"
+	fi
 fi
 
 printf "Creating $CDIR/MuleToolBootstrapFiles/MuleTool.mcfg... "
