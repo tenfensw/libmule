@@ -317,7 +317,7 @@ void MuleToolClass::viewHelp() {
 	std::cout << "                                     into a binary file that could be ran" << std::endl;
 	std::cout << "                                     on the target device." << std::endl;
 	std::cout << "" << std::endl;
-	std::cout << "    -compile-and-link [object files] Compile [object files] and link them" << std::endl;
+	std::cout << "    -build [object files]            Compile [object files] and link them" << std::endl;
 	std::cout << "                                     into a binary.";
 	std::cout << "" << std::endl;
 	std::cout << "     -o [filename]                   A useful option that specifies out-" << std::endl;
@@ -384,7 +384,7 @@ void MuleToolClass::parseArguments() {
 				i = i + 1;
 			}
 		}
-		else if (cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-clink" || cliArgs[i] == "-cl" || cliArgs[i] == "-be" || cliArgs[i] == "-build") {
+		else if (cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-compile_and_link" || cliArgs[i] == "-clink" || cliArgs[i] == "-cl" || cliArgs[i] == "-be" || cliArgs[i] == "-build") {
 			actionToRun = "completebuild";
 			if ((i + 1) < (cliArgs.size() - 1)) {
 				actionArgs.push_back(cliArgs[i + 1]);

@@ -1,3 +1,4 @@
+image: mageia:6
 
 before_script:
   - dpkg --add-architecture i386
