@@ -384,7 +384,7 @@ void MuleToolClass::parseArguments() {
 				i = i + 1;
 			}
 		}
-		else if (cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-clink" || cliArgs[i] == "-cl" || cliArgs[i] == "-be" || cliArgs[i] == "-build") {
+		else if (cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-clink" || cliArgs[i] == "-cl" || cliArgs[i] == "-be" || cliArgs[i] == "-build") {
 			actionToRun = "completebuild";
 			if ((i + 1) < (cliArgs.size() - 1)) {
 				actionArgs.push_back(cliArgs[i + 1]);
@@ -428,11 +428,12 @@ void MuleToolClass::parseArguments() {
 		}
 		else if (cliArgs[i] == "-quiet")
 			beQuiet = true;
+		else if (cliArgs[i] == "-nolibmule")
+			doNotIncludeLibMule = true;
 		else if (cliArgs[i] == "-lazy")
 			actionToRun = "lazymode";
-		else {
+		else
 			actionArgs.push_back(cliArgs[i]);
-		}
 	}
 	
 	if (actionToRun == "nmtd")
