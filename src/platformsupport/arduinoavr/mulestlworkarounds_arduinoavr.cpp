@@ -22,5 +22,5 @@
 
 // some bad workarounds needed for libMule to link with other programs when building these programs for Arduinos
 static void* __gxx_personality_sj0 = NULL; // I'm not sure that's safe, though
-static void* __gxx_personality_sj0 = NULL;
 static void* __cxa_begin_catch = NULL;
+static void* __cxa_end_catch = NULL;
