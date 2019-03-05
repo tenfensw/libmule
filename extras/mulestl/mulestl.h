@@ -68,9 +68,12 @@ inline void operator delete(void* todel) { free(todel); }
 inline void operator delete(void* todel, unsigned int toint) { free(todel); }
 
 #ifdef MULESTL_ARDUINO_REDEFINEGCCSTUFF
-  static void* __gxx_personality_sj0;
-  static void* __cxa_begin_catch;
-  static void* __cxa_end_catch;
+  // These void* (functions, actually) are meant to be implemented somewhere
+  // Please implement these in a seperate .cpp file
+  // Otherwise your code won't just work when linking with MuleSTL using GCC
+  extern void* __gxx_personality_sj0;
+  extern void* __cxa_begin_catch;
+  extern void* __cxa_end_catch;
 #endif
 #ifdef MULESTL_HEADERS_NOSIGNALH
   static volatile signed char sig_atomic_t;
