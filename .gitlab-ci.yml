@@ -51,7 +51,7 @@ arduinoplatform_and_tests:
 arduinoplatform_and_tests_distrotoolchain:
   script:
     - mkdir arduinoplatform-mdv-gcc-builddir
-    - /usr/sbin/urpmi --auto cross-avr-gcc-c++
+    - /usr/sbin/urpmi --auto cross-avr-gcc-c++ avr-libc
     - sh -c "cd arduinoplatform-mdv-gcc-builddir && CC=/usr/bin/gcc CXX=/usr/bin/g++ LD=/usr/bin/g++ ../configure -platform=avr -prefix=$PWD/bin -modules=arduino -arduino-device=uno -platformthirdpartytools=no"
     - sh -c "cd arduinoplatform-mdv-gcc-builddir && make && make install"
     - $PWD/bin/bin/muletool -compile tests/test01-muleapplication-test.cpp && $PWD/bin/bin/muletool -link tests/test01-muleapplication-test.o && mv -v a.out run-test01
