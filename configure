@@ -998,23 +998,16 @@ if test "$RUNDOWNLOADERSCRIPT" = "yes"; then
 	fi
 fi
 
-if test "$TARGETNAME" = "arduinoavr" && test -e "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"; then
-	mv "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
-	ARDUINOSERIALDEVICE=""
-	if test "$ARDUINOTARGETDEVICE" = "mega"; then
-		ARDUINOSERIALDEVICE=Serial2
-	elif test "$ARDUINOTARGETDEVICE" = "leonardo"; then
-		ARDUINOSERIALDEVICE=Serial1
+if test "$TARGETNAME" = "arduinoavr"; then
+	echo "#include <unistd.h>" > unistd-test.cpp
+	echo "int main() { return 0; }" >> unistd-test.cpp
+	if "$PWD/MuleToolBootstrapFiles/muletool" -compile unistd-test.cpp > /dev/null 2>&1; then
+		echo "avr-libc build used by $TARGETCXX contains \"unistd.h\""
 	else
-		ARDUINOSERIALDEVICE=NULL
+		echo "avr-libc build used by $TARGETCXX does not contain \"unistd.h\""
+		cp "$SOURCEDIR/extras/mulestl/arduino-unistd.h" "$SOURCEDIR/extras/mulestl/unistd.h"
 	fi
-	cat "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old" | sed "s+#define ARDUINOSTL_DEFAULT_SERIAL Serial+#define ARDUINOSTL_DEFAULT_SERIAL $ARDUINOSERIALDEVICE+g" > "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
-	if test "$ARDUINOSERIALDEVICE" = "NULL"; then
-		rm -r -f "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
-		mv "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp" "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
-		cat "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old" | sed "s+#define ARDUINOSTL_DEFAULT_CIN_COUT+// define ARDUINOSTL_DEFAULT_CIN_COUT for cin/cout implementation+g" > "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp"
-	fi
-	rm -r -f "$SOURCEDIR/src/3rdparty/ArduinoSTL-master/src/ArduinoSTL.cpp.old"
+	rm -r -f unistd-test.*
 fi
 
 # deal with modules
