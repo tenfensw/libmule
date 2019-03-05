@@ -37,6 +37,11 @@ MuleArduinoAVRPlatform::MuleArduinoAVRPlatform() {
      devlist = list_of_connected_devices;
 }
 
+MuleArduinoAVRPlatform::~MuleArduinoAVRPlatform() {
+	// reimplement ~MuleArduinoAVRPlatform, make the avr-binutils linker happy
+	internal_cleanDevList();
+}
+
 bool MuleArduinoAVRPlatform::arduinoIsDigitalPin(MULE_OTHER_HWPINTYPE pin) {
 	if (pin < (MULE_ARDUINO_LASTDIGITALPIN + 1))
 		return true;
