@@ -284,21 +284,26 @@ if test `uname` = "Linux"; then
 		dbgecho "Arch detected"
 		HOSTOS="Arch Linux"
 	fi
-elif test `uname` = "FreeBSD" || test `uname` = "OpenBSD"; then
-	dbgecho "$0 is running on FreeBSD or OpenBSD, will be using LLVM Clang if \$HOSTCC is not specified"
+elif test `uname` = "FreeBSD" || test `uname` = "OpenBSD" || test `uname` = "Darwin"; then
+	dbgecho "$0 is running on FreeBSD, Mac OS X or OpenBSD, will be using LLVM Clang if \$HOSTCC is not specified"
 	HOSTOS="FreeBSD"
 	if test `uname` = "OpenBSD"; then
 		HOSTOS="OpenBSD"
+	elif test `uname` = "Darwin"; then
+		HOSTOS="Apple Mac OS X"
+		if test "$PREFIX" = "/opt/libmule-sdk"; then
+			PREFIX=/Library/Developer/libMule
+		fi
 	fi
 	# use built-in LLVM
-	if test "$HOSTCC" = "" && test "$HOSTCXX" = "" && test "$HOSTLD" = "" && test "$HOSTAR" = ""; then
+	if test "$HOSTCC" = "" && test "$HOSTCXX" = "" && test "$HOSTAR" = ""; then
 		HOSTCC=clang
 		HOSTCXX=clang++
 		HOSTLD=clang++
 		HOSTAR=ar
 	fi
-elif (uname | grep -q "BSD") || test `uname` = "Darwin"; then
-	dbgecho "$0 is running on a wild unknown BSD-like operating system... or it's just running on a Mac"
+elif (uname | grep -q "BSD"); then
+	dbgecho "$0 is running on a wild unknown BSD-like operating system"
 	HOSTOS="4.4BSD"
 elif test `uname` = "SunOS"; then
 	dbgecho "$0 is running on Sun Solaris, better use grep without -q flag"
@@ -319,13 +324,13 @@ elif test `uname` = "Haiku" || test `uname` = "BeOS"; then
 	dbgecho "$0 is running on BeOS"
 	HOSTOS="BeOS"
 	# use built-in GCC
-	if test "$HOSTCC" = "" && test "$HOSTCXX" = "" && test "$HOSTLD" = "" && test "$HOSTAR" = ""; then
+	if test "$HOSTCC" = "" && test "$HOSTCXX" = "" && test "$HOSTAR" = ""; then
 		HOSTCC=gcc
 		HOSTCXX=g++
 		HOSTLD=g++
 		HOSTAR=ar
 	fi
-	if test "$PREFIX" = "/opt/timkoisoft/libmule"; then
+	if test "$PREFIX" = "/opt/libmule-sdk"; then
 		PREFIX=/boot/home/config/non-packaged/timkoisoft/libmule
 	fi
 else
@@ -547,7 +552,9 @@ if test "$TARGETNAME" != "dummy" && test "$TARGETNAME" != "microcontrollersim"; 
 	BUGGYFEDORALINUXGCC=no
 fi
 
-
+if test "$HOSTLD" = ""; then
+	HOSTLD=$HOSTCXX
+fi
 
 if test "$HOSTCC" = "" && test "$HOSTCXX" = ""; then
 	printf "Trying to find any supported host C++ compilers... "
@@ -1326,6 +1333,10 @@ if test "$BUILDQTSTUFF" = "yes"; then
 		echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/release/mulemicrosim.exe\" \"\$(PREFIX)/bin/mulemicrosim.exe\"" >> "$CDIR/Makefile"
 		printf "\t\t" >> "$CDIR/Makefile"
 		echo "cp \"\$(SOURCEDIR)/src/ideintegration/toolchainmanager-qt/release/muletcm-qt.exe\" \"\$(PREFIX)/bin/muletcm-qt.exe\"" >> "$CDIR/Makefile"
+	elif echo "$HOSTOS" | grep "Mac OS X" > /dev/null 2>&1; then
+		echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/mulemicrosim.app/Contents/MacOS/mulemicrosim\" \"\$(PREFIX)/bin/mulemicrosim\"" >> "$CDIR/Makefile"
+		printf "\t\t" >> "$CDIR/Makefile"
+		echo "cp \"\$(SOURCEDIR)/src/ideintegration/toolchainmanager-qt/muletcm-qt.app/Contents/MacOS/muletcm-qt\" \"\$(PREFIX)/bin/muletcm-qt\"" >> "$CDIR/Makefile"
 	else
 		echo "cp \"\$(SOURCEDIR)/extras/microcontrollersimulator/mulemicrosim\" \"\$(PREFIX)/bin/mulemicrosim\"" >> "$CDIR/Makefile"
 		printf "\t\t" >> "$CDIR/Makefile"
