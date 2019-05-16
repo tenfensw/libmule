@@ -26,9 +26,17 @@ MuleArduinoAVRPlatform::MuleArduinoAVRPlatform() {
       initVariant();
 #endif
       delay(1);
-#if defined(USBCON)
+#ifdef MULE_ARDUINO_USBCONNECTION
       USBDevice.attach();
 #endif
+     digitalWrite(LED_BUILTIN, LOW);
+     delay(2000);
+     digitalWrite(LED_BUILTIN, HIGH);
+     delay(500);
+     digitalWrite(LED_BUILTIN, HIGH);
+     delay(500);
+     digitalWrite(LED_BUILTIN, HIGH);
+     delay(500);
      std::vector<MuleDevice*> list_of_connected_devices;
      list_of_connected_devices.clear();
      int maxpincount = MULE_ARDUINO_DIGITALPINCOUNT + MULE_ARDUINO_ANALOGPINCOUNT; 

@@ -21,4 +21,5 @@
 #include "core/muleplatformdependantfunctions.h"
 
 void muleplatformprintf(MULE_OTHER_STRINGTYPE in, ...) {}
+
 void muleplatformsleep(double seconds) { delay(seconds * 1000); }

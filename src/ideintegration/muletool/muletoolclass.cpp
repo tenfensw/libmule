@@ -377,63 +377,65 @@ std::string MuleToolClass::replaceContextAlternatives(const std::string& vname, 
 void MuleToolClass::parseArguments() {
 	actionArgs.clear();
 	for (int i = 0; i < cliArgs.size(); i++) {
-		if (cliArgs[i] == "-compile" || cliArgs[i] == "-bc") {
-			actionToRun = "compile";
-			if ((i + 1) < (cliArgs.size() - 1)) {
-				actionArgs.push_back(cliArgs[i + 1]);
+		if (cliArgs[i].rfind("-internal-", 0) != 0) {
+			if (cliArgs[i] == "-compile" || cliArgs[i] == "-bc") {
+				actionToRun = "compile";
+				if ((i + 1) < (cliArgs.size() - 1)) {
+					actionArgs.push_back(cliArgs[i + 1]);
+					i = i + 1;
+				}
+			}
+			else if (cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-compile_and_link" || cliArgs[i] == "-clink" || cliArgs[i] == "-cl" || cliArgs[i] == "-be" || cliArgs[i] == "-build") {
+				actionToRun = "completebuild";
+				if ((i + 1) < (cliArgs.size() - 1)) {
+					actionArgs.push_back(cliArgs[i + 1]);
+					i = i + 1;
+				}
+			}
+			else if (cliArgs[i] == "-link" || cliArgs[i] == "-bl") {
+				actionToRun = "link";
+				if ((i + 1) < (cliArgs.size() - 1)) {
+					actionArgs.push_back(cliArgs[i + 1]);
+					i = i + 1;
+				}
+			}
+			else if (cliArgs[i] == "-deploy" || cliArgs[i] == "-br") {
+				actionToRun = "deploy";
+				deploy_binName = cliArgs[i + 1];
 				i = i + 1;
 			}
-		}
-		else if (cliArgs[i] == "-compile-and-link" || cliArgs[i] == "-compile_and_link" || cliArgs[i] == "-clink" || cliArgs[i] == "-cl" || cliArgs[i] == "-be" || cliArgs[i] == "-build") {
-			actionToRun = "completebuild";
-			if ((i + 1) < (cliArgs.size() - 1)) {
-				actionArgs.push_back(cliArgs[i + 1]);
+			else if (cliArgs[i] == "-config" || cliArgs[i] == "-c") {
+				if ((i + 1) < (cliArgs.size() - 1) && (fileExists(cliArgs[i + 1]))) {
+					haveToDetectConfig = false;
+					configFilePath = cliArgs[i + 1];
+				}
+				else
+					haveToDetectConfig = true;
 				i = i + 1;
+				
 			}
-		}
-		else if (cliArgs[i] == "-link" || cliArgs[i] == "-bl") {
-			actionToRun = "link";
-			if ((i + 1) < (cliArgs.size() - 1)) {
-				actionArgs.push_back(cliArgs[i + 1]);
-				i = i + 1;
+			else if (cliArgs[i] == "-o") {
+				if ((i + 1) < (cliArgs.size() - 1)) {
+					actionArgs.push_back(cliArgs[i]);
+					actionArgs.push_back(cliArgs[i + 1]);
+					i = i + 1;
+				}
 			}
-		}
-		else if (cliArgs[i] == "-deploy" || cliArgs[i] == "-br") {
-			actionToRun = "deploy";
-			deploy_binName = cliArgs[i + 1];
-			i = i + 1;
-		}
-		else if (cliArgs[i] == "-config" || cliArgs[i] == "-c") {
-			if ((i + 1) < (cliArgs.size() - 1) && (fileExists(cliArgs[i + 1]))) {
-				haveToDetectConfig = false;
-				configFilePath = cliArgs[i + 1];
+			else if ((cliArgs[i] == "-aport") || (cliArgs[i] == "-arduinoport") || (cliArgs[i] == "-port") || (cliArgs[i] == "-ba")) {
+				if ((i + 1) < (cliArgs.size() - 1)) {
+					arduinoPort = cliArgs[i + 1];
+					i = i + 1;
+				}
 			}
+			else if (cliArgs[i] == "-quiet")
+				beQuiet = true;
+			else if (cliArgs[i] == "-nolibmule")
+				doNotIncludeLibMule = true;
+			else if (cliArgs[i] == "-lazy")
+				actionToRun = "lazymode";
 			else
-				haveToDetectConfig = true;
-			i = i + 1;
-			
-		}
-		else if (cliArgs[i] == "-o") {
-			if ((i + 1) < (cliArgs.size() - 1)) {
 				actionArgs.push_back(cliArgs[i]);
-				actionArgs.push_back(cliArgs[i + 1]);
-				i = i + 1;
-			}
 		}
-		else if ((cliArgs[i] == "-aport") || (cliArgs[i] == "-arduinoport") || (cliArgs[i] == "-port") || (cliArgs[i] == "-ba")) {
-			if ((i + 1) < (cliArgs.size() - 1)) {
-				arduinoPort = cliArgs[i + 1];
-				i = i + 1;
-			}
-		}
-		else if (cliArgs[i] == "-quiet")
-			beQuiet = true;
-		else if (cliArgs[i] == "-nolibmule")
-			doNotIncludeLibMule = true;
-		else if (cliArgs[i] == "-lazy")
-			actionToRun = "lazymode";
-		else
-			actionArgs.push_back(cliArgs[i]);
 	}
 	
 	if (actionToRun == "nmtd")
