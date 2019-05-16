@@ -16,10 +16,24 @@
 
 #include "microcontrollerwindow.h"
 #include <QApplication>
+#include <QStringList>
+#include <QProcess>
+#include <QFile>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QStringList argsList = a.arguments();
+    if (argsList.size() > 1 && QFile::exists(argsList.at(1))) {
+	QString cmd = "\"" + argsList.at(1) + "\"";
+	if (QFile::exists("./" + argsList.at(1)))
+		cmd = "\"./" + argsList.at(1) + "\"";
+#ifdef Q_OS_WIN
+	cmd.replace('/', '\\');
+#endif
+	QProcess::startDetached(cmd);
+
+    }
     MicrocontrollerWindow w;
     w.show();
 

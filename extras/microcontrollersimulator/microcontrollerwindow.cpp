@@ -161,18 +161,6 @@ void MicrocontrollerWindow::initializeSocket() {
     globalTimer->setInterval(MULEMICROSIM_UPDATEINTERVAL);
     connect(globalTimer, SIGNAL(timeout()), this, SLOT(onGlobalTimerTimeout()));
     globalTimer->start();
-    if (QApplication::arguments().count() > 1) {
-	QString apptolaunch = "";
-	for (int elarg = 1; elarg < QApplication::arguments().count(); elarg++) {
-		if (apptolaunch.isEmpty())
-			apptolaunch = QApplication::arguments().at(elarg);
-		else
-			apptolaunch = apptolaunch + " " + QApplication::arguments().at(elarg);
-	}
-	qDebug() << "apptolaunch = " << apptolaunch;
-	QProcess::startDetached(apptolaunch);
-	qDebug() << "started detached QProcess";
-    }
 }
 
 void MicrocontrollerWindow::reloadDeviceVector() {
