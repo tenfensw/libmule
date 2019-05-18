@@ -369,6 +369,8 @@ std::string MuleToolClass::replaceContextAlternatives(const std::string& vname, 
 				i = i + 1;
 				result = result + arduinoPort;
 			}
+			else
+				result = result + vval[i];
 		}
 	}
 	return result;
