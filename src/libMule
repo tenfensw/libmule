@@ -1,7 +1,7 @@
 //
 // This file is a part of libMule - Microcontroller-Universal 
 // Library (that is extendable)
-// Copyright (C) 2018 Tim K <timprogrammer@rambler.ru>
+// Copyright (C) 2018-2019 Tim K <timprogrammer@rambler.ru>
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,34 +18,26 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef MULEFILE_H
-#define MULEFILE_H
-
-#include "core/muleglobalfunctions.h"
+#ifdef LIBMULE_HEADER
 #include "core/muleconfig.h"
 #include "core/muleapplication.h"
-
-#warning "libMule fileio module is deprecated and will be removed in libMule 0.5."
-
-class MuleFile
-{
-public:
-    MuleFile(MULE_OTHER_STRINGTYPE filename);
-    ~MuleFile();
-    MULE_OTHER_STRINGTYPE getParentDirectory();
-    MULE_OTHER_STRINGTYPE getFileName();
-    bool write(MULE_OTHER_STRINGTYPE val);
-    bool append(MULE_OTHER_STRINGTYPE val);
-    MULE_OTHER_STRINGTYPE read();
-    bool remove();
-    bool create();
-    bool exists();
-
-private:
-    MULE_OTHER_STRINGTYPE fileName;
-    MuleCommonPlatform* mcpLocalClass;
-    MULE_OTHER_STRINGTYPE readContents;
-
-};
-
-#endif // MULEFILE_H
+#include "core/muledevice.h"
+#include "platformsupport/common/mulecommonplatform.h"
+#include MULE_OTHER_NATIVEPLATFORMHEADER
+#include "core/muleglobalfunctions.h"
+#include "core/muleplatformdependantfunctions.h"
+#ifdef MULE_FEATURES_SOUND
+#include "sound/mulesoundplayer.h"
+#endif
+#ifdef MULE_FEATURES_FILEIO
+#include "fileio/muledirectoryfunctions.h"
+#include "fileio/mulefile.h"
+#endif
+#ifdef MULE_FEATURES_PWMDEVICES
+#include "pwmdevices/mulepwmdevice.h"
+#include "pwmdevices/muleservodevice.h"
+#endif
+#ifdef MULE_FEATURES_SENSORS
+#include "sensors/mulesensor.h"
+#endif
+#endif

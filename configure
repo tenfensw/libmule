@@ -204,6 +204,7 @@ PLATFORMSOURCES=""
 PLATFORMHEADERS=""
 LIBSOURCES=""
 LIBHEADERS=""
+LEGACYFILEAPI=no
 HOSTOS=""
 HOSTCPU=""
 ADDITIONALINCLUDES=""
@@ -390,6 +391,15 @@ for Argument in $*; do
 		DOADDMINUSGTOCOMPILERFLAGS=yes
 	elif test "$FIRSTHALF" = "-modules"; then
 		MODULES="$SECONDHALF"
+	elif test "$FIRSTHALF" = "-mulefile-api"; then
+		if test "$SECONDHALF" = "" || test "$SECONDHALF" = "true"; then
+			SECONDHALF=yes
+		fi
+		if test "$SECONDHALF" = "yes"; then
+			LEGACYFILEAPI=yes
+		else
+			LEGACYFILEAPI=no
+		fi
 	elif test "$FIRSTHALF" = "-platformthirdpartytools"; then
 		if test "$SECONDHALF" = "" || test "$SECONDHALF" = "true"; then
 			SECONDHALF=yes
@@ -1061,7 +1071,12 @@ fi
 
 # deal with modules
 if test "$MODULES" = "all" || test "$MODULES" = "everything"; then
-	MODULES="core,fileio,sound,pwmdevices,sensors"
+	MODULES="core,sound,pwmdevices,sensors"
+	if test "$LEGACYFILEAPI" = "yes"; then
+		MODULES="$MODULES,fileio"
+		THINGSTODEFINE="$THINGSTODEFINE MULE_FEATURES_FILEIO"
+		showwarning "libMule fileio module is deprecated and will be removed in libMule 0.5."
+	fi
 elif test "$MODULES" = "minimal"; then
 	MODULES="core"
 elif test "$MODULES" = "arduino"; then
@@ -1359,6 +1374,7 @@ if test "$BUILDQTSTUFF" = "yes"; then
 	fi
 fi
 printf "\t\t" >> "$CDIR/Makefile"
+echo "cp \"\$(SOURCEDIR)/src/libMule\" \"\$(PREFIX)/include/libmule/libMule\"" >> "$CDIR/Makefile"
 echo "cp \"\$(SOURCEDIR)/src/mule.h\" \"\$(PREFIX)/include/libmule/mule.h\"" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "-rm -r -f \"\$(PREFIX)/include/libmule/\$(SOURCEDIR)\"" >> "$CDIR/Makefile"

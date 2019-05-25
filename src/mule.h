@@ -18,25 +18,8 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#include "core/muleconfig.h"
-#include "core/muleapplication.h"
-#include "core/muledevice.h"
-#include "platformsupport/common/mulecommonplatform.h"
-#include MULE_OTHER_NATIVEPLATFORMHEADER
-#include "core/muleglobalfunctions.h"
-#include "core/muleplatformdependantfunctions.h"
-#ifdef MULE_FEATURES_FILEIO
-#include "fileio/mulefile.h"
-#include "fileio/muledirectoryfunctions.h"
+#ifndef MULE_LEGACY_HEADER
+#define MULE_LEGACY_HEADER
+#include <libMule>
+#warning "mule.h header is deprecated. It was renamed to just libMule, so now you should use \"#include <libMule>\" instead of \"#include <mule.h>\" in newer code."
 #endif
-#ifdef MULE_FEATURES_SOUND
-#include "sound/mulesoundplayer.h"
-#endif
-#ifdef MULE_FEATURES_PWMDEVICES
-#include "pwmdevices/mulepwmdevice.h"
-#include "pwmdevices/muleservodevice.h"
-#endif
-#ifdef MULE_FEATURES_SENSORS
-#include "sensors/mulesensor.h"
-#endif
-
