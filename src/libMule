@@ -18,7 +18,8 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifdef LIBMULE_HEADER
+#ifndef LIBMULE_HEADER
+#define LIBMULE_HEADER
 #include "core/muleconfig.h"
 #include "core/muleapplication.h"
 #include "core/muledevice.h"
