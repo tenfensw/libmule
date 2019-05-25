@@ -1375,6 +1375,7 @@ if test "$BUILDQTSTUFF" = "yes"; then
 fi
 printf "\t\t" >> "$CDIR/Makefile"
 echo "cp \"\$(SOURCEDIR)/src/libMule\" \"\$(PREFIX)/include/libmule/libMule\"" >> "$CDIR/Makefile"
+printf "\t\t" >> "$CDIR/Makefile"
 echo "cp \"\$(SOURCEDIR)/src/mule.h\" \"\$(PREFIX)/include/libmule/mule.h\"" >> "$CDIR/Makefile"
 printf "\t\t" >> "$CDIR/Makefile"
 echo "-rm -r -f \"\$(PREFIX)/include/libmule/\$(SOURCEDIR)\"" >> "$CDIR/Makefile"
