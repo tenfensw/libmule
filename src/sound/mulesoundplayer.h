@@ -31,7 +31,7 @@ class MuleSoundPlayer {
 	  MuleSoundPlayer();
 	  ~MuleSoundPlayer();
 	  void addToPlaylist(MULE_OTHER_STRINGTYPE filename);
-	  const std::vector<MuleFile> getPlaylist();
+	  const std::vector<std::string> getPlaylist();
 	  void clearPlaylist();
 	  void removeFromPlaylist(MULE_OTHER_STRINGTYPE filename);
 	  void removeFromPlaylist(int fileindex);
