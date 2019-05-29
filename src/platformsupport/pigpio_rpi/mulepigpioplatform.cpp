@@ -81,7 +81,6 @@ bool MulePigpioPlatform::setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPI
 }
 #endif
 
-#ifdef MULE_FEATURES_FILEIO
 MULE_OTHER_STRINGTYPE MulePigpioPlatform::readFromFile(MULE_OTHER_STRINGTYPE file) {
     muledebug("file = " + file);
     std::ifstream t(file.c_str());
@@ -111,7 +110,6 @@ bool MulePigpioPlatform::fileExists(MULE_OTHER_STRINGTYPE file) {
 bool MulePigpioPlatform::deleteFile(MULE_OTHER_STRINGTYPE file) {
     return (unlink(file.c_str()) == 0);
 }
-#endif
 
 
 #ifdef MULE_FEATURES_SOUND

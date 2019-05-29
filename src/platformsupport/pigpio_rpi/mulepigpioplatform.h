@@ -64,12 +64,10 @@ public:
     bool writeToPin(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE ct);
     bool setPullUpDown(MULE_OTHER_HWPINTYPE pin, MULE_OTHER_HWPINTYPE val);
 #endif
-#ifdef MULE_FEATURES_FILEIO
     MULE_OTHER_STRINGTYPE readFromFile(MULE_OTHER_STRINGTYPE file);
     bool writeToFile(MULE_OTHER_STRINGTYPE file, MULE_OTHER_STRINGTYPE ct);
     bool fileExists(MULE_OTHER_STRINGTYPE file);
     bool deleteFile(MULE_OTHER_STRINGTYPE file);
-#endif
 #ifdef MULE_FEATURES_SOUND
     void doBeep();
     bool playWaveFile(MULE_OTHER_STRINGTYPE filename);

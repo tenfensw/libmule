@@ -37,10 +37,7 @@ bool MuleSoundPlayer::init() {
 }
 
 void MuleSoundPlayer::addToPlaylist(MULE_OTHER_STRINGTYPE filename) {
-	if (mcpLocalClass->fileExists(filename) == false)
-		muleexception(11, "File does not exist", true);
-	else
-		playlist.push_back(filename);
+	playlist.push_back(filename);
 }
 
 const std::vector<std::string> MuleSoundPlayer::getPlaylist() {
