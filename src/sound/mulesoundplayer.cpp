@@ -40,14 +40,10 @@ void MuleSoundPlayer::addToPlaylist(MULE_OTHER_STRINGTYPE filename) {
 	if (mcpLocalClass->fileExists(filename) == false)
 		muleexception(11, "File does not exist", true);
 	else
-		playlist.push_back(MuleFile(filename));
+		playlist.push_back(filename);
 }
 
-void MuleSoundPlayer::addToPlaylist(MuleFile file) {
-	playlist.push_back(file);
-}
-
-const std::vector<MuleFile> MuleSoundPlayer::getPlaylist() {
+const std::vector<std::string> MuleSoundPlayer::getPlaylist() {
 	return playlist;
 }
 
@@ -58,19 +54,7 @@ void MuleSoundPlayer::clearPlaylist() {
 void MuleSoundPlayer::removeFromPlaylist(MULE_OTHER_STRINGTYPE filename) {
 	int vsize = (int)(playlist.size());
 	for (int i = 0; i < vsize; i++) {
-		if (playlist[i].getFileName() == filename) {
-			playlist.erase(playlist.begin() + i);
-			return;
-		}
-	}
-	muleexception(12, "Item not found", true);
-	return;
-}
-
-void MuleSoundPlayer::removeFromPlaylist(MuleFile file) {
-	int vsize = (int)(playlist.size());
-	for (int i = 0; i < vsize; i++) {
-		if (playlist[i].getFileName() == file.getFileName()) {
+		if (playlist[i] == filename) {
 			playlist.erase(playlist.begin() + i);
 			return;
 		}
@@ -90,20 +74,14 @@ void MuleSoundPlayer::removeFromPlaylist(int fileindex) {
 void MuleSoundPlayer::play() {
 	int vsize = (int)(playlist.size());
 	for (int i = 0; i < vsize; i++)
-		mcpLocalClass->playWaveFile(playlist[i].getFileName());
+		mcpLocalClass->playWaveFile(playlist[i]);
 	return;
 }
 
 bool MuleSoundPlayer::playSingleFile(MULE_OTHER_STRINGTYPE filename) {
-	return MuleSoundPlayer::playSingleFile(MuleFile(filename));
+	return (MuleApplication::getRunningInstance()->getPlatformClass())->playWaveFile(filename);
 }
 
-bool MuleSoundPlayer::playSingleFile(MuleFile file) {
-	if (file.exists() == true)
-		return (MuleApplication::getRunningInstance()->getPlatformClass())->playWaveFile(file.getFileName());
-	else
-		return false;
-}
 
 void MuleSoundPlayer::stop() {
 	mcpLocalClass->stopAllSounds();

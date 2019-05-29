@@ -21,31 +21,28 @@
 #ifndef MULESOUNDPLAYER_H
 #define MULESOUNDPLAYER_H
 #include <iostream>
+#include <string>
 #include <vector>
 #include "core/muleapplication.h"
 #include "platformsupport/common/mulecommonplatform.h"
-#include "fileio/mulefile.h"
 
 class MuleSoundPlayer {
 	public:
 	  MuleSoundPlayer();
 	  ~MuleSoundPlayer();
 	  void addToPlaylist(MULE_OTHER_STRINGTYPE filename);
-	  void addToPlaylist(MuleFile file);
 	  const std::vector<MuleFile> getPlaylist();
 	  void clearPlaylist();
 	  void removeFromPlaylist(MULE_OTHER_STRINGTYPE filename);
 	  void removeFromPlaylist(int fileindex);
-	  void removeFromPlaylist(MuleFile file);
 	  void play();
 	  static bool playSingleFile(MULE_OTHER_STRINGTYPE filename);
-	  static bool playSingleFile(MuleFile file);
 	  void stop();
 	  static void beep();
 
 	private:
 	  bool init();
-	  std::vector<MuleFile> playlist;
+	  std::vector<std::string> playlist;
 	  MuleCommonPlatform* mcpLocalClass;
 };
 
