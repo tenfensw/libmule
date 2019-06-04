@@ -23,9 +23,8 @@
 
 int main() {
 	MuleApplication mApp;
-	std::cout << "Current platform is " << mApp.getPlatformName() << std::endl;
-	std::cout << "Current directory is " << mApp.getCurrentDirectory() << std::endl;
-	std::cout << "Goodbye" << std::endl;
-	mApp.exit(0);
-	return 0;
+	muleprintf("Current platform is " + mApp.getPlatformName() + '\n');
+	muleprintf("Current directory is " + mApp.getCurrentDirectory() + '\n');
+	muleprintf("Goodbye\n");
+	return mApp.exit(0);
 }
